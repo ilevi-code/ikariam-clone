@@ -9,17 +9,16 @@
         <div class="content">
             <img alt="<?=$this->Data_Model->building_name_by_type($id)?>" src="<?=$this->config->item('style_url')?>skin/buildings/y100/<?=$this->Data_Model->building_class_by_type($id)?>.gif"/>
             <p><?=$this->Data_Model->building_desc_by_type($id)?></p>
-            <!--<p><b>Требования</b> <p>Исследования : нет</p></p>-->
+            <!--<p><b>Requirements</b> <p>Research: No</p></p>-->
             <div class="centerButton">
                 <a class="button" href="javascript:history.back()"><?=$this->lang->line('back')?></a>
             </div>
-<?php
+<?
     $position = $this->Data_Model->get_position($id, $this->Player_Model->now_town);
     $level_text = 'pos'.$position.'_level';
     $level = $this->Player_Model->now_town->$level_text;
     if ($position == 0 and $id > 1) { $level = 0; }
     $cost = $this->Data_Model->building_cost($id,$level-1,$this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
-    $cost['time'] = floor($cost['time'] / getConfig('game_speed'));
     $cost_max = $this->Data_Model->building_cost($id,$cost['max_level']-1,$this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
     $wood = ($cost_max['wood'] > 0) ? true : false;
     $wine = ($cost_max['wine'] > 0) ? true : false;
@@ -73,11 +72,11 @@
 <?if($id==6){?>
                 <tr>
                     <td colspan="4"></td>
-                    <td title="<?=$this->lang->line('wood')?>" class="warehouseMaterial"><img src="<?=$this->config->item('style_url')?>skin/resources/icon_wood.gif" alt="Стройматериалы"></td>
-                    <td title="<?=$this->lang->line('crystal')?>" class="warehouseMaterial"><img src="<?=$this->config->item('style_url')?>skin/resources/icon_glass.gif" alt="Хрусталь"></td>
-                    <td title="<?=$this->lang->line('marble')?>" class="warehouseMaterial"><img src="<?=$this->config->item('style_url')?>skin/resources/icon_marble.gif" alt="Мрамор"></td>
-                    <td title="<?=$this->lang->line('sulfur')?>" class="warehouseMaterial"><img src="<?=$this->config->item('style_url')?>skin/resources/icon_sulfur.gif" alt="Сера"></td>
-                    <td title="<?=$this->lang->line('wine')?>" class="warehouseMaterial"><img src="<?=$this->config->item('style_url')?>skin/resources/icon_wine.gif" alt="Виноград"></td>
+                    <td title="<?=$this->lang->line('wood')?>" class="warehouseMaterial"><img src="<?=$this->config->item('style_url')?>skin/resources/icon_wood.gif" alt="building materials"></td>
+                    <td title="<?=$this->lang->line('crystal')?>" class="warehouseMaterial"><img src="<?=$this->config->item('style_url')?>skin/resources/icon_glass.gif" alt="Crystal"></td>
+                    <td title="<?=$this->lang->line('marble')?>" class="warehouseMaterial"><img src="<?=$this->config->item('style_url')?>skin/resources/icon_marble.gif" alt="Marble"></td>
+                    <td title="<?=$this->lang->line('sulfur')?>" class="warehouseMaterial"><img src="<?=$this->config->item('style_url')?>skin/resources/icon_sulfur.gif" alt="Sulfur"></td>
+                    <td title="<?=$this->lang->line('wine')?>" class="warehouseMaterial"><img src="<?=$this->config->item('style_url')?>skin/resources/icon_wine.gif" alt="Grape"></td>
                 </tr>
 <?}?>
 

@@ -1,3 +1,4 @@
+<?$this->CI =& get_instance()?>
 <div id="mainview">
     <div class="buildingDescription">
         <h1><?=$this->lang->line('trade_fleet')?></h1>
@@ -7,11 +8,11 @@
     <div class="contentBox">
         <h3 class="header"><?=$this->lang->line('goods_transports')?></h3>
         <div class="content">
-<?if(isset($this->Player_Model->missions) && SizeOf($this->Player_Model->missions) > 0){?>
+<?if(SizeOf($this->Player_Model->missions) > 0){?>
 
             <table cellpadding="0" cellspacing="0">
                 <tr>
-                    <th class="transports"><img src="<?php echo $this->config->item('style_url');?>skin/characters/fleet/40x40/ship_transport_r_40x40.gif" width="40" height="40" title="<?=$this->lang->line('number_ships')?>" alt="<?=$this->lang->line('quantity')?>"></th>
+                    <th class="transports"><img src="<?=$this->config->item('style_url')?>skin/characters/fleet/40x40/ship_transport_r_40x40.gif" width="40" height="40" title="<?=$this->lang->line('number_ships')?>" alt="<?=$this->lang->line('quantity')?>"></th>
                     <th class="source"><?=$this->lang->line('start')?></th>
                     <th class="mission"><?=$this->lang->line('mission')?></th>
                     <th class="target"><?=$this->lang->line('target')?></th>
@@ -19,11 +20,11 @@
                     <th class="return"><?=$this->lang->line('return')?></th>
                     <th class="actions"><?=$this->lang->line('actions')?></th>
                 </tr>
-<?php foreach($this->Player_Model->missions as $mission){
-if($mission->user == $this->Player_Model->user->id){
-
+<?foreach($this->Player_Model->missions as $mission){?>
+<?if($mission->user == $this->Player_Model->user->id){?>
+<?
     $all_resources = $mission->wood+$mission->wine+$mission->marble+$mission->crystal+$mission->sulfur+$mission->peoples;
-    require(APPPATH.'models/mission_data.php');
+    include(APPPATH.'models/mission_data.php');
 ?>
                 <tr>
                     <td class="transports"><?=$mission->ship_transport?></td>
@@ -125,7 +126,7 @@ if($mission->user == $this->Player_Model->user->id){
                                             <td>
                                                 <div class="space">
                                                     <img src="<?=$this->config->item('style_url')?>skin/layout/crate.gif" width="22" height="22" alt="<?=$this->lang->line('cargo_space')?>" title="<?=$this->lang->line('cargo_space')?>">
-                                                </div> <?=number_format($all_resources)?> / <?php echo number_format($mission->ship_transport * getConfig('transport_capacity'));?>
+                                                </div> <?=number_format($all_resources)?> / <?=number_format($mission->ship_transport*$this->config->item('transport_capacity'))?>
                                                 </td></tr>
                                     </table>
                                 </div>

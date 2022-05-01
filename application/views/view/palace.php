@@ -1,23 +1,23 @@
 <div id="mainview">
 <?include_once('building_description.php')?>
     <div class="contentBox01h">
-        <h3 class="header"><span class="textLabel">Thành phố trong thể chế của bạn</span></h3>
+        <h3 class="header"><span class="textLabel">Cities of your empire</span></h3>
         <div class="content">
             <table cellpadding="0" cellspacing="0" class="table01">
                 <thead>
                     <tr>
                         <th class="crown"></th>
-                        <th>Thành phố 	</th>
-                        <th>Cấp độ</th>
-                        <th>Cung điện</th>
-                        <th>Hòn đảo</th>
-                        <th>Tài nguyên</th>
+                        <th>City</th>
+                        <th>Level</th>
+                        <th>The palace</th>
+                        <th>Island</th>
+                        <th>Resource</th>
                     </tr>
                 </thead>
                 <tbody>
 <?foreach($this->Player_Model->towns as $town){?>
 <?
-    // уровень дворца
+    // palace level
     $level = 0;
     for($i = 3; $i <= 13; $i++)
     {
@@ -27,7 +27,7 @@
     }
 ?>
                     <tr>
-                        <td><?if($town->id == $this->Player_Model->capital_id){?><img src="<?=$this->config->item('style_url')?>skin/layout/crown.gif" width="20" height="20" alt="Столица" title="Столица"><?}?></td>
+                        <td><?if($town->id == $this->Player_Model->capital_id){?><img src="<?=$this->config->item('style_url')?>skin/layout/crown.gif" width="20" height="20" alt="The capital" title="The capital"><?}?></td>
                         <td><?=$town->name?></td>
                         <td><?=$town->pos0_level?></td>
                         <td><?=$level?></td>
@@ -42,22 +42,22 @@
     </div>
 
 <div class="contentBox01h">
-    <h3 class="header"><span class="textLabel">Chiếm đóng thành phố</span></h3>
+    <h3 class="header"><span class="textLabel">Occupied cities</span></h3>
     <div class="content">
         <table cellpadding="0" cellspacing="0" class="table01">
         <thead>
         <tr>
             <th class="crown"></th>
-            <th>Thành phố</th>
-            <th>Cấp độ</th>
-            <th>Hòn đảo</th>
-            <th>Tài nguyên 	</th>
-            <th>Hành động</th>
+            <th>City</th>
+            <th>Level</th>
+            <th>Island</th>
+            <th>Resource</th>
+            <th>Action</th>
         </tr>
         </thead>
         <tbody>
 
-        <tr><td colspan="6">Bạn không chiếm đóng thành phố nào.</td></tr>        </tbody>
+        <tr><td colspan="6">You have no occupied cities.</td></tr>        </tbody>
         </table>
     </div>
     <div class="footer"></div>

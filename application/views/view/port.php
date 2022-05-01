@@ -1,38 +1,37 @@
-<?php
-    $level_text = 'pos'.$position.'_level';
+<?  $level_text = 'pos'.$position.'_level';
     $level = $this->Player_Model->now_town->$level_text;
     $speed = $this->Data_Model->speed_by_port_level($level);
 ?>
 <div id="mainview">
-<?php include_once('building_description.php');?>
+<?include_once('building_description.php')?>
     <div class="contentBox01h">
-        <h3 class="header"><span class="textLabel">Mua tàu chở hàng</span></h3>
+        <h3 class="header"><span class="textLabel">Buy a merchant ship</span></h3>
         <div class="content">
             <ul id="units">
                 <li class="unit">
                     <div class="unitinfo">
-                        <h4>Tàu chở hàng</h4>
-                        <a title="Biết thêm về Tàu chở hàng..." href="<?=$this->config->item('base_url')?>game/shipDescription/23/">
+                        <h4>Dry load</h4>
+                        <a title="Learn more about Bulk Cargo..." href="<?=$this->config->item('base_url')?>game/shipDescription/23/">
                             <img src="<?=$this->config->item('style_url')?>skin/characters/fleet/120x100/ship_transport_r_120x100.gif">
                         </a>
-                        <div class="unitcount"><span class="textLabel">Có sẵn: </span><?=$this->Player_Model->all_transports?></div>
-                        <p>Tàu giao thương là một phần hỗ trợ quan trong cho vương quốc đảo của bạn. Bất kể chúng chuyên chở hàng hóa, quân lính hay thông tin liên lạc: những thủy thủ của bạn phải chắc rằng, mọi thứ sẽ đến đích an toàn và nhanh chóng!</p>
+                        <div class="unitcount"><span class="textLabel">Available: </span><?=$this->Player_Model->all_transports?></div>
+                        <p>Trade ships are one of the most important elements for the development of an empire. They can be used both for the transportation of peaceful goods and for military needs.</p>
                     </div>
-                    <label for="textfield_">Mua một tàu thương mại:</label>
+                    <label for="textfield_">Buy a merchant ship:</label>
 
-                    <div class="forminput">Tối đa: 160<br>
+                    <div class="forminput">Maximum: 160<br>
 <?if($this->Player_Model->user->gold >= $this->Data_Model->transport_cost_by_count($this->Player_Model->all_transports)){?>
                         <div class="leftButton">
-                            <a href="<?=$this->config->item('base_url')?>actions/transporter/<?=$position?>/" class="button bigButton">Mua tàu chở hàng</a>
+                            <a href="<?=$this->config->item('base_url')?>actions/transporter/<?=$position?>/" class="button bigButton">Buy a merchant ship</a>
                         </div>
 <?}else{?>
-Không đủ nguồn lực
+Not enough resources
 <?}?>
                     </div>
                     <div class="costs">
                         <ul class="resources">
 <?if($this->Data_Model->transport_cost_by_count($this->Player_Model->all_transports) > 0){?>
-                            <li class="gold"><span class="textLabel">Золото: </span><?=number_format($this->Data_Model->transport_cost_by_count($this->Player_Model->all_transports))?></li>
+                            <li class="gold"><span class="textLabel">Gold: </span><?=number_format($this->Data_Model->transport_cost_by_count($this->Player_Model->all_transports))?></li>
 <?}?>
                         </ul>
                     </div>
@@ -43,26 +42,26 @@ Không đủ nguồn lực
     </div>
 
     <div class="contentBox01h">
-        <h3 class="header"><span class="textLabel">Điều động tàu giao thương</span></h3>
+        <h3 class="header"><span class="textLabel">Send a merchant ship</span></h3>
         <div class="content">
             <ul class="cities">
-<?php 
-foreach($this->Player_Model->towns as $town) {
-if($town->id != $this->Player_Model->town_id){?>
-<li><a title="Транспорт в <?=$town->name?>" href="<?=$this->config->item('base_url')?>game/transport/<?=$town->island?>/<?=$town->id?>/">(<?=$this->Player_Model->islands[$town->island]->x?>:<?=$this->Player_Model->islands[$town->island]->y?>) <?=$town->name?></a></li>
-<?php } } ?>
+<?foreach($this->Player_Model->towns as $town)?>
+<?if($town->id != $this->Player_Model->town_id){?>
+<li><a title="Transport in<?=$town->name?>" href="<?=$this->config->item('base_url')?>game/transport/<?=$town->island?>/<?=$town->id?>/">(<?=$this->Player_Model->islands[$town->island]->x?>:<?=$this->Player_Model->islands[$town->island]->y?>) <?=$town->name?></a></li>
+<?}?>
             </ul>
         </div>
         <div class="footer"></div>
     </div>
     <div class="contentBox01h" style="z-index:100">
-        <h3 class="header"><span class="textLabel">Tàu đang chuyển</span></h3>
+        <h3 class="header"><span class="textLabel">Fleets on load</span></h3>
         <div class="content master">
-            <div class="tcap">Tàu chở hàng của ta</div>
-<?php $m_id = 0;
-if($this->Player_Model->missions_loading > 0){
-foreach($this->Player_Model->missions as $mission){
-if ($mission->mission_start == 0){
+            <div class="tcap">My merchant ships</div>
+<?$m_id = 0?>
+<?if($this->Player_Model->missions_loading > 0){?>
+<?foreach($this->Player_Model->missions as $mission){
+if ($mission->mission_start == 0){?>
+<?
     $wood = $mission->wood;
     $marble = $mission->marble;
     $wine = $mission->wine;
@@ -78,21 +77,21 @@ if ($mission->mission_start == 0){
             <table cellpadding="0" cellspacing="0" class="table01">
                 <thead>
                     <tr>
-                        <th class="origin">Điểm đến</th>
-                        <th>Số lượng</th>
-                        <th>Nghiệm vụ</th>
-                        <th>Tình trạng 
+                        <th class="origin">Destination</th>
+                        <th>Quantity</th>
+                        <th>Mission</th>
+                        <th>Status
                         </th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
 <tr>            
-    <td>Polis</td>
+    <td>Policy</td>
     <td>
         <div class="tooltip" style="position:absolute;width:100px;overflow:show;">
             <table border='0' cellspacing='0' class='stuff'>
-                <tr><th colspan='2'>Hàng trên boong</th></tr>
+                <tr><th colspan='2'>Goods on board</th></tr>
 <?if($wood > 0){?>
                 <tr><td class='unit'><img src='<?=$this->config->item('style_url')?>skin/resources/icon_wood.gif'></td><td class='count'><?=number_format($wood)?></td></tr>
 <?}?>
@@ -142,12 +141,12 @@ if ($mission->mission_start == 0){
                 });
             });
 	</script>
-        Đang tải </td><td>
-        <a title="Rút quân!" href="<?=$this->config->item('base_url')?>actions/abortFleet/<?=$mission->id?>/<?=$position?>/">
-            <img src="<?=$this->config->item('style_url')?>skin/advisors/military/icon-back.gif" title="Rút quân!">
+        Loading</td><td>
+        <a title="Recall the fleet!" href="<?=$this->config->item('base_url')?>actions/abortFleet/<?=$mission->id?>/<?=$position?>/">
+            <img src="<?=$this->config->item('style_url')?>skin/advisors/military/icon-back.gif" title="Recall the fleet!">
         </a>
 <?}else{?>
-Chờ
+Expectation
 <?}?>
     </td>
 </tr>
@@ -157,17 +156,17 @@ Chờ
 <?}?>
 <?}}?>
 <?if($m_id == 0){?>
-            <p>Không có tàu thuyền nào đăng ký với chủ cảng</p>
+            <p>No registered ships in the port</p>
 <?}?>
-            <div class="tcap">Thuyền lạ</div>
-            <p>Không có tàu thuyền nào đăng ký với chủ cảng</p>
+            <div class="tcap">foreign ships</div>
+            <p>No registered ships in the port</p>
         </div>
         <div class="footer"></div>
     </div>
 
     <div class="contentBox01h" style="z-index:50;">
-        <h3 class="header"><span class="textLabel">Thương nhân đang đến</span></h3>
-        <div class="content master"><p>Không có tàu thuyền nào đăng ký với chủ cảng</p></div>
+        <h3 class="header"><span class="textLabel">Incoming merchants</span></h3>
+        <div class="content master"><p>No registered ships in the port</p></div>
         <div class="footer"></div>
     </div> 
 </div>

@@ -13,26 +13,28 @@ classValuePerSatisfaction[4] = -1000;
 classNamePerSatisfaction[4] = 'outraged';
 satPerWine = new Array();
 savedWine = new Array();
-<?php
+<?
     $level_text = 'pos'.$position.'_level';
     $level = $this->Player_Model->now_town->$level_text;
-    for($i = 0; $i <= $level; $i++){?>
+ ?>
+<?for($i = 0; $i <= $level; $i++){?>
 	satPerWine[<?=$i?>] = <?=$i*60?>;
 	savedWine[<?=$i?>] = '&nbsp;';
 <?}?>
 </script>
 <div id="mainview">
-<?php include_once('building_description.php');?>
+<?include_once('building_description.php')?>
     <div class="contentBox01h">
-        <h3 class="header"><span class="textLabel">Phục vụ thức uống</span></h3>
+        <h3 class="header"><span class="textLabel">Prepare drinks</span></h3>
         <div class="content">
             <form id="wineAssignForm" action="<?=$this->config->item('base_url')?>actions/tavern/<?=$position?>/" method="POST">
                 <ul id="units">
                     <li class="unit">
                         <div class="unitinfo">
-                            <h4>Phục vụ rượu</h4>
+                            <h4>Prepare wine</h4>
                             <img src="<?=$this->config->item('style_url')?>skin/resources/wine-big.gif" style="margin-left:10px;">
-                            <p>Bạn có thể xác định chính xác bao nhiêu rượu cần để phục vụ người dân của mình. Càng nhiều rượu, người dân càng hạnh phúc.</p>
+                            <p>You can specify the amount of grapes used to make wine. The more grapes, the more wine and the happier the citizens.
+                                Attention: the tavern keeper receives an hourly ration of grapes at each ration change!</p>
                         </div>
                         <div class="sliderinput">
                             <div id="sliderbg_wine" class="sliderbg" title="slider value = 0">
@@ -82,26 +84,26 @@ savedWine = new Array();
 				});
                 </script>
 
-                            <a class="setMin" href="#reset" onClick="sliders['slider_wine'].setActualValue(0); return false;" title="Thiết lập lại mục nhập"><span class="textLabel">Min</span></a>
-                            <a class="setMax" href="#max" onClick="sliders['slider_wine'].setActualValue(<?=$this->Data_Model->wine_by_tavern_level($level)?>); return false;" title="Phục vụ nhiều nhất có thể"><span class="textLabel">Max</span></a>                </div><!-- end .sliderinput -->
+                            <a class="setMin" href="#reset" onClick="sliders['slider_wine'].setActualValue(0); return false;" title="Reset input"><span class="textLabel">i</span></a>
+                            <a class="setMax" href="#max" onClick="sliders['slider_wine'].setActualValue(<?=$this->Data_Model->wine_by_tavern_level($level)?>); return false;" title="cook the maximum"><span class="textLabel">max.</span></a>                </div><!-- end .sliderinput -->
                             <div class="forminput">
-                                <a title="Phục vụ nhiều nhất có thể" onclick="sliders['slider_wine'].setActualValue(1); return false;" href="#max" class="setMax"><span class="textLabel">Max</span></a>
+                                <a title="cook the maximum" onclick="sliders['slider_wine'].setActualValue(1); return false;" href="#max" class="setMax"><span class="textLabel">max.</span></a>
                                 <div class="centerButton">
-                                    <input type="submit" value="Nâng cốc!" class="button">
+                                    <input type="submit" value="To your health!" class="button">
                                 </div>
-                                <div id="citySatisfaction"  class="<?=$this->Data_Model->good_name_by_count($this->Player_Model->good[$this->Player_Model->town_id])?>">
+                                <div id="citySatisfaction"  class="<?=$this->Data_Model->good_class_by_count($this->Player_Model->good[$this->Player_Model->town_id])?>">
                                 </div>
                             </div>
                             <div id="serve" class="textfield">
                                 <select id="wineAmount" name="amount" size="1">
-<?php for($i = 0; $i <= $level; $i++){
-if ($i == 0){?>
-                                    <option value="0" <?if($this->Player_Model->now_town->tavern_wine == $i){?>selected<?}?>>Không có rượu</option>
-<?php }else{ ?>
-                                    <option value="<?=$i?>" <?if($this->Player_Model->now_town->tavern_wine == $i){?>selected<?}?>><?=$this->Data_Model->wine_by_tavern_level($i)?> Rượu một giờ </option>
-<?php }} ?>
+<?for($i = 0; $i <= $level; $i++){?>
+<?if ($i == 0){?>
+                                    <option value="0" <?if($this->Player_Model->now_town->tavern_wine == $i){?>selected<?}?>>no grapes</option>
+<?}else{?>
+                                    <option value="<?=$i?>" <?if($this->Player_Model->now_town->tavern_wine == $i){?>selected<?}?>><?=$this->Data_Model->wine_by_tavern_level($i)?> Grapes per hour</option>
+<?}}?>
                                 </select>
-                                <span class="bonus">+<span id="bonus" class="value">0</span> Cư dân hạnh phúc</span>
+                                <span class="bonus">+<span id="bonus" class="value">0</span> happy citizens</span>
                                 <br>
                                 <span class="savedWine"><span id="savedWine"></span></span>
                             </div>

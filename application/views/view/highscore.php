@@ -1,4 +1,4 @@
-<?php
+<?
     $rangs_count = ceil($param1->num_rows()/100);
 ?>
 <div id="mainview">
@@ -43,6 +43,22 @@
 	           </td>
             </tr>
            </table>
+           <p style="font-size: 14px; padding: 0; margin: 0 0 15px 10px;">
+ Places in the top list
+<?switch($param3['highscoreType']){?>
+<?case 'building_score_main': echo $this->lang->line('master_builders'); break;?>
+<?case 'building_score_secondary': echo $this->lang->line('building_levels'); break;?>
+<?case 'research_score_main': echo $this->lang->line('scientists'); break;?>
+<?case 'research_score_secondary': echo $this->lang->line('research_levels'); break;?>
+<?case 'army_score_main': echo $this->lang->line('generals'); break;?>
+<?case 'trader_score_secondary': echo $this->lang->line('gold'); break;?>
+<?case 'offense': echo $this->lang->line('offencive_points'); break;?>
+<?case 'defense': echo $this->lang->line('defence_points'); break;?>
+<?case 'trade': echo $this->lang->line('trade_points'); break;?>
+<?case 'resources': echo $this->lang->line('resources'); break;?>
+<?case 'donations': echo $this->lang->line('donate_points'); break;?>
+<?default: echo $this->lang->line('total_score'); break;?>
+<?}?> !            </p>
            <table class="table01">
              <tr>
                 <th width="15%"><?=$this->lang->line('position')?></th>
@@ -57,37 +73,18 @@
             <tr class="<?if(!fmod($i,2)){?>alt<?}?><?if($param3['offset']==0){?><?if($i==1){?> first<?}?><?if($i==2){?> second<?}?><?if($i==3){?> third<?}?><?}?><?if($user->id==$this->Player_Model->user->id){?> own<?}?>">
                     <td class="place"><?=$i?></td>
     	            <td class="name"><?=$user->login?></td>
-	            <td class="allytag"><?
-				$query_alleanza = $this->db->get_where($this->session->userdata('universe').'_alliance_users', array('user_id' => $user->id));
-$this->alleanza = $query_alleanza->row();
-if($this->alleanza == TRUE)  {     
-foreach ($query_alleanza->result() as $row)
-{
-$querry = $this->db->get_where($this->session->userdata('universe').'_alliance', array('ally_id' => $row->ally_id));
-foreach ($querry->result() as $row) 
-{?> 
-
-<? $id_ally = $row->ally_id;?>
-<a class="allyLink" href="<?=$this->config->item('base_url')?>game/extpage/<?=$id_ally?>/"><? echo $row->ally_tag;?></a>
-
-<?
-}
-}
-} 			
-				
-				?>
-				<!--<a class="allyLink" href="?view=allyPage&oldView=highscore&allyId=648">Wand</a>--></td>
+	            <td class="allytag"><!--<a class="allyLink" href="?view=allyPage&oldView=highscore&allyId=648">Wand</a>--></td>
 	            <td class="score">
-<?php switch($param3['highscoreType']){
-case 'score': echo number_format($user->points); break;
-case 'building_score_main': echo number_format($user->points_buildings); break;
-case 'building_score_secondary': echo number_format($user->points_levels); break;
-case 'research_score_main': echo number_format($user->points_research); break;
-case 'research_score_secondary': echo number_format($user->points_complete); break;
-case 'army_score_main': echo number_format($user->points_army); break;
-case 'trader_score_secondary': echo number_format($user->points_gold); break;
+<?switch($param3['highscoreType']){?>
+<?case 'score': echo number_format($user->points); break;?>
+<?case 'building_score_main': echo number_format($user->points_buildings); break;?>
+<?case 'building_score_secondary': echo number_format($user->points_levels); break;?>
+<?case 'research_score_main': echo number_format($user->points_research); break;?>
+<?case 'research_score_secondary': echo number_format($user->points_complete); break;?>
+<?case 'army_score_main': echo number_format($user->points_army); break;?>
+<?case 'trader_score_secondary': echo number_format($user->points_gold); break;?>
 
-} ?>
+<?}?>
                     </td>
 	            <td class="action"><?if($user->id!=$this->Player_Model->user->id){?><a title="<?=$this->lang->line('create_message')?>" href="<?=$this->config->item('base_url')?>game/sendIKMessage/<?=$user->id?>/"><img src="<?=$this->config->item('style_url')?>skin/interface/icon_message_write.gif" alt="<?=$this->lang->line('create_message')?>"> </a><?}?></td>
 	    </tr>

@@ -1,7 +1,7 @@
-<?php $position = $param1;?>
+<?$position = $param1?>
 <div id="mainview" class="phase<?=$this->Player_Model->now_town->pos0_level?>">
     <ul id="locations">
-<?php
+<?
 for ($i = 0; $i <= 14; $i++)
 {
     $type_text = 'pos'.$i.'_type';
@@ -11,16 +11,16 @@ for ($i = 0; $i <= 14; $i++)
     $sub_class = ($i > 0) & ($i < 3) ? 'shore' : 'land';
     $sub_class = ($i == 14) ? 'wall' : $sub_class;
     $image = ($level == 0 and $class == 0) ? 'flag' : 'buildingimg';
-    
-	if ($this->Player_Model->now_town->build_line != '' and $this->Player_Model->build_line[$this->Player_Model->town_id][0]['position'] == $i){
+?>
 
+<?if ($this->Player_Model->now_town->build_line != '' and $this->Player_Model->build_line[$this->Player_Model->town_id][0]['position'] == $i){?>
+<?
     $type_text = 'pos'.$this->Player_Model->build_line[$this->Player_Model->town_id][0]['position'].'_type';
     $level_text = 'pos'.$this->Player_Model->build_line[$this->Player_Model->town_id][0]['position'].'_level';
     $level = $this->Player_Model->now_town->$level_text;
     $type = $this->Player_Model->build_line[$this->Player_Model->town_id][0]['type'];
     $cost = $this->Data_Model->building_cost($type, $level, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
-    $cost['time'] = floor($cost['time'] / getConfig('game_speed'));
-	$end_date = $this->Player_Model->now_town->build_start + $cost['time'];
+    $end_date = $this->Player_Model->now_town->build_start + $cost['time'];
     $ostalos = $end_date - time();
 ?>
 
@@ -50,7 +50,7 @@ for ($i = 0; $i <= 14; $i++)
             <a href="#" title="<?=$this->lang->line('research_bureaucracy')?>"><span class="textLabel"><?=$this->lang->line('research_bureaucracy')?></span></a>
 <?}else{?>
             <div class="<?if($class > 0){?><?if($level > 0){?><?=$image?><?}else{?>constructionSite<?}?><?}else{?><?=$image?><?}?>"></div>
-            <a href="<?=$this->config->item('base_url')?>game/<?=$this->Data_Model->building_class_by_type($class)?>/<?=$i?>/" title="<?=$this->Data_Model->building_name_by_type($class)?> <?if($class > 0){?><?=$this->lang->line('level')?> <?=$level?><?}?>"><span class="textLabel"><?=$this->Data_Model->building_name_by_type($class)?>  <?if($class > 0){?>Уровень <?=$level?><?}?></span></a>
+            <a href="<?=$this->config->item('base_url')?>game/<?=$this->Data_Model->building_class_by_type($class)?>/<?=$i?>/" title="<?=$this->Data_Model->building_name_by_type($class)?> <?if($class > 0){?><?=$this->lang->line('level')?> <?=$level?><?}?>"><span class="textLabel"><?=$this->Data_Model->building_name_by_type($class)?>  <?if($class > 0){?>Level<?=$level?><?}?></span></a>
 <?$line_id=1?>
 <?if(SizeOf($this->Player_Model->build_line[$this->Player_Model->town_id])>1){?>
 <?foreach($this->Player_Model->build_line[$this->Player_Model->town_id] as $build_line){?>

@@ -9,9 +9,9 @@
             <form name="addIslandForm" action="<?=$this->config->item('base_url')?>actions/addIslandToShortcut/" method="POST">
 			    <input type="hidden" name="islandX" value="1">
 			    <input type="hidden" name="islandY" value="1">
-			<p>Tên chứa 15 ký tự có thể đươc nhập vào trên tất cả đảo trong liên kết nhanh</p>
-			<div class="centerButton">Tên: <input type="text" name="label" value="inselname"  maxlength="15"></div>
-			<div class="centerButton"><a class="button" onclick="document.addIslandForm.submit();" href="#">Thêm đảo</a></div>
+			<p>Each island can have a text containing up to15 characters.</p>
+			<div class="centerButton">Text: <input type="text" name="label" value="inselname"  maxlength="15"></div>
+			<div class="centerButton"><a class="button" onclick="document.addIslandForm.submit();" href="#">Add an island</a></div>
 			</form>
         </div>
         <div class="footer"></div>
@@ -21,7 +21,7 @@
         <div id="worldmap" style="overflow:visible;position:absolute;z-index:40;left:240px;top:-300px;">
 
             <div id="map1" style="position:absolute;z-index:50;cursor:move;">
-<!-- Здесь видимо стандартные картинки моря -->
+<!-- Here, apparently, standard pictures of the sea -->
                 <div align='center' alt=''  valign='middle' id='tile_0_0'
                     class = "ocean1"
                     style='z-index:100;position:absolute; width:240px; height:120px; left:0px; top:0px;'

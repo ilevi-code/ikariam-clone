@@ -8,12 +8,12 @@
 <?
     $base = 100;
     $research = 0;
-        // Исследования уменьшают стоимость зданий
-        // Шкив
+        // Research reduces the cost of buildings
+        // Pulley
         if ($this->Player_Model->research->res2_2 > 0){$research = $research +2;}
-        // Геометрия
+        // Geometry
         if ($this->Player_Model->research->res2_6 > 0){$research = $research +4;}
-        // Водяной уровень
+        // water level
         if ($this->Player_Model->research->res2_11 > 0){$research = $research +8;}
     $research_percent = $base - $research;
     $building_percent = $research_percent - $this->Player_Model->levels[$this->Player_Model->town_id][21];

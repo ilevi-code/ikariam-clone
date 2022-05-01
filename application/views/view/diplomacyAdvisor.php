@@ -11,8 +11,8 @@
                 <td><a href="<?=$this->config->item('base_url')?>game/diplomacyAdvisorOutBox/" title="<?=$this->lang->line('outbox')?>"><em><?=$this->lang->line('outbox')?>  (<?=SizeOf($this->Player_Model->from_user_messages)?>)</em></a></td>
                 <td><a href="<?=$this->config->item('base_url')?>game/diplomacyAdvisorTreaty/" title="<?=$this->lang->line('treaty_overview')?>"><em><?=$this->lang->line('treaty')?></em></a></td>
                 <td><a href="<?=$this->config->item('base_url')?>game/diplomacyAdvisorAlly/" title="<?=$this->lang->line('ally_info')?>"><em><?=$this->lang->line('ally')?></em></a></td>
-               <!--   <td><a href="?view=diplomacyAdvisorArchive" title="Входящие"><em>Входящие</em></a></td>
-                <td><a href="?view=diplomacyAdvisorArchiveOutBox" title="Исходящие"><em>Исходящие</em></a></td>-->
+               <!--   <td><a href="?view=diplomacyAdvisorArchive" title="inbox"><em>inbox</em></a></td>
+                <td><a href="?view=diplomacyAdvisorArchiveOutBox" title="outgoing"><em>outgoing</em></a></td>-->
             </tr>
         </table>
     </div>
@@ -81,7 +81,7 @@ function markAll(command) {
                 <h3 class="header"><span class="textLabel"><?=$this->lang->line('messages')?></span></h3>
                 <div class="content">
                     <form action="<?=$this->config->item('base_url')?>actions/messages/delete/0/diplomacyAdvisor/" method="post" name="deleteMessages" id="deleteMessages">
-<? if(count($this->Player_Model->to_user_messages) > 0){?>
+<? if(Count($this->Player_Model->to_user_messages) > 0){?>
                         <table cellpadding="0" cellspacing="0" class="table01" id="messages"  style="width:100%;margin:0px;border:none;">
                             <tr>
                                 <th><?=$this->lang->line('action')?></th>
@@ -92,7 +92,8 @@ function markAll(command) {
                                 <th><?=$this->lang->line('date')?></th>
                             </tr>
 
-<?php foreach($this->Player_Model->to_user_messages as $message){
+<?foreach($this->Player_Model->to_user_messages as $message){?>
+<?
     $this->Data_Model->Load_User($message->from);
     $user = $this->Data_Model->temp_users_db[$message->from];
     $this->Data_Model->Load_Town($user->capital);

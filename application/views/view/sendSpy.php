@@ -1,7 +1,7 @@
 <div id="mainview">		
     <div class="buildingDescription">
-        <h1>Gửi điệp viên</h1>
-        <p>Gửi điệp viên của bạn đến thành phố của địch để biết thêm thông tin về thành phố này. Ngay khi điệp viên của bạn đột nhập vào thành phố, bạn có thể cho anh ta biết cần thực hiện nhiệm vụ nào. Chú ý: Điệp viên của bạn có thể bị phát hiện <strong>bất cứ lúc nào!</strong></p>
+        <h1>Send a spy</h1>
+        <p>Send spies to the cities of other players to get intelligence information. As soon as the spy has entered the city, you can give him tasks.<br /><br />Please note that<strong>always</strong> there is a certain risk of exposing a spy! Your spy's reports are archived at<strong>diplomatic adviser</strong>.</p>
     </div>
 <?
     $x1 = $this->Player_Model->now_island->x;
@@ -19,12 +19,12 @@
     
     <form  action="<?=$this->config->item('base_url')?>actions/spyes/send/<?=$this->Island_Model->island->id?>/<?=$param1?>/"  method="POST">
         <div class="contentBox01h" id="sendSpy">
-            <h3 class="header">Gửi điệp viên</h3>
+            <h3 class="header">Send a spy</h3>
             <div class="content">
-                <p class="desc">Điệp viên của bạn sẽ cố đột nhập vào <?=$this->Data_Model->temp_towns_db[$param1]->name?>. <?=$this->Data_Model->temp_towns_db[$param1]->name?> là một thành phố cấp độ 3. Sẽ dẽ dàng hơn cho một điệp viên khi trà trộn vào một thành phố lớn, vì nhiều người qua lại khiến cho điệp viên khó lòng bị phát hiện ra.							</p>
-		<div class="costs"><span class="textLabel">Chi phí:: </span>30</div>
-                <div class="risk"><span class="textLabel">Nguy ngại trong thám hiểm:</span>
-                    <div title="Риск разоблачения <?=$risk?>%" class="statusBar">
+                <p class="desc">Your spy will try to infiltrate<?=$this->Data_Model->temp_towns_db[$param1]->name?>. <?=$this->Data_Model->temp_towns_db[$param1]->name?> has level dimensions3. The easiest way for spies to get lost among the population of large cities.							</p>
+		<div class="costs"><span class="textLabel">Price: </span>30</div>
+                <div class="risk"><span class="textLabel">Exposure risk:</span>
+                    <div title="Exposure risk<?=$risk?>%" class="statusBar">
                         <div style="width: <?=$risk?>%" class="bar"></div>
                     </div>
                     <div class="percentage"><?=$risk?>%</div>
@@ -32,12 +32,12 @@
                 <hr>
                 <div id="missionSummary">
                     <div class="common">
-                        <div class="journeyTarget" title="Thành phố đích"><span class="textLabel">Thành phố đích: </span><?=$this->Data_Model->temp_towns_db[$param1]->name?></div>
-                        <div class="journeyTime" title="Thời gian di chuyển"><span class="textLabel">Thời gian di chuyển: </span><?=format_time($time)?></div>
+                        <div class="journeyTarget" title="City"><span class="textLabel">City: </span><?=$this->Data_Model->temp_towns_db[$param1]->name?></div>
+                        <div class="journeyTime" title="Travel time"><span class="textLabel">Travel time: </span><?=format_time($time)?></div>
                     </div>
                 </div>
                 <div class="centerButton">
-                    <input id="submit" class="button" type="submit" value="Gửi điệp viên">
+                    <input id="submit" class="button" type="submit" value="Send a spy">
                 </div>
             </div>
             <div class="footer"></div>

@@ -1,16 +1,16 @@
 <?$spy = $this->Player_Model->spyes[$this->Player_Model->town_id][$param1]?>
 <div id="mainview">
     <div class="buildingDescription">
-        <h1>Các nhiệm vụ</h1>
-        <p>Gửi bản phân công cho điệp viên</p>
+        <h1>Missions</h1>
+        <p>Give a task to a spy</p>
     </div>
     <div class="contentBox01h">
-        <h3 class="header"><span class="textLabel">Chọn nhiệm vụ cho điệp viên ở <?=$this->Data_Model->temp_towns_db[$spy->to]->name?></span></h3>
+        <h3 class="header"><span class="textLabel">Select a mission for the spy in<?=$this->Data_Model->temp_towns_db[$spy->to]->name?></span></h3>
         <div class="content" style="position:relative">
             <div class="percentage"><?=$spy->risk?>%</div>
-            <h4><span class="textLabel">Nguy cơ điệp viên bị phát hiện hiện thời:</span></h4>
+            <h4><span class="textLabel">Current detection risk:</span></h4>
             <div class="missionText">
-                <div title="Nguy hiểm разоблачения: <?=$spy->risk?>%" class="statusBar">
+                <div title="Exposure risk: <?=$spy->risk?>%" class="statusBar">
                     <div style="width: <?=$spy->risk?>%;" class="bar"></div>
                 </div>
             </div>
@@ -25,15 +25,15 @@
     $risk = $risk + $spy->risk + $this->Data_Model->spy_risk_by_mission(3);
 ?>
                 <li class="gold">
-                    <div title="Tên nhiệm vụ" class="missionType">Điều tra hầm kho báu</div>
-                    <div title="Mô tả nhiệm vụ" class="missionDesc">Không dễ dàng để mạo hiểm đột nhập vào hầm kho báu của thành phố. Nhưng khi hoàn thành nhiệm vụ và trở ra được, ta sẽ biết hầm chứa bao nhiêu vàng.                     </div>
-                    <div title="Chi phí cho nhiệm vụ này" class="missionCosts"><strong>Chi phí:</strong>
-                    	<span class="textLabel">Vàng: </span><span class="gold">45</span>
+                    <div title="Mission name" class="missionType">Treasury espionage</div>
+                    <div title="Mission Description" class="missionDesc">It will not be an easy task to infiltrate the city treasury. But we can find out the amount of gold stored there.</div>
+                    <div title="The cost of this mission" class="missionCosts"><strong>Price:</strong>
+                    	<span class="textLabel">Gold: </span><span class="gold">45</span>
                     </div>
-                    <div title="Nguy ngại trong nhiệm vụ này" class="missionRisk"><strong>Nguy hiểm:</strong> <?=$risk?>%</div>
+                    <div title="The risk of this mission" class="missionRisk"><strong>risk:</strong> <?=$risk?>%</div>
                     <div title="3" class="missionStart">
                         <div class="centerButton">
-                            <a class="button" href="<?=$this->config->item('base_url')?>actions/espionage/<?=$spy->from?>/<?=$spy->id?>/3/">Bắt đầu nhiệm vụ</a>
+                            <a class="button" href="<?=$this->config->item('base_url')?>actions/espionage/<?=$spy->from?>/<?=$spy->id?>/3/">Start a task</a>
                         </div>
                     </div>
                 </li>
@@ -43,15 +43,15 @@
     $risk = $risk + $spy->risk + $this->Data_Model->spy_risk_by_mission(4);
 ?>
             	<li class="resources">
-                    <div title="Tên nhiệm vụ" class="missionType">Xem xét kho hàng</div>
-                    <div title="Mô tả nhiệm vụ" class="missionDesc">Ta có thể phát hiện được có bao nhiêu nguồn tài nguyên bằng cách xem xét kho hàng trong thành phố. Ngoài ra, ta cũng có thể biết được từ phí tổn trả cho một cuộc tấn công.                     </div>
-                    <div title="Chi phí cho nhiệm vụ này" class="missionCosts"><strong>Chi phí</strong>
- 	                	<span class="textLabel">Vàng: </span><span class="gold">75</span>
+                    <div title="Mission name" class="missionType">Inspect the warehouse</div>
+                    <div title="Mission Description" class="missionDesc">We can find out how many resources are in the city warehouses. Then it will become clear how much the attack will pay off.</div>
+                    <div title="The cost of this mission" class="missionCosts"><strong>Price</strong>
+ 	                	<span class="textLabel">Gold: </span><span class="gold">75</span>
                     </div>
-                    <div title="Nguy ngại trong nhiệm vụ này" class="missionRisk"><strong>Nguy hiểm:</strong><?=$risk?>%</div>
+                    <div title="The risk of this mission" class="missionRisk"><strong>risk:</strong><?=$risk?>%</div>
                     <div title="4" class="missionStart">
                         <div class="centerButton">
-                            <a class="button" href="<?=$this->config->item('base_url')?>actions/espionage/<?=$spy->from?>/<?=$spy->id?>/4/">Bắt đầu nhiệm vụ</a>
+                            <a class="button" href="<?=$this->config->item('base_url')?>actions/espionage/<?=$spy->from?>/<?=$spy->id?>/4/">Start a task</a>
                         </div>
                     </div>
                 </li>
@@ -62,15 +62,15 @@
 ?>
 
                 <li class="research">
-                    <div title="Tên nhiệm vụ" class="missionType">Điều tra cấp độ nghiên cứu</div>
-                    <div title="Mô tả nhiệm vụ" class="missionDesc">Điệp viên của ta sở hữu trí thông minh như một nhà khoa học. Đó là lý do tại sao hắn có thể phát hiện và theo dõi tiến độ của một công trình nghiên cứu trong thành phố.                     </div>
-                    <div title="Chi phí cho nhiệm vụ này" class="missionCosts"><strong>Chi phí:</strong>
-                    	<span class="textLabel">Vàng: </span><span class="gold">90</span>
+                    <div title="Mission name" class="missionType">Spying on research</div>
+                    <div title="Mission Description" class="missionDesc">Our spy is smart enough to pass for a scientist. This will allow him to collect information about the current level of research in the city.</div>
+                    <div title="The cost of this mission" class="missionCosts"><strong>Price:</strong>
+                    	<span class="textLabel">Gold: </span><span class="gold">90</span>
                     </div>
-                    <div title="Nguy ngại trong nhiệm vụ này" class="missionRisk"><strong>Nguy hiểm:</strong> <?=$risk?>%</div>
+                    <div title="The risk of this mission" class="missionRisk"><strong>risk:</strong> <?=$risk?>%</div>
                     <div title="5" class="missionStart">
                         <div class="centerButton">
-                            <a class="button" href="<?=$this->config->item('base_url')?>actions/espionage/<?=$spy->from?>/<?=$spy->id?>/5/">Bắt đầu nhiệm vụ</a>
+                            <a class="button" href="<?=$this->config->item('base_url')?>actions/espionage/<?=$spy->from?>/<?=$spy->id?>/5/">Start a task</a>
                         </div>
                     </div>
                 </li>
@@ -81,15 +81,15 @@
 ?>
 
                 <li class="online">
-                    <div title="Tên nhiệm vụ" class="missionType">Tình trạng trực tuyến</div>
-                    <div title="Mô tả nhiệm vụ" class="missionDesc">Với một tí may mắn, ta có phát hiện ra hiện thời tên thủ lĩnh có đang để ý đến người dân của hắn hay không.                     </div>
-                    <div title="Chi phí cho nhiệm vụ này" class="missionCosts"><strong>Chi phí:</strong>
-                    	<span class="textLabel">Vàng: </span><span class="gold">240</span>
+                    <div title="Mission name" class="missionType">Online status</div>
+                    <div title="Mission Description" class="missionDesc">With luck, we will be able to find out how the leader is aware of the mood among his own inhabitants.</div>
+                    <div title="The cost of this mission" class="missionCosts"><strong>Price:</strong>
+                    	<span class="textLabel">Gold: </span><span class="gold">240</span>
                     </div>
-                    <div title="Nguy ngại trong nhiệm vụ này" class="missionRisk"><strong>Nguy hiểm:</strong> <?=$risk?>%</div>
+                    <div title="The risk of this mission" class="missionRisk"><strong>risk:</strong> <?=$risk?>%</div>
                     <div title="6" class="missionStart">
                         <div class="centerButton">
-                            <a class="button" href="<?=$this->config->item('base_url')?>actions/espionage/<?=$spy->from?>/<?=$spy->id?>/6/">Bắt đầu nhiệm vụ</a>
+                            <a class="button" href="<?=$this->config->item('base_url')?>actions/espionage/<?=$spy->from?>/<?=$spy->id?>/6/">Start a task</a>
                         </div>
                     </div>
                 </li>
@@ -100,15 +100,15 @@
 ?>
 
             	<li class="garrison">
-                    <div title="Tên nhiệm vụ" class="missionType">Điều tra doanh trại</div>
-                    <div title="Mô tả nhiệm vụ" class="missionDesc">Nếu ta nấp ở một nơi trong khi kèn gọi quân điểm danh buổi sáng, ta có thể biết được bao nhiêu binh lính đóng quân tại đơn vị này. Nhờ thế ta có thể lập kế hoạch tấn công hiệu quả hơn!                    </div>
-                    <div title="Chi phí cho nhiệm vụ này" class="missionCosts"><strong>Chi phí:</strong>
-                    	<span class="textLabel">Vàng: </span><span class="gold">150</span>
+                    <div title="Mission name" class="missionType">Spying in the garrison</div>
+                    <div title="Mission Description" class="missionDesc">If we hide in the right place during the morning roll call, we can find out the number of soldiers in this garrison. With this information, an attack can be planned more accurately.!                    </div>
+                    <div title="The cost of this mission" class="missionCosts"><strong>Price:</strong>
+                    	<span class="textLabel">Gold: </span><span class="gold">150</span>
                     </div>
-                    <div title="Nguy ngại trong nhiệm vụ này" class="missionRisk"><strong>Nguy hiểm:</strong> <?=$risk?>%</div>
+                    <div title="The risk of this mission" class="missionRisk"><strong>risk:</strong> <?=$risk?>%</div>
                     <div title="7" class="missionStart">
                         <div class="centerButton">
-                            <a class="button" href="<?=$this->config->item('base_url')?>actions/espionage/<?=$spy->from?>/<?=$spy->id?>/7/">Bắt đầu nhiệm vụ</a>
+                            <a class="button" href="<?=$this->config->item('base_url')?>actions/espionage/<?=$spy->from?>/<?=$spy->id?>/7/">Start a task</a>
                         </div>
                     </div>
                 </li>
@@ -119,15 +119,15 @@
 ?>
 
             	<li class="fleet">
-                    <div title="Tên nhiệm vụ" class="missionType">Theo dõi di chuyển của quân đội và các hạm đội hải quân</div>
-                    <div title="Mô tả nhiệm vụ" class="missionDesc">Nếu ta để ý kỹ cổng thành và các cảng khác, ta sẽ phát hiện ra người dân thành phố đang lệ thuộc vào điều gì, họ chiến đấu cho ai và ai là người giao dịch với họ.                   </div>
-                    <div title="Chi phí cho nhiệm vụ này" class="missionCosts"><strong>Chi phí:</strong>
-                    	<span class="textLabel">Vàng: </span><span class="gold">750</span>
+                    <div title="Mission name" class="missionType">Monitoring the movement of troops and fleets</div>
+                    <div title="Mission Description" class="missionDesc">If we focus on the city gates and the port building, we can certainly get useful information about the inhabitants of this city. For example, who they trade with or who they are at war with.</div>
+                    <div title="The cost of this mission" class="missionCosts"><strong>Price:</strong>
+                    	<span class="textLabel">Gold: </span><span class="gold">750</span>
                     </div>
-                    <div title="Nguy ngại trong nhiệm vụ này" class="missionRisk"><strong>Nguy hiểm:</strong> <?=$risk?>%</div>
+                    <div title="The risk of this mission" class="missionRisk"><strong>risk:</strong> <?=$risk?>%</div>
                     <div title="8" class="missionStart">
                         <div class="centerButton">
-                            <a class="button" href="<?=$this->config->item('base_url')?>actions/espionage/<?=$spy->from?>/<?=$spy->id?>/8/">Bắt đầu nhiệm vụ</a>
+                            <a class="button" href="<?=$this->config->item('base_url')?>actions/espionage/<?=$spy->from?>/<?=$spy->id?>/8/">Start a task</a>
                         </div>
                     </div>
                 </li>
@@ -138,29 +138,29 @@
 ?>
 
                 <li class="message">
-                    <div title="Tên nhiệm vụ" class="missionType">Theo dõi tình hình liên lạc</div>
-                    <div title="Mô tả nhiệm vụ" class="missionDesc">Nếu điệp viên của chúng ta giả dạng thành một người đưa tin, anh ta có thể báo cáo lại mục tiêu của ta đang bắt liên lạc hay giao dịch với ai!                   </div>
-                    <div title="Chi phí cho nhiệm vụ này" class="missionCosts"><strong>Chi phí:</strong>
-                    	<span class="textLabel">Vàng: </span><span class="gold">360</span>
+                    <div title="Mission name" class="missionType">Spying on messaging</div>
+                    <div title="Mission Description" class="missionDesc">If our spy works as a courier, he will be able to provide information about who our common target is in contact with and with whom she has contracts.</div>
+                    <div title="The cost of this mission" class="missionCosts"><strong>Price:</strong>
+                    	<span class="textLabel">Gold: </span><span class="gold">360</span>
                     </div>
-                    <div title="Nguy ngại trong nhiệm vụ này" class="missionRisk"><strong>Nguy hiểm:</strong> <?=$risk?>%</div>
+                    <div title="The risk of this mission" class="missionRisk"><strong>risk:</strong> <?=$risk?>%</div>
                     <div title="9" class="missionStart">
                         <div class="centerButton">
-                            <a class="button" href="<?=$this->config->item('base_url')?>actions/espionage/<?=$spy->from?>/<?=$spy->id?>/9/">Bắt đầu nhiệm vụ</a>
+                            <a class="button" href="<?=$this->config->item('base_url')?>actions/espionage/<?=$spy->from?>/<?=$spy->id?>/9/">Start a task</a>
                         </div>
                     </div>
                 </li>
 
                 <li class="retreat">
-                    <div title="Tên nhiệm vụ" class="missionType">Triệu hồi điệp viên</div>
-                    <div title="Mô tả nhiệm vụ" class="missionDesc">Ta có thể triệu hồi điệp viên bất cứ lúc nào, sẽ không gây báo động trong thành phố.                     </div>
-                    <div title="Chi phí cho nhiệm vụ này" class="missionCosts"><strong>Chi phí:</strong>
-                    	<span class="textLabel">Vàng: </span><span class="gold">0</span>
+                    <div title="Mission name" class="missionType">Recall Spy</div>
+                    <div title="Mission Description" class="missionDesc">We can recall the spy at any time. His return will remain imperceptible to the inhabitants of the city.</div>
+                    <div title="The cost of this mission" class="missionCosts"><strong>Price:</strong>
+                    	<span class="textLabel">Gold: </span><span class="gold">0</span>
                     </div>
-                    <div title="Nguy ngại trong nhiệm vụ này" class="missionRisk"><strong>Nguy hiểm:</strong> 0%</div>
+                    <div title="The risk of this mission" class="missionRisk"><strong>risk:</strong> 0%</div>
                     <div title="10" class="missionStart">
                         <div class="centerButton">
-                            <a class="button" href="<?=$this->config->item('base_url')?>actions/espionage/<?=$spy->from?>/<?=$spy->id?>/10/">Bắt đầu nhiệm vụ</a>
+                            <a class="button" href="<?=$this->config->item('base_url')?>actions/espionage/<?=$spy->from?>/<?=$spy->id?>/10/">Start a task</a>
                         </div>
                     </div>
                 </li>

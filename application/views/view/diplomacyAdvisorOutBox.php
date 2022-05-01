@@ -11,8 +11,8 @@
                 <td class="selected"><a href="<?=$this->config->item('base_url')?>game/diplomacyAdvisorOutBox/" title="<?=$this->lang->line('outbox')?>"><em><?=$this->lang->line('outbox')?>  (<?=SizeOf($this->Player_Model->from_user_messages)?>)</em></a></td>
                 <td><a href="<?=$this->config->item('base_url')?>game/diplomacyAdvisorTreaty/" title="<?=$this->lang->line('treaty_overview')?>"><em><?=$this->lang->line('treaty')?></em></a></td>
                 <td><a href="<?=$this->config->item('base_url')?>game/diplomacyAdvisorAlly/" title="<?=$this->lang->line('ally_info')?>"><em><?=$this->lang->line('ally')?></em></a></td>
-               <!--   <td><a href="?view=diplomacyAdvisorArchive" title="Входящие"><em>Входящие</em></a></td>
-                <td><a href="?view=diplomacyAdvisorArchiveOutBox" title="Исходящие"><em>Исходящие</em></a></td>-->
+               <!--   <td><a href="?view=diplomacyAdvisorArchive" title="inbox"><em>inbox</em></a></td>
+                <td><a href="?view=diplomacyAdvisorArchiveOutBox" title="outgoing"><em>outgoing</em></a></td>-->
             </tr>
         </table>
     </div>
@@ -81,7 +81,7 @@ function markAll(command) {
                             </tr>
 <?foreach($this->Player_Model->from_user_messages as $message){?>
 <?$this->Data_Model->Load_User($message->to)?>
-                            <tr title="Нажмите здесь, чтобы показать/скрыть сообщение!" class="entry " onMouseOver="this.bgColor='#ECD5AC'" onMouseOut="this.bgColor='#FDF7DD'" >
+                            <tr title="Click here to show/hide message!" class="entry " onMouseOver="this.bgColor='#ECD5AC'" onMouseOut="this.bgColor='#FDF7DD'" >
                                 <td><input type="checkbox"  name="deleteId[<?=$message->id?>]" value="1"></td>
                                 <td onclick="show_hide_menus('mail<?=$message->id?>');imgtoggle(getElementById('button<?=$message->id?>'));">
                                     <img class="open" alt="" id="button<?=$message->id?>" name="button<?=$message->id?>" src="<?=$this->config->item('style_url')?>skin/layout/down-arrow.gif">

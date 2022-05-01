@@ -1,26 +1,26 @@
 <div id="mainview">
-    <h1>Viết tin nhắn</h1>
-    <p>Bạn có thể viết tin nhắn cho người chơi khác hoặc đề nghị một Hiệp ước, trong trường hợp bạn đã nghiên cứu kĩ lưỡng các mẫu Hiệp ước.</p>
+    <h1>Create message</h1>
+    <p>You can write a message to other players or offer them some kind of contract - as you researched different types of contracts.</p>
 
     <div id="notice">
         <form action="<?=$this->config->item('base_url')?>actions/messages/send/<?=$param1?>/" method="post">
             <div id="mailRecipient">
-                <span class="maillabels"><label>Người nhận:</label></span>
-                <span><?=$this->Data_Model->temp_user_db[$param1]->login?></span>
+                <span class="maillabels"><label>Recipient:</label></span>
+                <span><?=$this->Data_Model->temp_users_db[$param1]->login?></span>
             </div>
             <div id="mailSubject">
-                <span class="maillabels"><label for="treaties">Đề tài:</label></span>
+                <span class="maillabels"><label for="treaties">Theme:</label></span>
                 <span>
                     <select name="msgType" id="treaties">
-                        <option value="1" selected="selected">Tin nhắn</option>
+                        <option value="1" selected="selected">Message</option>
                     </select>
                 </span>
             </div>
-            <span class="maillabels"><label for="text">Lời nhắn:</label></span><br />
+            <span class="maillabels"><label for="text">Message:</label></span><br />
             <span><textarea id="text" class="textfield" name="content" ></textarea></span><br />
-            <div id="nr_chars_div" style="display:none">Cho phép  <span id="nr_chars"></span>&nbsp;  ký tự.</div>
+            <div id="nr_chars_div" style="display:none">Available<span id="nr_chars"></span>&nbsp;  characters.</div>
             <div class="centerButton">
-                <input type="submit" class="button" onclick="return confirmIfNeccessary(document.getElementById('treaties').value,'Вы уверены?')" title="Gửi" value="Gửi">
+                <input type="submit" class="button" onclick="return confirmIfNeccessary(document.getElementById('treaties').value,'Are you sure?')" title="Send" value="Send">
             </div>
         </form>
     </div>

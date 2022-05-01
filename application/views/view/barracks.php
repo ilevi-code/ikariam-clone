@@ -1,12 +1,13 @@
 <div id="mainview">
 <?include_once('building_description.php')?>
-    <form id="buildForm"  action="<?=$this->config->item('base_url')?>actions/army/<?=$position?>/" method="POST">
-        <input type="hidden" name="action" value="buildUnits">
+    <form id="buildForm"  action="<?=$this->config->item('base_url')?>actions/army/<?=$position?>" method="POST">
+        <input type=hidden name="action" value="buildUnits">
         <div class="contentBox01h">
             <h3 class="header"><?=$this->lang->line('recruit_units')?></h3>
             <div class="content">
                 <ul id="units">
-<?php for($i = 1; $i <= 14; $i++){
+<?for($i = 1; $i <= 14; $i++){?>
+<?
     if (($i == 1 and $this->Player_Model->research->res4_3 > 0) or // 4
         ($i == 2 and $this->Player_Model->research->res4_12 > 0) or // 12
         ($i == 3) or // 1
@@ -21,14 +22,14 @@
         ($i == 12 and $this->Player_Model->research->res3_15 > 0) or // 11
         ($i == 13 and $this->Player_Model->research->res2_9 > 0) or // 5
         ($i == 14 and $this->Player_Model->research->res3_8 > 0)){ // 9
-
+?>
+<?
     $max_wood = 0;
     $max_sulfur = 0;
     $max_wine = 0;
     $max_crystal = 0;
     $max_peoples = 0;
     $cost = $this->Data_Model->army_cost_by_type($i, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
-    $cost['time'] = floor($cost['time'] / getConfig('game_speed'));
     $class = $this->Data_Model->army_class_by_type($i);
     if ($cost['wood'] > 0){ $max_wood = floor($this->Player_Model->now_town->wood/$cost['wood']);}
     if ($cost['sulfur'] > 0){ $max_sulfur = floor($this->Player_Model->now_town->sulfur/$cost['sulfur']); }
@@ -80,8 +81,8 @@
                         <div class="forminput">
                             <?=$this->lang->line('is_upgrading')?>
                         </div>
-<?php }else{ 
-if(   ($i == 1 and $level < 4) or // 4
+<?}else{?>
+<?if(   ($i == 1 and $level < 4) or // 4
         ($i == 2 and $level < 12) or // 12
         ($i == 4 and $level < 6) or // 6
         ($i == 5 and $level < 2) or // 2
@@ -95,7 +96,7 @@ if(   ($i == 1 and $level < 4) or // 4
         ($i == 13 and $level < 5) or // 5
         ($i == 14 and $level < 9)){ // 9?>
                         <div class="forminput"><?=$this->lang->line('building_low')?></div>
-<?php }else{ ?>
+<?}else{?>
                         <div class="forminput">
                             <input class="textfield" id="textfield_<?=$this->Data_Model->army_class_by_type($i)?>" type="text" name="<?=$i?>"  value="0" size="4" maxlength="4">
                             <a class="setMax" href="#max" onClick="sliders['slider_<?=$this->Data_Model->army_class_by_type($i)?>'].setActualValue(<?=$max?>); return false;" title="<?=$this->lang->line('recruit_max')?>">
@@ -103,10 +104,10 @@ if(   ($i == 1 and $level < 4) or // 4
                             </a>
                             <input class="button" type=submit value="<?=$this->lang->line('recruit')?>!">
                         </div>
-<?php }} ?>
+<?}}?>
 
                         <div class="costs">
-                            <h5>Стоимость:</h5>
+                            <h5>Price:</h5>
                             <ul class="resources">
 <?if($cost['peoples'] > 0){?>
                                 <li class="citizens" title="<?=$this->lang->line('peoples')?>"><span class="textLabel"><?=$this->lang->line('peoples')?>: </span><?=$cost['peoples']?></li>

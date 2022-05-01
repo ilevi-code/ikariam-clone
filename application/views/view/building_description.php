@@ -1,18 +1,15 @@
-<?php
+<?
     $level_text = 'pos'.$position.'_level';
     $type_text = 'pos'.$position.'_type';
     $level = $this->Player_Model->now_town->$level_text;
     $class = $this->Player_Model->now_town->$type_text;
-    
-	if ($this->Player_Model->now_town->build_line != '' and $this->Player_Model->build_line[$this->Player_Model->town_id][0]['position'] == $position)
-	{
 ?>
+<?if ($this->Player_Model->now_town->build_line != '' and $this->Player_Model->build_line[$this->Player_Model->town_id][0]['position'] == $position){?>
     <div class="buildingDescription">
         <h1 style="text-align:center"><?=$this->Data_Model->building_name_by_type($class)?></h1>
-<?php
+<?
     $cost = $this->Data_Model->building_cost($class, $level, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
-    $cost['time'] = floor($cost['time'] / getConfig('game_speed'));
-	$end_date = $this->Player_Model->now_town->build_start + $cost['time'];
+    $end_date = $this->Player_Model->now_town->build_start + $cost['time'];
     $ostalos = $end_date - time();
     $one_percent = ($cost['time']/100);
     $percent = 100 - floor($ostalos/$one_percent);
@@ -63,9 +60,9 @@
 
     </div>
     </div>
-<?php }else{ ?>
+<?}else{?>
     <div class="buildingDescription">
         <h1><?=$this->Data_Model->building_name_by_type($class)?></h1>
         <p><?=$this->Data_Model->building_desc_by_type($class)?></p>
     </div>
-<?php } ?>
+<?}?>

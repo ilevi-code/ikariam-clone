@@ -1,16 +1,17 @@
 <div id="mainview">
 
   <div class="buildingDescription">
-    <h1> <?=$this->lang->line('opzioni')?></h1>
-    </div><!-- ende .buildingDescription -->
+    <h1>Settings</h1>
+    <p>Here you can change the player's name, password and email address. The email address can only be changed once a week and only numbers, letters and spaces can be used.</p>
+  </div><!-- ende .buildingDescription -->
 
 <?if($this->Player_Model->user->register_complete == 0 and $this->config->item('game_email')){?>
   <div class="contentBox01h" id="emailInvalidWarning">
-    <h3 class="header"><span class="textLabel">Địa chỉ email chưa được xác nhận!</span></h3>
+    <h3 class="header"><span class="textLabel">Your addresse-mail has not been confirmed!</span></h3>
     <div class="content">
-      <p>Địa chỉ email của bạn chưa được xác nhận. Bạn không thể bắt liên lạc với người chơi khác hay gửi quân đội và tàu thuyền. Bạn có thể xác nhận địa chỉ email bằng cách truy cập link trong email mà chúng tôi đã gửi. Nếu bạn không nhận được, vui lòng hồi báo lại và chúng tôi sẽ gửi cho bạn một email khác.</p>
+      <p>Your addresse-mail has not been confirmed. Until you confirm it, you will not be able to fully play. The addresse-mail can be confirmed by clicking on the link in the email. If you have not received such a letter, you can request it again here.</p>
       <div class="centerButton">
-          <a class="button" href="<?=$this->config->item('base_url')?>actions/options/validationEmail/">Gửi lại thư xác nhận</a>
+          <a class="button" href="<?=$this->config->item('base_url')?>actions/options/validationEmail/">Send confirmation email</a>
       </div>
     </div>
     <div class="footer"></div>
@@ -19,7 +20,7 @@
 
 <?if($this->session->flashdata('options_error')){?>
 <div class="contentBox01h">
-    <h3 class="header"><span class="textLabel">Thông báo Lỗi</span></h3>
+    <h3 class="header"><span class="textLabel">Error message</span></h3>
     <div class="content">
         <ul class="errors">
 <?if($this->session->flashdata('options_error_login')){?>
@@ -32,14 +33,14 @@
 <?}?>
 
   <div class="contentBox01h">
-    <h3 class="header"><span class="textLabel">Cài đặt</span></h3>
+    <h3 class="header"><span class="textLabel">Settings</span></h3>
     <div class="content">
       <form  action="<?=$this->config->item('base_url')?>actions/options/user/" method="POST">
       
       <div id="options_userData">
         <table cellpadding="0" cellspacing="0">
           <tr>
-            <th>Đổi tên người chơi</th>
+            <th>Rename player</th>
             <td><input class="textfield" type="text" name="name" size="15" value="<?=$this->Player_Model->user->login?>"></td>
           </tr>
 
@@ -47,43 +48,43 @@
       </div>
 
       <div id="options_changePass">
-        <h3>Thay đổi mật khẩu</h3>
+        <h3>Change password</h3>
         <table cellpadding="0" cellspacing="0">
           <tr>
-            <th>Mật khẩu cũ</th>
+            <th>Former password</th>
             <td><input type="password" class="textfield" name="oldPassword" size="20"></td>
           </tr>
           <tr>
-            <th>Mật khẩu mới</th>
+            <th>New Password</th>
             <td><input type="password" class="textfield" name="newPassword" size="20"></td>
           </tr>
           <tr>
-            <th>Xác nhận mật khẩu mới</th>
+            <th>New password confirmation</th>
             <td><input type="password" class="textfield" name="newPasswordConfirm" size="20"></td>
           </tr>
         </table>
       </div>
 
     <div>
-    <h3></h3>
+    <h3>Miscellaneous</h3>
     <table cellpadding="0" cellspacing="0">
         <tr>
-            <th>Hiển thị chi tiết của thị trấn được chọn</th>
+            <th>Show additional information in city selection</th>
             <td>
                 <select name="citySelectOptions" size="1">
-                    <option value="0" <?if($this->Player_Model->user->options_select == 0){?>selected="selected"<?}?>>Không có thông tin</option>
-                    <option value="1" <?if($this->Player_Model->user->options_select == 1){?>selected="selected"<?}?>>Hiển thị tọa độ ở hướng dẫn thị trấn</option>
-                    <option value="2" <?if($this->Player_Model->user->options_select == 2){?>selected="selected"<?}?>>Hàng hóa thương mại</option>
+                    <option value="0" <?if($this->Player_Model->user->options_select == 0){?>selected="selected"<?}?>>Not</option>
+                    <option value="1" <?if($this->Player_Model->user->options_select == 1){?>selected="selected"<?}?>>Show coordinates in city overview</option>
+                    <option value="2" <?if($this->Player_Model->user->options_select == 2){?>selected="selected"<?}?>>Products</option>
                     </select>
                 </td>
             </tr>
 <?if($this->Player_Model->user->tutorial < 999){?>
         <tr>
-            <th>Hướng dẫn</th>
+            <th>Training</th>
             <td>
                 <select name="tutorialOptions" size="1">
-                    <option value="2"selected>Bật</option>
-                    <option value="-2">Tắt</option>
+                    <option value="2"selected>Turn on</option>
+                    <option value="-2">Disable</option>
                     </select>
                 </td>
         </tr>
@@ -107,7 +108,7 @@
 
 
       <div class="centerButton">
-        <input type="submit" class="button" value="Сохранить">
+        <input type="submit" class="button" value="Save">
       </div>
       </form>
       </div>
@@ -117,13 +118,13 @@
 
 
     <div class="contentBox01h">
-    <h3 class="header"><span class="textLabel">Đổi địa chỉ email</span></h3>
+    <h3 class="header"><span class="textLabel">Changee-mail</span></h3>
     <div class="content">
       <form  action="<?=$this->config->item('base_url')?>actions/options/email/" method="POST">
       <table cellpadding="0" cellspacing="0">
 
       <tr>
-            <th>Đổi địa chỉ email</th>
+            <th>Changee-mail</th>
             <td>
                                 <input class="textfield" type="text" name="email" size="30" value="<?=$this->Player_Model->user->email?>">
                                 (<?=$this->Player_Model->user->email?>)
@@ -131,12 +132,12 @@
           </tr>
 
            <tr>
-          	<th>Xác nhận thay đổi địa chỉ Email bằng mật khẩu của bạn</th>
+          	<th>enter a password to confirm the new addresse-mail</th>
           	<td><input type="password" class="textfield" name="emailPassword" size="20"/></td>
           </tr>
       </table>
       <div class="centerButton">
-          <input type="submit" class="button" value="Đổi địa chỉ email">
+          <input type="submit" class="button" value="Changee-mail">
       </div>
       </form>
       </div>
@@ -144,12 +145,12 @@
     </div>
 
       <div class="contentBox01h" id="vacationMode">
-        <h3 class="header"><span class="textLabel">Kích hoạt chế độ nghỉ phép</span></h3>
+        <h3 class="header"><span class="textLabel">Enable Vacation Mode</span></h3>
         <div class="content">
-          <p>Bạn có thể kích hoạt chế độ nghỉ ở đây. Điều này có nghĩa là tài khoản game của bạn sẽ không bị xóa nếu bạn không đăng nhập trong thời gian dài và thành phố của bạn không thể bị tấn công trong thời gian này. Công nhân và các nhà khoa học cũng sẽ đi nghỉ và không làm việc. Do đó chế độ nghỉ không phải là một lợi thế, chế độ nghỉ khi kích hoạt sẽ kéo dài ít nhất là 48 giờ. Bạn sẽ không thể chơi Ikariam trong thời gian này. Sau 2 ngày, chế độ nghỉ sẽ tự động kết thúc khi bạn đăng nhập.</p>
-          <p class="warningFont">Chú ý! Tàu thuyền và quân đội đang ở ngoài thành phố bạn sẽ giải tán và trở về khi bạn kích hoạt chế độ nghỉ! Hàng hóa đang vận chuyển sẽ bị mất!</p>
+          <p>Here you can activate holiday mode. This means that your game account will not be deleted due to inactivity and your cities will not be attacked during this time. Your workers and scientists will stop their work. You can enter the holiday mode for at least48 hours. You cannot play Ikariam during this time. After these two days, your vacation will automatically end as soon as you log into the game.</p>
+          <p class="warningFont">Attention! Fleets and armies leaving your cities will be reorganized and brought back as soon as you enter vacation mode! Goods on board will be lost!</p>
             <div class="centerButton">
-                <a class="button" href="<?=$this->config->item('base_url')?>game/options_umod_confirm/">Kích hoạt chế độ nghỉ phép</a>
+                <a class="button" href="<?=$this->config->item('base_url')?>game/options_umod_confirm/">Enable Vacation Mode</a>
             </div>
         </div>
         <div class="footer"></div>
@@ -157,12 +158,12 @@
 
 
       <div class="contentBox01h" id="deletionMode">
-        <h3 class="header"><span class="textLabel">Xóa người chơi</span></h3>
+        <h3 class="header"><span class="textLabel">Account deleting</span></h3>
         <div class="content">
-          <p>Nếu bạn không muốn chơi nữa, bạn có thể xóa bỏ tài khoản của mình tại đây. Nó sẽ được loại khỏi trò chơi trong vòng 7 ngày.</p>
+          <p>If you no longer want to play, you can delete your account here. It will be deleted after seven days.</p>
           <br>
           <div class="centerButton">
-            <a class="button" href="<?=$this->config->item('base_url')?>game/options_deletion_confirm/">Xóa vĩnh viễn người chơi!</a>
+            <a class="button" href="<?=$this->config->item('base_url')?>game/options_deletion_confirm/">Delete account!</a>
           </div>
           <br>
         </div>

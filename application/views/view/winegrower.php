@@ -8,7 +8,7 @@
 ?>
     <div class="contentBox01h">
         <div class="buildingPictureImg"><img src="<?=$this->config->item('style_url')?>skin/img/city/small/building_winegrower.gif" /></div>
-        <h3 class="header"><span class="textLabel">Thống kê Máy ép nho</span></h3>
+        <h3 class="header"><span class="textLabel">grape extraction</span></h3>
         <div class="content">
             <table cellspacing="0" cellspacing="0" border="0" style="margin:0 auto 0px;">
                 <colgroup><col width="150"/><col width="70"/><col width="%"/></colgroup>
@@ -18,11 +18,11 @@
                 <tr>
                     <td class="col1Style">
 
-                        <label>Sản xuất cơ bản: </label>
+                        <label>Primary production: </label>
 
                     </td>
                     <td class="col2Style">
-                        <span title="Основное производство"><?=number_format($production)?></span>
+                        <span title="Primary production"><?=number_format($production)?></span>
                     </td>
                     <td class="col3Style">
                         <div class="green" style="width:<?=99-($level*2)?>%" title="100.00%"></div>
@@ -30,10 +30,10 @@
                 </tr>
                 <tr class='alt'>
                     <td class="col1Style">
-                        <label>Rượu nho: </label>
+                        <label>winery: </label>
                     </td>
                     <td class="col2Style">
-                        <span title="Винодельня"><?=number_format($bonus)?></span>
+                        <span title="winery"><?=number_format($bonus)?></span>
                     </td>
                     <td class="col3Style">
                         <div class="yellow" style="width:<?=($level*2)-1?>%" title="+<?=$level*2?>.00%"></div>
@@ -44,7 +44,7 @@
                         <img src="<?=$this->config->item('style_url')?>skin/layout/sigma.gif"/>
                     </td>
                     <td class="col2Style">
-                        <span title="Всего"><b><?=number_format($summ)?></b></span>
+                        <span title="Total"><b><?=number_format($summ)?></b></span>
                     </td>
                     <td class="col3Style">
                         <div class="green" style="width:99%" title="<?=100+($level*2)?>.00%"></div>

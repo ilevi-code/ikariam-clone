@@ -1,74 +1,75 @@
 <div id="mainview">
-    <h1><?=$this->lang->line('h1_premium')?></h1>
+    <h1>Ikariam Plus</h1>
     <div id="premiumOffers" class="contentBox01h">
-        <h3 class="header"><?=$this->lang->line('h1_premium')?></h3>
+        <h3 class="header">Ikariam PLUS</h3>
         <div class="content">
-            <p><?=$this->lang->line('intestazione_premium')?></p>
+            <p>Ikariam PLUS will give you the opportunity to lead your empire along the path of wealth and prosperity. Get some ambrosia, and then your advisors and employees will pleasantly surprise you with the quality of their work.!
+    You can choose from the following bonuses:</p>
             <table class="TableHoriMax Account">
                 <tr>
-                    <th class="feature"><?=$this->lang->line('caratteristiche_premium')?></th>
-                    <th class="duration"><?=$this->lang->line('durata_premium')?></th>
-                    <th class="cost"><?=$this->lang->line('costi_premium')?></th>
+                    <th class="feature">PLUS Features</th>
+                    <th class="duration">Time</th>
+                    <th class="cost">Price</th>
                     <th class="buy">&nbsp;</th>
                 </tr>
                 <tr class="account">
                     <td class="feature" rowspan="2">
-                      <h4><?=$this->lang->line('account_premium')?></h4>
-                      <p><?=$this->lang->line('descrizione_account_premium')?></p>
-                      <a href="<?=$this->config->item('base_url')?>game/premiumDetails/"><?=$this->lang->line('ulteriori_info_premium')?></a>
+                      <h4>Premium account</h4>
+                      <p>With Ikariam PLUS you will get improved views and full control over your island empire.</p>
+                      <a href="<?=$this->config->item('base_url')?>game/premiumDetails/">More about Ikariam PLUS</a>
                     </td>
-                    <td class="duration">7&nbsp;<?=$this->lang->line('giorni_account_premium')?></td>
-                    <td class="cost">10&nbsp;<img src="<?=$this->config->item('style_url')?>skin/premium/ambrosia_icon.gif" width="24" height="20" alt="Аmbrosia" /></td>
+                    <td class="duration">7&nbsp;e.</td>
+                    <td class="cost">10&nbsp;<img src="<?=$this->config->item('style_url')?>skin/premium/ambrosia_icon.gif" width="24" height="20" alt="Ambrosia" /></td>
                     <td class="buy" rowspan="2">
 <?if($this->Player_Model->user->ambrosy >= 10){?>
         <div class="centerButton">
-            <a href="<?=$this->config->item('base_url')?>actions/premium/account/" class="button" title="Kích hoạt"><?=$this->lang->line('attiva_account_premium')?></a>
+            <a href="<?=$this->config->item('base_url')?>actions/premium/account/" class="button" title="Buy">Buy</a>
         </div>
 <?}else{?>
-                      <a class="notenough" href="<?=$this->config->item('base_url')?>game/premiumPayment/">Còn thiếu 10 Ambrosia!<br><span class="buyNow">Mua ngay!</span></a>
+                      <a class="notenough" href="<?=$this->config->item('base_url')?>game/premiumPayment/">Lacks10 ed. ragweed!<br><span class="buyNow">Buy!</span></a>
 <?}?>
                     </td>
                 </tr>
                 <tr>
 <?if($this->Player_Model->user->premium_account > 0){?>
-                    <td class="active" colspan="3"><br>Còn <?=premium_time($this->Player_Model->user->premium_account-time())?></td>
+                    <td class="active" colspan="3"><br>Left<?=premium_time($this->Player_Model->user->premium_account-time())?></td>
 <?}else{?>
-                    <td class="inactive" colspan="3">Chưa kích hoạt</td>
+                    <td class="inactive" colspan="3">Not active</td>
 <?}?>
                 </tr>
             </table>
 
             <table class="TableHoriMax">
                 <tr>
-                    <th class="feature">Phần thưởng PLUS</th>
-                    <th class="duration">Quá trình</th>
-                    <th class="cost">Giá</th>
+                    <th class="feature">PLUS bonuses</th>
+                    <th class="duration">Time</th>
+                    <th class="cost">Price</th>
                     <th class="buy">&nbsp;</th>
                 </tr>
 
                 <tr class="woodbonus">
                     <td class="feature" rowspan="2">
-                      <h4>Thêm 20% vật liệu xây dựng</h4>
-                      <p>Trong khoảng thời gian thưởng, sẽ thêm 20% vào sản lượng khai thác gỗ cho tất cả các thành phố trên đảo!</p>
+                      <h4>20% more building materials</h4>
+                      <p>During the bonus, all your islands will be mined on20% more building materials!</p>
                     </td>
-                    <td class="duration">7&nbsp;Ngày</td>
-                    <td class="cost">10&nbsp;<img src="<?=$this->config->item('style_url')?>skin/premium/ambrosia_icon.gif" width="24" height="20" alt="Аmbrosia" /></td>
+                    <td class="duration">7&nbsp;e.</td>
+                    <td class="cost">10&nbsp;<img src="<?=$this->config->item('style_url')?>skin/premium/ambrosia_icon.gif" width="24" height="20" alt="Ambrosia" /></td>
                     <td class="buy"  rowspan="2">
 <?if($this->Player_Model->user->ambrosy >= 10){?>
         <div class="centerButton">
-            <a href="<?=$this->config->item('base_url')?>actions/premium/wood/" class="button" title="Kích hoạt">Kích hoạt</a>
+            <a href="<?=$this->config->item('base_url')?>actions/premium/wood/" class="button" title="Buy">Buy</a>
         </div>
 <?}else{?>
-                      <a class="notenough" href="<?=$this->config->item('base_url')?>game/premiumPayment/">Còn thiếu 10 Ambrosia!<br><span class="buyNow">Mua ngay!</span></a>
+                      <a class="notenough" href="<?=$this->config->item('base_url')?>game/premiumPayment/">Lacks10 ed. ragweed!<br><span class="buyNow">Buy!</span></a>
 <?}?>
                     </td>
                 </tr>
 
                 <tr>
 <?if($this->Player_Model->user->premium_wood > 0){?>
-                    <td class="active" colspan="3"><br>Còn <?=premium_time($this->Player_Model->user->premium_wood-time())?></td>
+                    <td class="active" colspan="3"><br>Left<?=premium_time($this->Player_Model->user->premium_wood-time())?></td>
 <?}else{?>
-                    <td class="inactive" colspan="3">Chưa kích hoạt</td>
+                    <td class="inactive" colspan="3">Not active</td>
 <?}?>
                 </tr>
 
@@ -78,27 +79,27 @@
 
                 <tr class="marblebonus">
                     <td class="feature" rowspan="2">
-                      <h4>Thêm 20% cẩm thạch</h4>
-                      <p>Trong khoảng thời gian thưởng, sẽ thêm 20% vào sản lượng khai thác cẩm thạch trên toàn đảo!</p>
+                      <h4>20% more marble</h4>
+                      <p>During the bonus, all your islands will be mined on20% more marble!</p>
                     </td>
-                    <td class="duration">7&nbsp;Ngày</td>
-                    <td class="cost">8&nbsp;<img src="<?=$this->config->item('style_url')?>skin/premium/ambrosia_icon.gif" width="24" height="20" alt="Аmbrosia" /></td>
+                    <td class="duration">7&nbsp;e.</td>
+                    <td class="cost">8&nbsp;<img src="<?=$this->config->item('style_url')?>skin/premium/ambrosia_icon.gif" width="24" height="20" alt="Ambrosia" /></td>
                     <td class="buy"  rowspan="2">
 <?if($this->Player_Model->user->ambrosy >= 8){?>
         <div class="centerButton">
-            <a href="<?=$this->config->item('base_url')?>actions/premium/marble/" class="button" title="Kích hoạt">Kích hoạt</a>
+            <a href="<?=$this->config->item('base_url')?>actions/premium/marble/" class="button" title="Buy">Buy</a>
         </div>
 <?}else{?>
-                      <a class="notenough" href="<?=$this->config->item('base_url')?>game/premiumPayment/">Còn thiếu 8 Ambrosia!<br><span class="buyNow">Mua ngay!</span></a>
+                      <a class="notenough" href="<?=$this->config->item('base_url')?>game/premiumPayment/">Lacks8 ed. ragweed!<br><span class="buyNow">Buy!</span></a>
 <?}?>
                     </td>
                 </tr>
 
                 <tr>
 <?if($this->Player_Model->user->premium_marble > 0){?>
-                    <td class="active" colspan="3"><br>Còn <?=premium_time($this->Player_Model->user->premium_marble-time())?></td>
+                    <td class="active" colspan="3"><br>Left<?=premium_time($this->Player_Model->user->premium_marble-time())?></td>
 <?}else{?>
-                    <td class="inactive" colspan="3">Chưa kích hoạt</td>
+                    <td class="inactive" colspan="3">Not active</td>
 <?}?>
                 </tr>
 
@@ -108,27 +109,27 @@
 
                 <tr class="sulfurbonus">
                     <td class="feature" rowspan="2">
-                      <h4>Thêm 20% lưu huỳnh</h4>
-                      <p>Trong khoảng thời gian thưởng, sẽ thêm 20% vào sản lượng khai thác lưu huỳnh cho tất cả các đảo của bạn!</p>
+                      <h4>20% more sulfur</h4>
+                      <p>During the bonus, all your islands will be mined on20% more sulfur!</p>
                     </td>
-                    <td class="duration">7&nbsp;Ngày</td>
-                    <td class="cost">3&nbsp;<img src="<?=$this->config->item('style_url')?>skin/premium/ambrosia_icon.gif" width="24" height="20" alt="Аmbrosia" /></td>
+                    <td class="duration">7&nbsp;e.</td>
+                    <td class="cost">3&nbsp;<img src="<?=$this->config->item('style_url')?>skin/premium/ambrosia_icon.gif" width="24" height="20" alt="Ambrosia" /></td>
                     <td class="buy"  rowspan="2">
 <?if($this->Player_Model->user->ambrosy >= 3){?>
         <div class="centerButton">
-            <a href="<?=$this->config->item('base_url')?>actions/premium/sulfur/" class="button" title="Kích hoạt">Kích hoạt</a>
+            <a href="<?=$this->config->item('base_url')?>actions/premium/sulfur/" class="button" title="Buy">Buy</a>
         </div>
 <?}else{?>
-                      <a class="notenough" href="<?=$this->config->item('base_url')?>game/premiumPayment/">Còn thiếu 3 Ambrosia!<br><span class="buyNow">Mua ngay!</span></a>
+                      <a class="notenough" href="<?=$this->config->item('base_url')?>game/premiumPayment/">Lacks3 ed. ragweed!<br><span class="buyNow">Buy!</span></a>
 <?}?>
                     </td>
                 </tr>
 
                 <tr>
 <?if($this->Player_Model->user->premium_sulfur > 0){?>
-                    <td class="active" colspan="3"><br>Còn <?=premium_time($this->Player_Model->user->premium_sulfur-time())?></td>
+                    <td class="active" colspan="3"><br>Left<?=premium_time($this->Player_Model->user->premium_sulfur-time())?></td>
 <?}else{?>
-                    <td class="inactive" colspan="3">Chưa kích hoạt</td>
+                    <td class="inactive" colspan="3">Not active</td>
 <?}?>
                 </tr>
 
@@ -138,27 +139,27 @@
 
                 <tr class="crystalbonus">
                     <td class="feature" rowspan="2">
-                      <h4>Thêm 20% pha lê</h4>
-                      <p>Trong khoảng thời gian thưởng, sẽ thêm 20% vào sản lượng khai thác pha lê cho tất cả các đảo của bạn!</p>
+                      <h4>20% more crystal</h4>
+                      <p>During the bonus, all your islands will be mined on20% more crystal!</p>
                     </td>
-                    <td class="duration">7&nbsp;Ngày</td>
-                    <td class="cost">5&nbsp;<img src="<?=$this->config->item('style_url')?>skin/premium/ambrosia_icon.gif" width="24" height="20" alt="Аmbrosia" /></td>
+                    <td class="duration">7&nbsp;e.</td>
+                    <td class="cost">5&nbsp;<img src="<?=$this->config->item('style_url')?>skin/premium/ambrosia_icon.gif" width="24" height="20" alt="Ambrosia" /></td>
                     <td class="buy"  rowspan="2">
 <?if($this->Player_Model->user->ambrosy >= 5){?>
         <div class="centerButton">
-            <a href="<?=$this->config->item('base_url')?>actions/premium/crystal/" class="button" title="Kích hoạt">Kích hoạt</a>
+            <a href="<?=$this->config->item('base_url')?>actions/premium/crystal/" class="button" title="Buy">Buy</a>
         </div>
 <?}else{?>
-                      <a class="notenough" href="<?=$this->config->item('base_url')?>game/premiumPayment/">Còn thiếu 5 Ambrosia!<br><span class="buyNow">Mua ngay!</span></a>
+                      <a class="notenough" href="<?=$this->config->item('base_url')?>game/premiumPayment/">Lacks5 ed. ragweed!<br><span class="buyNow">Buy!</span></a>
 <?}?>
                     </td>
                 </tr>
 
                 <tr>
 <?if($this->Player_Model->user->premium_crystal > 0){?>
-                    <td class="active" colspan="3"><br>Còn <?=premium_time($this->Player_Model->user->premium_crystal-time())?></td>
+                    <td class="active" colspan="3"><br>Left<?=premium_time($this->Player_Model->user->premium_crystal-time())?></td>
 <?}else{?>
-                    <td class="inactive" colspan="3">Chưa kích hoạt</td>
+                    <td class="inactive" colspan="3">Not active</td>
 <?}?>
                 </tr>
 
@@ -168,27 +169,27 @@
 
                 <tr class="winebonus">
                     <td class="feature" rowspan="2">
-                      <h4>Thêm 20% rượu vang</h4>
-                      <p>Trong suốt thời gian tặng thưởng, 20% lượng rượu sản xuất sẽ tăng trên toàn hòn đảo!</p>
+                      <h4>20% more grapes</h4>
+                      <p>During the bonus, all your islands will be mined on20% more grapes!</p>
                     </td>
-                    <td class="duration">7&nbsp;Ngày</td>
-                    <td class="cost">3&nbsp;<img src="<?=$this->config->item('style_url')?>skin/premium/ambrosia_icon.gif" width="24" height="20" alt="Аmbrosia" /></td>
+                    <td class="duration">7&nbsp;e.</td>
+                    <td class="cost">3&nbsp;<img src="<?=$this->config->item('style_url')?>skin/premium/ambrosia_icon.gif" width="24" height="20" alt="Ambrosia" /></td>
                     <td class="buy"  rowspan="2">
 <?if($this->Player_Model->user->ambrosy >= 3){?>
         <div class="centerButton">
-            <a href="<?=$this->config->item('base_url')?>actions/premium/wine/" class="button" title="Kích hoạt">Kích hoạt</a>
+            <a href="<?=$this->config->item('base_url')?>actions/premium/wine/" class="button" title="Buy">Buy</a>
         </div>
 <?}else{?>
-                      <a class="notenough" href="<?=$this->config->item('base_url')?>game/premiumPayment/">Còn thiếu 3 Ambrosia!<br><span class="buyNow">Mua ngay!</span></a>
+                      <a class="notenough" href="<?=$this->config->item('base_url')?>game/premiumPayment/">Lacks3 ed. ragweed!<br><span class="buyNow">Buy!</span></a>
 <?}?>
                     </td>
                 </tr>
 
                 <tr>
 <?if($this->Player_Model->user->premium_wine > 0){?>
-                    <td class="active" colspan="3"><br>Còn <?=premium_time($this->Player_Model->user->premium_wine-time())?></td>
+                    <td class="active" colspan="3"><br>Left<?=premium_time($this->Player_Model->user->premium_wine-time())?></td>
 <?}else{?>
-                    <td class="inactive" colspan="3">Chưa kích hoạt</td>
+                    <td class="inactive" colspan="3">Not active</td>
 <?}?>
                 </tr>
 
@@ -198,27 +199,27 @@
 
                 <tr class="savecapacityBonus">
                     <td class="feature" rowspan="2">
-                      <h4>Tăng độ an toàn khi bị cướp bóc thêm 100%.</h4>
-                      <p>Bạn nhận được thêm 100% an toàn cho hàng hóa trong nhà kho.</p>
+                      <h4>Increases the size of the secret vault in warehouses by100%.</h4>
+                      <p>You get an additional bonus to the reserved resources in warehouses in the amount of100%.</p>
                     </td>
-                    <td class="duration">7&nbsp;Ngày</td>
-                    <td class="cost">14&nbsp;<img src="<?=$this->config->item('style_url')?>skin/premium/ambrosia_icon.gif" width="24" height="20" alt="Аmbrosia" /></td>
+                    <td class="duration">7&nbsp;e.</td>
+                    <td class="cost">14&nbsp;<img src="<?=$this->config->item('style_url')?>skin/premium/ambrosia_icon.gif" width="24" height="20" alt="Ambrosia" /></td>
                     <td class="buy"  rowspan="2">
 <?if($this->Player_Model->user->ambrosy >= 14){?>
         <div class="centerButton">
-            <a href="<?=$this->config->item('base_url')?>actions/premium/capacity/" class="button" title="Kích hoạt">Kích hoạt</a>
+            <a href="<?=$this->config->item('base_url')?>actions/premium/capacity/" class="button" title="Buy">Buy</a>
         </div>
 <?}else{?>
-                      <a class="notenough" href="<?=$this->config->item('base_url')?>game/premiumPayment/">Còn thiếu 14 Ambrosia!<br><span class="buyNow">Mua ngay!</span></a>
+                      <a class="notenough" href="<?=$this->config->item('base_url')?>game/premiumPayment/">Lacks14 ed. ragweed!<br><span class="buyNow">Buy!</span></a>
 <?}?>
                     </td>
                 </tr>
 
                 <tr>
 <?if($this->Player_Model->user->premium_capacity > 0){?>
-                    <td class="active" colspan="3"><br>Còn <?=premium_time($this->Player_Model->user->premium_capacity-time())?></td>
+                    <td class="active" colspan="3"><br>Left<?=premium_time($this->Player_Model->user->premium_capacity-time())?></td>
 <?}else{?>
-                    <td class="inactive" colspan="3">Chưa kích hoạt</td>
+                    <td class="inactive" colspan="3">Not active</td>
 <?}?>
                 </tr>
 

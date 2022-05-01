@@ -1,40 +1,40 @@
-<?php
+<?
         $config['base_url'] = $this->config->item('base_url').'game/tradeAdvisor/';
         $config['total_rows'] = SizeOf($this->Player_Model->towns_messages);
         $config['per_page'] = '10';
         $config['num_links'] = 3;
-        $config['next_link'] = '<img src="'.$this->config->item('style_url').'skin/img/resource/btn_max.png" title="След. 10">';
-        $config['last_link'] = '<img src="'.$this->config->item('style_url').'skin/img/resource/btn_max.png" title="В Конец">';
-        $config['prev_link'] = '<img src="'.$this->config->item('style_url').'skin/img/resource/btn_min.png" title="Пред. 10">';
-        $config['first_link'] = '<img src="'.$this->config->item('style_url').'skin/img/resource/btn_min.png" title="В Начало">';
+        $config['next_link'] = '<img src="'.$this->config->item('style_url').'skin/img/resource/btn_max.gif" title="After10">';
+        $config['last_link'] = '<img src="'.$this->config->item('style_url').'skin/img/resource/btn_max.gif" title="In the end">';
+        $config['prev_link'] = '<img src="'.$this->config->item('style_url').'skin/img/resource/btn_min.gif" title="Before.10">';
+        $config['first_link'] = '<img src="'.$this->config->item('style_url').'skin/img/resource/btn_min.gif" title="In the Home">';
         $this->pagination->initialize($config);
         $msg_id = $param1;
 ?>
 <div id="mainview">
     <div class="buildingDescription">
-        <h1><?=$this->lang->line('mayor')?></h1>
+        <h1>Mayor</h1>
         <p></p>
     </div>
     <div class="yui-navset">
         <ul class="yui-nav"  >
             <li  class="selected"><a
                 href="<?=$this->config->item('base_url')?>game/tradeAdvisor/"
-                title="<?=$this->lang->line('town_news')?>"><em><?=$this->lang->line('town_news')?></em></a></li>
+                title="City News"><em>City News</em></a></li>
             <li ><a
                 href="<?=$this->config->item('base_url')?>game/tradeAdvisorTradeRoute/"
-                title="<?=$this->lang->line('trade_routes')?>"><em><?=$this->lang->line('trade_routes')?></em></a></li>
+                title="trade routes"><em>trade routes</em></a></li>
         </ul>
     </div>
     <div class="contentBox01h">
-        <h3 class="header"><?=$this->lang->line('current_events')?> (<?=SizeOf($this->Player_Model->towns_messages)?>)</h3>
+        <h3 class="header">Current events(<?=SizeOf($this->Player_Model->towns_messages)?>)</h3>
         <div class="content">
             <table cellpadding="0" cellspacing="0" class="table01" id="inboxCity">
                 <thead>
                     <tr>
                         <th></th>
-                        <th colspan="2"><?=$this->lang->line('location')?></th>
-                        <th><?=$this->lang->line('date')?></th>
-                        <th><?=$this->lang->line('subject')?></th>
+                        <th colspan="2">Location</th>
+                        <th>Date</th>
+                        <th>Theme</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -46,15 +46,15 @@
                         <td class="<?if ($message->checked == 0){?>wichtig<?}else{?>empty<?}?>"></td>
                         <td class="city"></td>
                         <td style="white-space:nowrap;">
-                            <a title="Trở lại thành phố <?=$this->Data_Model->temp_towns_db[$message->town]->name?>" href="/game/city/<?=$message->town?>/"><?=$this->Data_Model->temp_towns_db[$message->town]->name?></a>
+                            <a title="Jump into the city<?=$this->Data_Model->temp_towns_db[$message->town]->name?>" href="/game/city/<?=$message->town?>/"><?=$this->Data_Model->temp_towns_db[$message->town]->name?></a>
                         </td>
                         <td class="date"><?=date("d.m.Y G:i",$message->date)?></td>
                         <td class="subject"><?=$message->text?></td>
                         <td class="empty"></td>
                     </tr>
-<?php }
-$message_id++;
-}?>
+<?}?>
+<?$message_id++?>
+<?}?>
                     <tr class="pgnt">
                         <td class="empty"></td>
                         <td></td>
@@ -77,7 +77,7 @@ $message_id++;
    Dom.get("mainview").style.display="block";
 //-->
 </script>
-<?php
+<?
     $this->db->set('checked', 1);
     $this->db->where(array('user' => $this->Player_Model->user->id));
     $this->db->update($this->session->userdata('universe').'_town_messages');

@@ -2,21 +2,21 @@
 <?include_once('building_description.php')?>
 <div class="yui-navset">
     <ul class="yui-nav">
-        <li <?if($param2!='reports' and $param2!='archive'){?>class="selected"<?}?>><a href="<?=$this->config->item('base_url')?>game/safehouse/<?=$position?>/" title="Nơi ẩn náu"><em>Nơi ẩn náu</em></a></li>
-        <li <?if($param2=='reports'){?>class="selected"<?}?>><a href="<?=$this->config->item('base_url')?>game/safehouse/reports/" title="Các báo cáo hoạt động tình báo"><em>Các báo cáo hoạt động tình báo</em></a></li>
-        <li <?if($param2=='archive'){?>class="selected"<?}?>><a href="<?=$this->config->item('base_url')?>game/safehouse/archive/"><em>Lưu trữ</em></a></li>
+        <li <?if($param2!='reports' and $param2!='archive'){?>class="selected"<?}?>><a href="<?=$this->config->item('base_url')?>game/safehouse/<?=$position?>/" title="Shelter"><em>Shelter</em></a></li>
+        <li <?if($param2=='reports'){?>class="selected"<?}?>><a href="<?=$this->config->item('base_url')?>game/safehouse/reports/" title="Spy reports"><em>Spy reports</em></a></li>
+        <li <?if($param2=='archive'){?>class="selected"<?}?>><a href="<?=$this->config->item('base_url')?>game/safehouse/archive/"><em>Archive</em></a></li>
     </ul>
 </div>
 <?if($param2!='reports' and $param2!='archive'){?>
     <div class="contentBox01h">
-        <h3 class="header"><span class="textLabel">Đào tạo điệp viên</span></h3>
+        <h3 class="header"><span class="textLabel">Spy training</span></h3>
         <div class="content">
             <ul id="units">
                 <li class="unit">
                     <div class="unitinfo">
-                        <h4>Đào tạo điệp viên</h4>
+                        <h4>Spy</h4>
                         <img src="<?=$this->config->item('style_url')?>skin/characters/military/120x100/spy_120x100.gif">
-                        <p>Người công dân này rất cẩn trọng và trung thành - một ứng cử viên sáng giá để trở thành điệp viên. Thời gian đào tạo một điệp viên :</p>
+                        <p>This citizen is a loyal and at the same time secretive person. In a word, an ideal candidate for spies. Spy training time:</p>
                     </div>
                     <div class="forminput">
 <?if($this->Player_Model->now_town->spyes_start == 0){?>
@@ -29,25 +29,25 @@
     }
 ?>
 <?if($build_pos > 0){?>
-                        Công trình trong quá trình nâng cấp!
+                        Building under improvement!
 <?}else{?>
 <?$all_spyes = SizeOf($this->Player_Model->spyes[$this->Player_Model->town_id])+$this->Player_Model->now_town->spyes?>
 <?if(($this->Player_Model->levels[$this->Player_Model->town_id][14]-$all_spyes) > 0){?>
                         <div class="centerButton">
-                            <a href="<?=$this->config->item('base_url')?>actions/spyes/buy/" class="button" title="Тренировать">Тренировать</a>
+                            <a href="<?=$this->config->item('base_url')?>actions/spyes/buy/" class="button" title="Train">Train</a>
                         </div>
 <?}else{?>
-                        Đã đạt tối đa số điệp viên cho phép!
+                        Max. number of spies reached!
 <?}}?>
 <?}else{?>
-                        Cơ sở đào tạo
+                        The workout has started.
 <?}?>
                     </div>
                     <div class="costs">
-                        <h5>Chi phí:</h5>
+                        <h5>Price:</h5>
                         <ul class="resources">
-                            <li class="gold"><span class="textLabel">Золото: </span>150</li>
-                            <li class="glass"><span class="textLabel">Стройматериалы: </span>80</li>
+                            <li class="gold"><span class="textLabel">Gold: </span>150</li>
+                            <li class="glass"><span class="textLabel">building materials: </span>80</li>
                             <li class="time"><?=format_time($this->Data_Model->spyes_time_by_level($this->Player_Model->levels[$this->Player_Model->town_id][14]))?></li>
                         </ul>
                     </div>
@@ -59,7 +59,7 @@
 
 
 <div class="contentBox01h">
-  <h3 class="header"><span class="textLabel">Điệp viên đang thực thi nhiệm vụ</span></h3>
+  <h3 class="header"><span class="textLabel">Spies on missions</span></h3>
   <div class="content">
 
 <?if (sizeOf($this->Player_Model->spyes[$this->Player_Model->town_id]) > 0){?>
@@ -67,11 +67,11 @@
 
       <div class="spyinfo">
           <ul>
-              <li title="Резиденция" class="city"><?=$this->Data_Model->temp_towns_db[$spy->to]->name?> (<?=$this->Data_Model->temp_islands_db[$this->Data_Model->temp_towns_db[$spy->to]->island]->x?>,<?=$this->Data_Model->temp_islands_db[$this->Data_Model->temp_towns_db[$spy->to]->island]->y?>)</li>
+              <li title="Residence" class="city"><?=$this->Data_Model->temp_towns_db[$spy->to]->name?> (<?=$this->Data_Model->temp_islands_db[$this->Data_Model->temp_towns_db[$spy->to]->island]->x?>,<?=$this->Data_Model->temp_islands_db[$this->Data_Model->temp_towns_db[$spy->to]->island]->y?>)</li>
 <?if($spy->mission_start > 0 and $spy->mission_type != 2){?>
-              <li title="Tình trạng" class="status">Điệp viên đang làm việc</li>
+              <li title="Status" class="status">Spy on a mission</li>
 <?}?>
-              <li title="Tình trạng" class="status">
+              <li title="Status" class="status">
 <?if($spy->mission_start > 0){?>
 <?
     $x1 = $this->Player_Model->now_island->x;
@@ -116,7 +116,7 @@ else
                 $risk = $spy->risk;
 }
 ?>
-              <li class="risk"><span class="textLabel">Nguy ngại trong thám hiểm</span>:<br>
+              <li class="risk"><span class="textLabel">Exposure risk</span>:<br>
                   <div class="statusBar">
                       <div style="width: <?=$risk?>%;" class="bar"></div>
                   </div>
@@ -126,16 +126,16 @@ else
           </ul>
 <?if($spy->mission_start == 0){?>
           <div class="missionButton">
-              <a title="Gửi bản phân công cho điệp viên" href="<?=$this->config->item('base_url')?>game/safehouseMissions/<?=$spy->id?>/">Nhiệm vụ</a>
+              <a title="Give a task to a spy" href="<?=$this->config->item('base_url')?>game/safehouseMissions/<?=$spy->id?>/">Mission</a>
           </div>
           <div class="missionAbort">
-              <a title="Triệu tập điệp viên trở về thành phố" href="<?=$this->config->item('base_url')?>actions/spyes/return/<?=$spy->id?>/<?=$spy->from?>/">Hủy bỏ</a>
+              <a title="Call the spy home" href="<?=$this->config->item('base_url')?>actions/spyes/return/<?=$spy->id?>/<?=$spy->from?>/">Review</a>
           </div>
 <?}?>
       </div>
 <?}?>
 <?}else{?>
-        <center><div style="padding:10px;">Không có điệp viên nào đang thi hành nhiệm vụ! </div></center>
+        <center><div style="padding:10px;">No spies on missions!</div></center>
 <?}?>
       </div>
   <div class="footer"></div>
@@ -143,12 +143,12 @@ else
 <?}?>
 <?if($param2=='reports'){?>
     <div class="contentBox01">
-        <h3 class="header"><span class="textLabel">Báo cáo của Điệp viên</span></h3>
+        <h3 class="header"><span class="textLabel">Spy reports</span></h3>
         <div class="content">
             <table cellpadding="0" cellspacing="0" class="spyMessages table01">                            
 <?foreach($this->Player_Model->spyes_messages as $messages){?>
                 <?$this->Data_Model->Load_Town($messages[0]->to)?>
-                <tr><th colspan="3">Báo cáo của các điệp viên <?=$this->Data_Model->temp_towns_db[$messages[0]->to]->name?></th></tr>
+                <tr><th colspan="3">Spy reports from<?=$this->Data_Model->temp_towns_db[$messages[0]->to]->name?></th></tr>
 <?foreach($messages as $message){?>
                 <tr>
                     <td class="icon <?=spy_mission_icon($message->mission)?>"></td>
@@ -165,9 +165,9 @@ else
 <?if($param2=='archive'){?>
 <div id="troopsOverview">
         <div class="contentBox01h">
-            <h3 class="header"><span class="textLabel">Các báo cáo hoạt động tình báo</span></h3>
+            <h3 class="header"><span class="textLabel">Spy reports</span></h3>
             <div class="content">
-                <p style="text-align: center;">Không có hồ sơ nào</p>
+                <p style="text-align: center;">No records</p>
             </div>
             <div class="footer"></div>
         </div>

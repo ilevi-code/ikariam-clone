@@ -1,6 +1,6 @@
 <div id="mainview">
-<?php
-include_once('building_description.php');
+<?include_once('building_description.php')?>
+<?
 $max_scientists = $this->Data_Model->scientists_by_level($level);
 $peoples = floor($this->Player_Model->now_town->peoples);
 $all = $this->Player_Model->now_town->peoples + $this->Player_Model->now_town->scientists;
@@ -9,7 +9,7 @@ $max = floor($max);
 $add_research = $this->Player_Model->now_town->scientists * $this->Player_Model->plus_research;
 $gold_need = $this->Player_Model->scientists_gold_need+3;
 ?>
-    <form id="setScientists" action="<?=$this->config->item('base_url')?>actions/workers/academy/<?=$position?>/" method="POST">
+    <form id="setScientists" action="<?=$this->config->item('base_url')?>actions/workers/academy/<?=$position?>" method="POST">
         <div class="contentBox01h">
             <h3 class="header"><span class="textLabel"><?=$this->lang->line('assign_workers')?></span></h3>
             <div class="content">

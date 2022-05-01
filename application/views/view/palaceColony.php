@@ -1,23 +1,23 @@
 <div id="mainview">
 <?include_once('building_description.php')?>
     <div class="contentBox01h">
-        <h3 class="header"><span class="textLabel">Thành phố trong thể chế của bạn</span></h3>
+        <h3 class="header"><span class="textLabel">Cities of your empire</span></h3>
         <div class="content">
             <table cellpadding="0" cellspacing="0" class="table01">
                 <thead>
                     <tr>
                         <th class="crown"></th>
-                        <th>Thành phố</th>
-                        <th>Cấp độ</th>
-                        <th>Cung điện</th>
-                        <th>Hòn đảo</th>
-                        <th>Tài nguyên</th>
+                        <th>City</th>
+                        <th>Level</th>
+                        <th>The palace</th>
+                        <th>Island</th>
+                        <th>Resource</th>
                     </tr>
                 </thead>
                 <tbody>
 <?foreach($this->Player_Model->towns as $town){?>
 <?
-    // уровень дворца
+    // palace level
     $level = 0;
     for($i = 3; $i <= 13; $i++)
     {
@@ -27,7 +27,7 @@
     }
 ?>
                     <tr>
-                        <td><?if($town->id == $this->Player_Model->capital_id){?><img src="<?=$this->config->item('style_url')?>skin/layout/crown.gif" width="20" height="20" alt="Thủ đô" title="Thủ đô"><?}?></td>
+                        <td><?if($town->id == $this->Player_Model->capital_id){?><img src="<?=$this->config->item('style_url')?>skin/layout/crown.gif" width="20" height="20" alt="The capital" title="The capital"><?}?></td>
                         <td><?=$town->name?></td>
                         <td><?=$town->pos0_level?></td>
                         <td><?=$level?></td>
@@ -42,22 +42,22 @@
     </div>
 <?if($param2 == 'upgrade'){?>
 <div class="contentBox01h" id="moveCapitalConfirmation">
-    <h3 class="header"><span class="textLabel">Vui lòng xác nhận</span></h3>
+    <h3 class="header"><span class="textLabel">Confirm</span></h3>
     <div class="content">
-        <p>Bạn thật sự muốn chọn <?=$this->Player_Model->now_town->name?> là thủ đô mới? Hãy nhớ: <ul><li> Dinh cơ chính phủ cũng sẽ được di dời sang cung điện mới.</li><li>Cấp độ cung điện <?=$this->Player_Model->levels[$this->Player_Model->capital_id][10]?> ở thủ đô cũ <?=$this->Player_Model->towns[$this->Player_Model->capital_id]->name?> sẽ bị <strong>phá hủy hoàn toàn</strong>! Bạn sẽ <strong>mất toàn bộ tài nguyên</strong>! Phí tổn công trình sẽ mất sạch!</li><ul></p>
+        <p>Do you really want to do<?=$this->Player_Model->now_town->name?> capital? Keep in mind: <ul><li> the governor's residence will become a new palace.</li><li>Palace level<?=$this->Player_Model->levels[$this->Player_Model->capital_id][10]?> in the old capital<?=$this->Player_Model->towns[$this->Player_Model->capital_id]->name?> will<strong>completely destroyed</strong>! You<strong>don't get resources</strong>! Construction costs will be lost!</li><ul></p>
             <div class="centerButton">
-                <a href="<?=$this->config->item('base_url')?>actions/changeCapital/<?=$this->Player_Model->now_town->id?>/" class="button">Xác nhận</a>
+                <a href="<?=$this->config->item('base_url')?>actions/changeCapital/<?=$this->Player_Model->now_town->id?>/" class="button">Confirmation</a>
             </div>
     </div>
     <div class="footer"></div>
 </div>
 <?}else{?>
 <div class="contentBox01h" id="moveCapital">
-    <h3 class="header"><span class="textLabel">Định lại vị trí thủ đô</span></h3>
+    <h3 class="header"><span class="textLabel">Move capital</span></h3>
     <div class="content">
-        <p>Bạn có thể tuyên bố thuộc địa này là <strong>thủ đô</strong>. của bạn. Bằng cách này, dinh thự thống đốc được chuyển đổi thành một  <strong>cung điện cùng cấp</strong> và do đó thị trấn này sẽ trở thành thủ đô của đế chế bạn. Tuy nhiên, cung điện trong thủ đô cũ của bạn sẽ được <strong>phá hủy hoàn toàn</strong> - do đó bạn sẽ phải thiết lập lại pháp luật và trật tự do việc xây dựng một chính phủ mới !</p>
+        <p>You can make this colony<strong>capital</strong>. Governor's Residence<strong>will become a palace of the same level</strong> and the city would become the capital of the empire. But keep in mind that the palace in your former capital<strong>will be destroyed</strong> - need to build a new governor's residence!</p>
         <div class="centerButton">
-            <a href="<?=$this->config->item('base_url')?>game/palaceColony/upgrade/" class="button">Chọn thành phố là thủ đô của bạn</a>
+            <a href="<?=$this->config->item('base_url')?>game/palaceColony/upgrade/" class="button">Make this city the capital</a>
         </div>
     </div>
     <div class="footer"></div>

@@ -1,17 +1,18 @@
+<?$this->CI =& get_instance()?>
 <div id="mainview">
     <div class="buildingDescription">
-        <h1>Quân sự</h1>
+        <h1>The army</h1>
         <p></p>
     </div>
     <div class="yui-navset">
         <ul class="yui-nav">
-            <li class="selected"><a href="<?=$this->config->item('base_url')?>game/militaryAdvisorMilitaryMovements/" title="Перемещения войск"><em>Hành quân (<?php echo $this->Player_Model->fleets;?>)</em></a></li>
-            <li><a href="<?=$this->config->item('base_url')?>game/militaryAdvisorCombatReports/" title="Боевые доклады"><em>Báo cáo chiến sự (<?php echo $this->Player_Model->reports_count;?>)</em></a></li>
-            <li><a href="<?=$this->config->item('base_url')?>game/militaryAdvisorCombatReportsArchive/" title="Архив"><em>Lưu trữ</em></a></li>
+            <li  class="selected"><a href="<?=$this->config->item('base_url')?>game/militaryAdvisorMilitaryMovements/" title="Troop movements"><em>Troop movements(<?=$this->Player_Model->fleets?>)</em></a></li>
+            <li ><a href="<?=$this->config->item('base_url')?>game/militaryAdvisorCombatReports/" title="Combat Reports"><em>Combat Reports(0)</em></a></li>
+            <li><a href="<?=$this->config->item('base_url')?>game/militaryAdvisorCombatReportsArchive/" title="Archive"><em>Archive</em></a></li>
         </ul>
     </div>
     <div id="combatsInProgress" class="contentBox">
-        <h3 class="header">Sự kiện hiện tại</h3>
+        <h3 class="header">Current events</h3>
         <div class="content">
             <ul>
             </ul>
@@ -19,37 +20,37 @@
         <div class="footer"></div>
     </div>
     <div id="fleetMovements" class="contentBox">
-        <h3 class="header"><span class="textLabel">Di chuyển của Chiến hạm / Quân đội</span></h3>
+        <h3 class="header"><span class="textLabel">Fleet/ Troops Movement</span></h3>
         <div class="content">
             <table width="100%" cellpadding="0" cellspacing="0" class="locationEvents">
                 <tr style="font-weight: bold; background-color: #faeac6; background-repeat: repeat-x;">
                     <td style="background-repeat: repeat-x; width: 35px; padding: 0"></td>
                     <td style="width: 50px;"></td>
-                    <td style="width: 150px;">	Quân lính</td>
-                    <td>Xuất xứ</td>
-                    <td colspan="3" style="width: 80px; text-align: center;">Nhiệm vụ</td>
-                    <td>Mục tiêu</td>
-                    <td style="width: 42px">Hành động</td>
+                    <td style="width: 150px;">The army</td>
+                    <td>Start</td>
+                    <td colspan="3" style="width: 80px; text-align: center;">Mission</td>
+                    <td>Target</td>
+                    <td style="width: 42px">Action</td>
                 </tr>
-<?php 
-$mission_id = 0;
-if(isset($this->Player_Model->missions) && SizeOf($this->Player_Model->missions) > 0)
-foreach($this->Player_Model->missions as $mission){
-
+<?$mission_id = 0?>
+<?if(SizeOf($this->Player_Model->missions) > 0)?>
+<?foreach($this->Player_Model->missions as $mission){?>
+<?
     $all_resources = $mission->wood+$mission->wine+$mission->marble+$mission->crystal+$mission->sulfur+$mission->peoples;
-    require(APPPATH.'models/mission_data.php');
-    if($mission->user == $this->Player_Model->user->id or ($mission->return_start == 0 and $mission->user != $this->Player_Model->user->id)){?>
+    include(APPPATH.'models/mission_data.php');
+?>
+<?if($mission->user == $this->Player_Model->user->id or ($mission->return_start == 0 and $mission->user != $this->Player_Model->user->id)){?>
 	<tr  <?if (($mission_id % 2) == 1){?>class='alt'<?}?>>
             <td><img src="<?=$this->config->item('style_url')?>skin/resources/icon_time.gif" /></td>
-            <td id="fleetRow<?=$mission->id?>" title="Thời gian đến">
-                        <?php if ($mission->mission_start == 0){?>
-                            Đang nạp
-                        <?php }else{ ?>
+            <td id="fleetRow<?=$mission->id?>" title="Arrival time">
+                        <?if ($mission->mission_start == 0){?>
+                            Loading
+                        <?}else{?>
                             <?if($mission_end > 0 and $mission->return_start == 0){?>
                                 <?=format_time($mission_end)?>
                             <?}elseif($mission_end == 0 and $mission->return_start > 0){?>
                                 <?if($mission->return_start == 0){?>
-                                    Đang nạp
+                                    Loading
                                 <?}?>
                             <?}elseif($mission->loading_to_start == 0 and $mission->return_start> 0){?>
                                 <?if($mission->loading_to_start > 0){?>
@@ -60,18 +61,17 @@ foreach($this->Player_Model->missions as $mission){
                             <?}?>
                         <?}?>
             </td>
-            <td title="Tàu thuyền" style="cursor: pointer" onMouseOut="this.firstChild.nextSibling.style.display = 'none'" onMouseOver="this.firstChild.nextSibling.style.display = 'block'"><?=$mission->ship_transport?> Tàu thuyền
+            <td title="Quantity" style="cursor: pointer" onMouseOut="this.firstChild.nextSibling.style.display = 'none'" onMouseOver="this.firstChild.nextSibling.style.display = 'block'"><?=$mission->ship_transport?> ships
                 <div class="tooltip2" style="z-index: 2000">
-                    <h5>Hạm đội/Quân lính/Hàng hóa</h5>
-                    
-					<div class="unitBox" title="Tàu chở hàng">
+                    <h5>Fleet/ Military units/ Cargo</h5>
+                    <div class="unitBox" title="Dry load">
                         <div class="icon">
                             <img src="<?=$this->config->item('style_url')?>skin/characters/fleet/40x40/ship_transport_r_40x40.gif">
                         </div>
                         <div class="count"><?=$mission->ship_transport?></div>
                     </div>
-                    <?php if($mission->wood > 0){?>
-                    <div class="unitBox" title="Vật liệu xây dựng">
+                    <?if($mission->wood > 0){?>
+                    <div class="unitBox" title="building materials">
                         <div class="iconSmall">
                             <img src="<?=$this->config->item('style_url')?>skin/resources/icon_wood.gif">
                         </div>
@@ -79,23 +79,23 @@ foreach($this->Player_Model->missions as $mission){
                     </div>
                     <?}?>
                     <?if($mission->wine > 0){?>
-                    <div class="unitBox" title="Rượu">
+                    <div class="unitBox" title="Grape">
                         <div class="iconSmall">
                             <img src="<?=$this->config->item('style_url')?>skin/resources/icon_wine.gif">
                         </div>
                         <div class="count"><?=number_format($mission->wine)?></div>
                     </div>
-                    <?php }
-                    if($mission->marble > 0){?>
-                    <div class="unitBox" title="Cẩm thạch">
+                    <?}?>
+                    <?if($mission->marble > 0){?>
+                    <div class="unitBox" title="Marble">
                         <div class="iconSmall">
                             <img src="<?=$this->config->item('style_url')?>skin/resources/icon_marble.gif">
                         </div>
                         <div class="count"><?=number_format($mission->marble)?></div>
                     </div>
-                    <?php }
-                    if($mission->crystal > 0){?>
-                    <div class="unitBox" title="Pha lê">
+                    <?}?>
+                    <?if($mission->crystal > 0){?>
+                    <div class="unitBox" title="Crystal">
                         <div class="iconSmall">
                             <img src="<?=$this->config->item('style_url')?>skin/resources/icon_glass.gif">
                         </div>
@@ -103,7 +103,7 @@ foreach($this->Player_Model->missions as $mission){
                     </div>
                     <?}?>
                     <?if($mission->sulfur > 0){?>
-                    <div class="unitBox" title="Lưu huỳnh">
+                    <div class="unitBox" title="Sulfur">
                         <div class="iconSmall">
                             <img src="<?=$this->config->item('style_url')?>skin/resources/icon_sulfur.gif">
                         </div>
@@ -111,7 +111,7 @@ foreach($this->Player_Model->missions as $mission){
                     </div>
                     <?}?>
                     <?if($mission->peoples > 0){?>
-                    <div class="unitBox" title="Người dân">
+                    <div class="unitBox" title="citizens">
                         <div class="iconSmall">
                             <img src="<?=$this->config->item('style_url')?>skin/resources/icon_citizen.gif">
                         </div>
@@ -120,36 +120,29 @@ foreach($this->Player_Model->missions as $mission){
                     <?}?>
                 </div>
             </td>
-            <td title="Xuất xứ"><a href="<?=$this->config->item('base_url')?>game/island/<?=$this->Data_Model->temp_towns_db[$mission->from]->island?>/<?=$this->Data_Model->temp_towns_db[$mission->from]->id?>/"><?=$this->Data_Model->temp_towns_db[$mission->from]->name?></a> (<?=$this->Data_Model->temp_user_db[$this->Data_Model->temp_towns_db[$mission->from]->user]->login?>)</td>
+            <td title="Start"><a href="<?=$this->config->item('base_url')?>game/island/<?=$this->Data_Model->temp_towns_db[$mission->from]->island?>/<?=$this->Data_Model->temp_towns_db[$mission->from]->id?>/"><?=$this->Data_Model->temp_towns_db[$mission->from]->name?></a> (<?=$this->Data_Model->temp_users_db[$this->Data_Model->temp_towns_db[$mission->from]->user]->login?>)</td>
             <td style='width: 12px; padding-left: 0px; padding-right: 0px'>
 <?if($mission->return_start > 0){?>
                 <img style="padding-bottom: 5px;" src="<?=$this->config->item('style_url')?>skin/interface/arrow_left_green.gif">
 <?}?>
             </td>
-            <td style="text-align: center; width: 35px" title="<?=$this->Data_Model->mission_name_by_type($mission->mission_type)?>  <?if($mission->return_start == 0){?><?if($mission->mission_start > 0 and $loading_end > 0){?>(Đang tiến hành)<?}else{?>(Đang tải)<?}?><?}else{?><?if($mission->percent < 1){?>(Huỷ)<?}else{?>(Trở lại)<?}}?>">
-<?php if($mission->mission_type <=2){?>
+            <td style="text-align: center; width: 35px" title="<?=$this->Data_Model->mission_name_by_type($mission->mission_type)?>  <?if($mission->return_start == 0){?><?if($mission->mission_start > 0 and $loading_end > 0){?>(on the road)<?}else{?>(loading)<?}?><?}else{?><?if($mission->percent < 1){?>(cancellation)<?}else{?>(return)<?}}?>">
+<?if($mission->mission_type <=2){?>
                 <img src="<?=$this->config->item('style_url')?>skin/interface/mission_transport.gif">
-<?php }elseif($mission->mission_type > 2 and $mission->mission_type <= 4){?>
+<?}elseif($mission->mission_type > 2 and $mission->mission_type <= 4){?>
                 <img src="<?=$this->config->item('style_url')?>skin/interface/mission_trade.gif">
-<?php } elseif($mission->mission_type = 5)  {?> <img src="<?=$this->config->item('style_url')?>skin/interface/mission_plunder.gif"><?php } ?>
+<?}?>
             </td>
             <td style='width: 12px; padding-left: 0px; padding-right: 0px'>
 <?if($mission->return_start == 0 and $mission->mission_start > 0 and $loading_end > 0){?>
                 <img style="padding-bottom: 5px;" src="<?=$this->config->item('style_url')?>skin/interface/arrow_right_green.gif">
 <?}?>
             </td>
-            <td title="Mục tiêu">
-			    <?php if(is_int($mission->to))
-				{?>
-				<a href="<?=$this->config->item('base_url')?>game/island/<?=$this->Data_Model->temp_towns_db[$mission->to]->island?>/<?=$this->Data_Model->temp_towns_db[$mission->to]->id?>/"><?=$this->Data_Model->temp_towns_db[$mission->to]->name?></a> (<?=$this->Data_Model->temp_user_db[$this->Data_Model->temp_towns_db[$mission->to]->user]->login?>)
-				<?php } else { ?>
-				Barbarian Village
-				<?php } ?>
-			</td>
-            <td title="Hành động" style="text-align: center; ">
+            <td title="Target"><a href="<?=$this->config->item('base_url')?>game/island/<?=$this->Data_Model->temp_towns_db[$mission->to]->island?>/<?=$this->Data_Model->temp_towns_db[$mission->to]->id?>/"><?=$this->Data_Model->temp_towns_db[$mission->to]->name?></a> (<?=$this->Data_Model->temp_users_db[$this->Data_Model->temp_towns_db[$mission->to]->user]->login?>)</td>
+            <td title="Actions" style="text-align: center; ">
 <?if($mission->return_start == 0 and $mission->user == $this->Player_Model->user->id){?>
                 <a href="<?=$this->config->item('base_url')?>actions/abortFleet/<?=$mission->id?>/0/militaryAdvisorMilitaryMovements/">
-                    <img title="Rút!" src="<?=$this->config->item('style_url')?>skin/interface/btn_abort.gif">
+                    <img title="Retreat!" src="<?=$this->config->item('style_url')?>skin/interface/btn_abort.gif">
                 </a>
 <?}else{?>-<?}?>
             </td>
@@ -180,10 +173,10 @@ foreach($this->Player_Model->missions as $mission){
                 getCountdown({enddate: <?=time()+$loading_end?>, currentdate: <?=time()?>, el: "fleetRow<?=$mission->id?>"});
             })
         </script>
-<?php }
-}}
-$mission_id++;
-}?>
+<?}?>
+<?}}?>
+<?$mission_id++?>
+<?}?>
             </table>
         </div>
         <div class="footer"></div>

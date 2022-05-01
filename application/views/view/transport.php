@@ -1,24 +1,20 @@
 <div id="mainview">		
     <div class="buildingDescription">
-        <h1>Транспорт</h1>
-        <p>Выберите тип и кол-во транспортируемых товаров.</p>
+        <h1>Transport</h1>
+        <p>Select the type and number of goods to be transported.</p>
     </div>
 
-
-	<?php
-	$this->load->helper('form');
-	$attributes = array('id' => 'transport');
-	echo form_open('actions/transport/'.$this->Island_Model->island->id.'/'.$param1, $attributes);
-	?>
+					
+    <form id="transport" action="<?=$this->config->item('base_url')?>actions/transport/<?=$this->Island_Model->island->id?>/<?=$param1?>/" method="POST">		                    
         <div id="setPremiumTransports" class="contentBox">
-            <h3 class="header">Наемный транспорт</h3>
+            <h3 class="header">hired transport</h3>
             <div class="content">
-                <p>Моряки готовы доплыть до края света в поисках амброзии! Вы можете нанять транспорты за 5 ед. амброзии, чтобы увеличить грузоподъемность своего флота.</p>
-                <label for="textfield_premium">Взять наемный транспорт:</label>
-                <p class="costs">Стоимость:: <span id="ambrosiaCosts">5</span><img src="<?=$this->config->item('style_url')?>skin/premium/ambrosia_icon.gif" width="24" height="20" alt="Амброзия" title="Амброзия"/> (У Вас есть <?=$this->Player_Model->user->ambrosy?>)</p>
+                <p>Sailors are ready to sail to the ends of the world in search of ambrosia! You can hire transports for5 units ambrosia to increase the carrying capacity of your fleet.</p>
+                <label for="textfield_premium">Take hired transport:</label>
+                <p class="costs">Price:: <span id="ambrosiaCosts">5</span><img src="<?=$this->config->item('style_url')?>skin/premium/ambrosia_icon.gif" width="24" height="20" alt="Ambrosia" title="Ambrosia"/> (You have<?=$this->Player_Model->user->ambrosy?>)</p>
                 <p class="PremiumTransportsButton">
                     <div class="centerButton">
-                        <a class="button" href="<?=$this->config->item('base_url')?>game/premiumPayment/">Получить амброзию</a>
+                        <a class="button" href="<?=$this->config->item('base_url')?>game/premiumPayment/">Get Ambrosia</a>
                     </div>
                 </p>
             </div>
@@ -26,125 +22,85 @@
         </div>
 
         <div id="transportGoods" class="contentBox">
-            <h3 class="header">Транспортировать!</h3>
+            <h3 class="header">To transport!</h3>
             <div class="content">
-                <p>Выберите товары для транспортировки из <?=$this->Player_Model->now_town->name?> в <?=$this->Data_Model->temp_towns_db[$param1]->name?>. Учитывайте кол-во торговых кораблей в наличии.</p>
+                <p>Select goods to transport from<?=$this->Player_Model->now_town->name?> in<?=$this->Data_Model->temp_towns_db[$param1]->name?>. Consider the number of merchant ships available.</p>
                 <ul class="resourceAssign">
 <?if($this->Player_Model->now_town->wood > 0){?>
                     <li class="wood">
-                        <label for="textfield_resource">Отправить стройматериалы:</label>
+                        <label for="textfield_resource">Send building materials:</label>
                         <div class="sliderinput">
                             <div class="sliderbg">
                                 <div class="actualValue valuebg"></div>
                                 <div class="sliderthumb" id="sliderthumb_wood"></div>
                             </div>
-                            <a id="slider_wood_min" class="setMin" href="#reset" title="Сбросить ввод"><span class="textLabel">мин.</span></a>
-                            <a id="slider_wood_max" class="setMax" href="#max" title="отправить все"><span class="textLabel">макс.</span></a>
+                            <a id="slider_wood_min" class="setMin" href="#reset" title="Reset input"><span class="textLabel">i</span></a>
+                            <a id="slider_wood_max" class="setMax" href="#max" title="send all"><span class="textLabel">max.</span></a>
                         </div>
-						<?php $data = array(
-									  'name'        => 'cargo_resource',
-									  'id'          => 'textfield_wood',
-									  'class'   => 'textfield',
-									  'value'        => '0',
-									  'size'        => '4',
-									  'maxlength'        => '9',
-									);
-						echo form_input($data); ?>
+                        <input class="textfield" id="textfield_wood" type="text" name="cargo_resource"  value="0" size="4" maxlength="9">
                     </li>
 <?}?>
 <?if($this->Player_Model->now_town->wine > 0){?>
                     <li class="wine">
-                        <label for="textfield_wine">Отправить мрамор:</label>
+                        <label for="textfield_wine">send marble:</label>
                         <div class="sliderinput">
                             <div class="sliderbg">
                                 <div class="actualValue valuebg"></div>
                                 <div class="sliderthumb" id="sliderthumb_wine"></div>
                             </div>
-                            <a id="slider_wine_min" class="setMin" href="#reset" title="Сбросить ввод"><span class="textLabel">мин.</span></a>
-                            <a id="slider_wine_max" class="setMax" href="#max" title="отправить все"><span class="textLabel">макс.</span></a>
+                            <a id="slider_wine_min" class="setMin" href="#reset" title="Reset input"><span class="textLabel">i</span></a>
+                            <a id="slider_wine_max" class="setMax" href="#max" title="send all"><span class="textLabel">max.</span></a>
                         </div>
-						<?php $data = array(
-									  'name'        => 'cargo_tradegood1',
-									  'id'          => 'textfield_wine',
-									  'class'   => 'textfield',
-									  'value'        => '0',
-									  'size'        => '4',
-									  'maxlength'        => '9',
-									);
-						echo form_input($data); ?>
+                        <input class="textfield" id="textfield_wine" type="text" name="cargo_tradegood1"  value="0" size="4" maxlength="9">
                     </li>
 <?}?>
 <?if($this->Player_Model->now_town->marble > 0){?>
                     <li class="marble">
-                        <label for="textfield_resource">Отправить мрамор:</label>
+                        <label for="textfield_resource">send marble:</label>
                         <div class="sliderinput">
                             <div class="sliderbg">
                                 <div class="actualValue valuebg"></div>
                                 <div class="sliderthumb" id="sliderthumb_marble"></div>
                             </div>						
-                            <a id="slider_marble_min" class="setMin" href="#reset" title="Сбросить ввод"><span class="textLabel">мин.</span></a>
-                            <a id="slider_marble_max" class="setMax" href="#max" title="отправить все"><span class="textLabel">макс.</span></a>
+                            <a id="slider_marble_min" class="setMin" href="#reset" title="Reset input"><span class="textLabel">i</span></a>
+                            <a id="slider_marble_max" class="setMax" href="#max" title="send all"><span class="textLabel">max.</span></a>
                         </div>
-						<?php $data = array(
-									  'name'        => 'cargo_tradegood2',
-									  'id'          => 'textfield_marble',
-									  'class'   => 'textfield',
-									  'value'        => '0',
-									  'size'        => '4',
-									  'maxlength'        => '9',
-									);
-						echo form_input($data); ?>
+                        <input class="textfield" id="textfield_marble" type="text" name="cargo_tradegood2"  value="0" size="4" maxlength="9">
                     </li>
 <?}?>
 <?if($this->Player_Model->now_town->crystal > 0){?>
                     <li class="glass">
-                        <label for="textfield_resource">Отправить хрусталь:</label>
+                        <label for="textfield_resource">send crystal:</label>
                         <div class="sliderinput">
                             <div class="sliderbg">
                                 <div class="actualValue valuebg"></div>
                                 <div class="sliderthumb" id="sliderthumb_glass"></div>
                             </div>
-                            <a id="slider_glass_min" class="setMin" href="#reset" title="Сбросить ввод"><span class="textLabel">мин.</span></a>
-                            <a id="slider_glass_max" class="setMax" href="#max" title="отправить все"><span class="textLabel">макс.</span></a>
+                            <a id="slider_glass_min" class="setMin" href="#reset" title="Reset input"><span class="textLabel">i</span></a>
+                            <a id="slider_glass_max" class="setMax" href="#max" title="send all"><span class="textLabel">max.</span></a>
                         </div>
-						<?php $data = array(
-									  'name'        => 'cargo_tradegood3',
-									  'id'          => 'textfield_glass',
-									  'class'   => 'textfield',
-									  'value'        => '0',
-									  'size'        => '4',
-									  'maxlength'        => '9',
-									);
-						echo form_input($data); ?>
+                        <input class="textfield" id="textfield_glass" type="text" name="cargo_tradegood3"  value="0" size="4" maxlength="9">
                     </li>
-<?php } ?>
-<?php if($this->Player_Model->now_town->sulfur > 0){?>
+<?}?>
+<?if($this->Player_Model->now_town->sulfur > 0){?>
                     <li class="sulfur">
-                        <label for="textfield_resource">Отправить серу</label>
+                        <label for="textfield_resource">send sulfur</label>
                         <div class="sliderinput">
                             <div class="sliderbg">
                                 <div class="actualValue valuebg"></div>
                                 <div class="sliderthumb" id="sliderthumb_sulfur"></div>
                             </div>
-                            <a id="slider_sulfur_min" class="setMin" href="#reset" title="Сбросить ввод"><span class="textLabel">мин.</span></a>
-                            <a id="slider_sulfur_max" class="setMax" href="#max" title="отправить все"><span class="textLabel">макс.</span></a>
+                            <a id="slider_sulfur_min" class="setMin" href="#reset" title="Reset input"><span class="textLabel">i</span></a>
+                            <a id="slider_sulfur_max" class="setMax" href="#max" title="send all"><span class="textLabel">max.</span></a>
                         </div>
-						<?php $data = array(
-									  'name'        => 'cargo_tradegood4',
-									  'id'          => 'textfield_sulfur',
-									  'class'   => 'textfield',
-									  'value'        => '0',
-									  'size'        => '4',
-									  'maxlength'        => '9',
-									);
-						echo form_input($data); ?>
+                        <input class="textfield" id="textfield_sulfur" type="text" name="cargo_tradegood4"  value="0" size="4" maxlength="9">
                     </li>
-<?php } ?>
+<?}?>
                 </ul>
 
                 <hr />
-<?php
-    $all_capacity = $this->Player_Model->user->transports * getConfig('transport_capacity');
+<?
+    $all_capacity = $this->Player_Model->user->transports*$this->config->item('transport_capacity');
     $used_capacity =  1250 + 40;
     $capacity = $all_capacity - $used_capacity;
     $cost = $this->Data_Model->army_cost_by_type(23, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
@@ -156,31 +112,16 @@
 ?>
                 <div id="missionSummary">
                     <div class="common">
-                        <div class="journeyTarget"><span class="textLabel">Пункт назначения </span><?=$this->Data_Model->temp_towns_db[$param1]->name?></div>
-                        <div class="journeyTime"><span class="textLabel">Время в пути: </span><?=format_time($time)?></div>
+                        <div class="journeyTarget"><span class="textLabel">Destination</span><?=$this->Data_Model->temp_towns_db[$param1]->name?></div>
+                        <div class="journeyTime"><span class="textLabel">Travel time: </span><?=format_time($time)?></div>
                     </div>
                     <div class="transporters">
                         <span class="textLabel"> </span>
-                        <span>
-						<?php $data = array(
-									  'name'        => 'transporters',
-									  'id'          => 'transporterCount',
-									  'value'        => '0',
-									  'size'        => '3',
-									  'maxlength'        => '3',
-									  'readonly'        => 'readonly',
-									);
-						echo form_input($data); ?> / <span id="totalTansporters"><?=$this->Player_Model->user->transports?></span>
-						</span>
+                        <span><input id="transporterCount" name="transporters" size="3" maxlength="3" readonly="readonly" value="0" /> / <span id="totalTansporters"><?=$this->Player_Model->user->transports?></span></span>
                     </div>
                 </div>
                 <div class="centerButton">
-					<?php $data = array(
-								'id'        => 'submit',
-								'class'        => 'button',
-								'value'        => 'Транспортировать!',
-							);
-					echo form_submit($data); ?>
+                    <input id="submit" class="button" type="submit" value="To transport!">
                 </div>
                 </form>
 <!--
@@ -197,41 +138,41 @@
                                     <input type="hidden" id="tradeRouteNumber" name="number" value="">
                                     <input type="hidden" id="tradeRouteTradegood" name="tradegood" value="">
 
-                                    <p>Торговый путь состоит в регулярной пересылке транспортов между двумя городами в вашей империи. Таким образом, вы можете, например, автоматически снабжать свои поселения вином. Один торговый маршрут доступен по умолчанию и вы можете добавить еще с помощью Амброзии. <br/>
+                                    <p>A trade route consists of sending vehicles between two cities in your empire on a regular basis. This way you can, for example, automatically supply your settlements with wine. One trade route is available by default and you can add more with Ambrosia.<br/>
 <br/>
-Пожалуйста убедитесь в наличии достаточного количества товаров и свободных сухогрузов, а также в отсутствии препятствий на пути маршрута, таких как вражеские флоты.</p>
+Please make sure that there are enough goods and bulk carriers available, and that there are no obstacles on the route, such as enemy fleets.</p>
 
                                     <ul class="tradeRoute">
                                       <li class="time">
                                         <select name="time" id="tradeRouteTime" class="dropdown size115 smallFont">
-                                                                                    <option value="0">каждый день в 0:00</option>
-                                                                                    <option value="1">каждый день в 1:00</option>
-                                                                                    <option value="2">каждый день в 2:00</option>
-                                                                                    <option value="3">каждый день в 3:00</option>
-                                                                                    <option value="4">каждый день в 4:00</option>
-                                                                                    <option value="5">каждый день в 5:00</option>
-                                                                                    <option value="6">каждый день в 6:00</option>
-                                                                                    <option value="7">каждый день в 7:00</option>
-                                                                                    <option value="8">каждый день в 8:00</option>
-                                                                                    <option value="9">каждый день в 9:00</option>
-                                                                                    <option value="10">каждый день в 10:00</option>
-                                                                                    <option value="11">каждый день в 11:00</option>
-                                                                                    <option value="12">каждый день в 12:00</option>
-                                                                                    <option value="13">каждый день в 13:00</option>
-                                                                                    <option value="14">каждый день в 14:00</option>
-                                                                                    <option value="15">каждый день в 15:00</option>
-                                                                                    <option value="16">каждый день в 16:00</option>
-                                                                                    <option value="17">каждый день в 17:00</option>
-                                                                                    <option value="18">каждый день в 18:00</option>
-                                                                                    <option value="19">каждый день в 19:00</option>
-                                                                                    <option value="20">каждый день в 20:00</option>
-                                                                                    <option value="21">каждый день в 21:00</option>
-                                                                                    <option value="22">каждый день в 22:00</option>
-                                                                                    <option value="23">каждый день в 23:00</option>
+                                                                                    <option value="0">every day in0:00</option>
+                                                                                    <option value="1">every day in1:00</option>
+                                                                                    <option value="2">every day in2:00</option>
+                                                                                    <option value="3">every day in3:00</option>
+                                                                                    <option value="4">every day in4:00</option>
+                                                                                    <option value="5">every day in5:00</option>
+                                                                                    <option value="6">every day in6:00</option>
+                                                                                    <option value="7">every day in7:00</option>
+                                                                                    <option value="8">every day in8:00</option>
+                                                                                    <option value="9">every day in9:00</option>
+                                                                                    <option value="10">every day in10:00</option>
+                                                                                    <option value="11">every day in11:00</option>
+                                                                                    <option value="12">every day in12:00</option>
+                                                                                    <option value="13">every day in13:00</option>
+                                                                                    <option value="14">every day in14:00</option>
+                                                                                    <option value="15">every day in15:00</option>
+                                                                                    <option value="16">every day in16:00</option>
+                                                                                    <option value="17">every day in17:00</option>
+                                                                                    <option value="18">every day in18:00</option>
+                                                                                    <option value="19">every day in19:00</option>
+                                                                                    <option value="20">every day in20:00</option>
+                                                                                    <option value="21">every day in21:00</option>
+                                                                                    <option value="22">every day in22:00</option>
+                                                                                    <option value="23">every day in23:00</option>
                                                                                 </select>
                                       </li>
                                       <li class="save">
-                                        <input type="submit" class="button" onclick="return setTradeRouteData();" value="установить торговый маршрут">
+                                        <input type="submit" class="button" onclick="return setTradeRouteData();" value="set trade route">
                                       </li>
                                     </ul>
 
@@ -270,7 +211,7 @@
         Dom.get('tradeRouteNumber').value = number;
         Dom.get('tradeRouteTradegood').value = tradegood;
         if (countGoods>1) {
-            alert('Вы можете заключить торговый маршрут только на один вид товаров. Пожалуйста, передвиньте остальные указатели на 0.');
+            alert('You can conclude a trade route for only one type of goods. Please move the rest of the markers to0.');
             return false;
         }
         return true;
@@ -291,7 +232,7 @@
 <script type="text/javascript">
     var transporterCount = new transportController({
         'availableTransporters' : <?=$this->Player_Model->user->transports?>,
-	'capacityPerTransport' : <?php echo getConfig('transport_capacity');?>,
+	'capacityPerTransport' : <?=$this->config->item('transport_capacity')?>,
 	'spaceReserved' : 0
     });
     transporterCount.subscribe('usedTransChanged', function(v) {

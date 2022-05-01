@@ -17,7 +17,7 @@
     <div class="buildingDescription">
         <h1>Sawmill</h1>
         <p>Wood comes to the sawmill from a neighboring forest. After processing, it turns into building materials necessary for the construction of buildings.
-The sawmill is improved by all the inhabitants of the island. The larger the sawmill, the more workers you can use on it.</p>
+The sawmill is improved by all the inhabitants of the island. The larger the sawmill, the more workers you can use on it.</p>      
     </div>
     <form id="setWorkers" action="<?=$this->config->item('base_url')?>actions/workers/resource/<?=$this->Island_Model->island->id?>"  method="POST">
         <div id="setWorkersBox" class="contentBox">
@@ -102,12 +102,12 @@ The sawmill is improved by all the inhabitants of the island. The larger the saw
     </div>
 </div>
 
-<script type="text/javascript">
+<script type="text/javascript">    
     create_slider({
-        id : "default",
         dir : 'ltr',
+        id : "default",
         maxValue : <?=floor($max)?>,
-        overcharge : <?=$over_max?>,
+        overcharge : <?=$over_max-$max?>,
         iniValue : <?=floor($this->Player_Model->now_town->workers)?>,
         bg : "sliderbg",
         thumb : "sliderthumb",

@@ -12,10 +12,10 @@
     }
     switch($way)
     {
-        case 1:  $way_name = 'Hải dương học'; break;
-        case 2:  $way_name = 'Kinh tế'; break;
-        case 3:  $way_name = 'Khoa học'; break;
-        case 4:  $way_name = 'Quân sự'; break;
+        case 1:  $way_name = 'Seafaring'; break;
+        case 2:  $way_name = 'Economics'; break;
+        case 3:  $way_name = 'Science'; break;
+        case 4:  $way_name = 'Militarism'; break;
     }
     $parametr = 'res'.$way.'_'.$id;
     $time = ($data['points']/$this->Player_Model->now_town->scientists)*3600;
@@ -23,41 +23,41 @@
 ?>
 <div id="mainview">
     <div class="buildingDescription">
-        <h1 style="padding:0; margin:30px 0px 0px 0px;">Lĩnh vực nghiên cứu - <?=$way_name?></h1>
+        <h1 style="padding:0; margin:30px 0px 0px 0px;">Research area -<?=$way_name?></h1>
     </div>
     <div class="contentBox01h">
         <h3 class="header"><span class="textLabel"></span></h3>
         <div class="content">
             <table cellpadding="0" cellspacing="0">
             <tr>
-                <td class="desc" title="Lĩnh vực nghiên cứu">Lĩnh vực nghiên cứu:</td>
-                <td class="" title="Мореходство"><?=$way_name?></td>
+                <td class="desc" title="Research area">Research area:</td>
+                <td class="" title="Seafaring"><?=$way_name?></td>
             </tr>
             <tr>
-                <td class="desc" title="Tên">Tên:</td>
-                <td class="" title="Плотницкое дело"><?=$data['name']?></td>
+                <td class="desc" title="Name">Name:</td>
+                <td class="" title="carpentry"><?=$data['name']?></td>
             </tr>
             <tr>
-                <td class="desc" title="Mô tả">Mô tả:</td>
+                <td class="desc" title="Description">Description:</td>
                 <td class="" title="<?=$data['desc']?>"><?=$data['desc']?></td>
             </tr>
             <tr>
-                <td class="desc" title="Thời gian nghiên cứu hiện tại">Thời gian nghiên cứu hiện tại:</td>
+                <td class="desc" title="Time of current study">Time of current study:</td>
 <?if($this->Player_Model->research->$parametr > 0){?>
-                <td class="">Nghiên cứu đã hoàn tất!</td>
+                <td class="">Study already completed!</td>
 <?}else{?>
 <td class=""><?=format_time($time)?> (<?=number_format($data['points'])?>)</td>
 
 <?}?>
             </tr>
             <tr>
-                <td class="desc" title="След. исследование в этой области">Nghiên cứu kế tiếp trong lĩnh vực này:</td>
+                <td class="desc" title="Track. research in this area">Track. research in this area:</td>
                 <td class=""> 
-                    <a title="К исследованию <?=$next_data['name']?>" href="<?=$this->config->item('base_url')?>game/researchDetail/<?=$way?>/<?=$id+1?>/"><?=$next_data['name']?></a>
+                    <a title="To research<?=$next_data['name']?>" href="<?=$this->config->item('base_url')?>game/researchDetail/<?=$way?>/<?=$id+1?>/"><?=$next_data['name']?></a>
                 </td>
             </tr>
             <tr>
-                <td class="desc" title="Điều kiện">Điều kiện:</td>
+                <td class="desc" title="Requirements">Requirements:</td>
                 <td class="" title="<?=$need_name?>">
 <?if(isset($need_data)){?>
                     <a title="<?=$need_data['name']?>" href="<?=$this->config->item('base_url')?>game/researchDetail/<?=$data['need_way']?>/<?=$data['need_id']?>/"><?=$need_data['name']?></a>
