@@ -226,67 +226,7 @@ class Player_Model extends CI_Model {
 					
             }
 			
-			$this->plus_research = 1;
-            
-			// Бумага - на 2% больше баллов
-            if ($this->research->res3_2 > 0){$this->plus_research = $this->plus_research + 0.2;}
-            
-			// Чернила - на 4% больше баллов
-            if ($this->research->res3_5 > 0){$this->plus_research = $this->plus_research + 0.4;}
-
-			// Механическая ручка - на 8% больше баллов
-            if ($this->research->res3_11 > 0){$this->plus_research = $this->plus_research + 0.8;}
-
-			// Будущее Науки - на 2% больше баллов за уровень
-            if ($this->research->res3_16 > 0){$this->plus_research = $this->plus_research + (0.9*$this->research->res3_16);}
-
-			// Премиум прирост
-                    if ($this->user->premium_wood > 0){$this->plus_wood = 1.2;}
-                    if ($this->user->premium_wine > 0){$this->plus_wine = 1.2;}
-                    if ($this->user->premium_marble > 0){$this->plus_marble = 1.2;}
-                    if ($this->user->premium_crystal > 0){$this->plus_crystal = 1.2;}
-                    if ($this->user->premium_sulfur > 0){$this->plus_sulfur = 1.2;}
-                    if ($this->user->premium_capacity > 0){$this->plus_capacity = 2;}
-
-                    // Вычисляем коррупцию и производство
-                    foreach($this->towns as $town)
-                    {
-                        $colonys = SizeOf($this->towns) - 1;
-                        if ($colonys > 0)
-                        {
-                            $this->corruption[$town->id] = (1 - ($this->levels[$town->id][10] + $this->levels[$town->id][15] + 1) / ($colonys + 1));
-                            if ($this->corruption[$town->id] > 0)
-                            {
-                                $this->good[$town->id] = $this->good[$town->id] - (($town->peoples + $this->good[$town->id]) * $this->corruption[$town->id] );
-                            }
-                        }
-                        // Производство
-                        $resource_level = $this->islands[$town->island]->wood_level;
-                        $tradegood_level = $this->islands[$town->island]->trade_level;
-                        $resource_cost = $this->Data_Model->island_cost(0, $resource_level);
-                        $tradegood_cost = $this->Data_Model->island_cost(1, $tradegood_level);
-                        if ($town->workers > $resource_cost['workers'])
-                        {
-                            $this->resource_production[$town->id] = ($resource_cost['workers']/10)*(2-$this->corruption[$town->id])*($this->plus_wood);
-                            $this->resource_production[$town->id] = $this->resource_production[$town->id] + (($town->workers-$resource_cost['workers'])*100)*(2-$this->corruption[$town->id])*($this->plus_wood);
-                        }
-                        else
-                        {
-                            $this->resource_production[$town->id] = ($town->workers/3)*(1-$this->corruption[$town->id]);
-                        }
-                        $this->resource_production_bonus[$town->id] = $this->resource_production[$town->id]*($this->plus_wood);
-                        $plus_name = 'plus_'.$this->Data_Model->resource_class_by_type($this->islands[$town->island]->trade_resource);
-                        if ($town->tradegood > $tradegood_cost['workers'])
-                        {
-                            $this->tradegood_production[$town->id] = ($tradegood_cost['workers']/10)*(2-$this->corruption[$town->id]);
-                            $this->tradegood_production[$town->id] = $this->tradegood_production[$town->id] + (($town->tradegood-$tradegood_cost['workers'])*0.25/3600)*(1-$this->corruption[$town->id]);
-                        }
-                        else
-                        {
-                            $this->tradegood_production[$town->id] = ($town->tradegood/3)*(1-$this->corruption[$town->id]);
-                        }
-                        $this->tradegood_production_bonus[$town->id] = $this->tradegood_production[$town->id]*($this->$plus_name);
-                    }
+			$this->Load_Production();
 
                 // Загружаем миссии
                 $this->Data_Model->Load_Missions($this->user->id, $this->towns);
@@ -414,6 +354,71 @@ class Player_Model extends CI_Model {
             if ($town_messages->num_rows() > 0)
                 foreach ($town_messages->result() as $row)
                     $this->towns_messages[] = $row;
+    }
+
+    function Load_Production()
+    {
+        $this->plus_research = 1;
+
+        // Бумага - на 2% больше баллов
+        if ($this->research->res3_2 > 0){$this->plus_research = $this->plus_research + 0.2;}
+
+        // Чернила - на 4% больше баллов
+        if ($this->research->res3_5 > 0){$this->plus_research = $this->plus_research + 0.4;}
+
+        // Механическая ручка - на 8% больше баллов
+        if ($this->research->res3_11 > 0){$this->plus_research = $this->plus_research + 0.8;}
+
+        // Будущее Науки - на 2% больше баллов за уровень
+        if ($this->research->res3_16 > 0){$this->plus_research = $this->plus_research + (0.9*$this->research->res3_16);}
+
+        // Премиум прирост
+        if ($this->user->premium_wood > 0){$this->plus_wood = 1.2;}
+        if ($this->user->premium_wine > 0){$this->plus_wine = 1.2;}
+        if ($this->user->premium_marble > 0){$this->plus_marble = 1.2;}
+        if ($this->user->premium_crystal > 0){$this->plus_crystal = 1.2;}
+        if ($this->user->premium_sulfur > 0){$this->plus_sulfur = 1.2;}
+        if ($this->user->premium_capacity > 0){$this->plus_capacity = 2;}
+
+        // Вычисляем коррупцию и производство
+        foreach($this->towns as $town)
+        {
+            $colonys = SizeOf($this->towns) - 1;
+            if ($colonys > 0)
+            {
+                $this->corruption[$town->id] = (1 - ($this->levels[$town->id][10] + $this->levels[$town->id][15] + 1) / ($colonys + 1));
+                if ($this->corruption[$town->id] > 0)
+                {
+                    $this->good[$town->id] = $this->good[$town->id] - (($town->peoples + $this->good[$town->id]) * $this->corruption[$town->id] );
+                }
+            }
+            // Производство
+            $resource_level = $this->islands[$town->island]->wood_level;
+            $tradegood_level = $this->islands[$town->island]->trade_level;
+            $resource_cost = $this->Data_Model->island_cost(0, $resource_level);
+            $tradegood_cost = $this->Data_Model->island_cost(1, $tradegood_level);
+            if ($town->workers > $resource_cost['workers'])
+            {
+                $this->resource_production[$town->id] = ($resource_cost['workers']/3600)*(1-$this->corruption[$town->id])*($this->plus_wood);
+                $this->resource_production[$town->id] = $this->resource_production[$town->id] + (($town->workers-$resource_cost['workers'])*100)*(2-$this->corruption[$town->id])*($this->plus_wood);
+            }
+            else
+            {
+                $this->resource_production[$town->id] = ($town->workers/3600)*(1-$this->corruption[$town->id]);
+            }
+            $this->resource_production_bonus[$town->id] = $this->resource_production[$town->id]*($this->plus_wood);
+            $plus_name = 'plus_'.$this->Data_Model->resource_class_by_type($this->islands[$town->island]->trade_resource);
+            if ($town->tradegood > $tradegood_cost['workers'])
+            {
+                $this->tradegood_production[$town->id] = ($tradegood_cost['workers']/3600)*(1-$this->corruption[$town->id]);
+                $this->tradegood_production[$town->id] = $this->tradegood_production[$town->id] + (($town->tradegood-$tradegood_cost['workers'])*0.25/3600)*(1-$this->corruption[$town->id]);
+            }
+            else
+            {
+                $this->tradegood_production[$town->id] = ($town->tradegood/3)*(1-$this->corruption[$town->id]);
+            }
+            $this->tradegood_production_bonus[$town->id] = $this->tradegood_production[$town->id]*($this->$plus_name);
+        }
     }
 	
     function Load_User_Messages()
