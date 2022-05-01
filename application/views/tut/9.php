@@ -106,17 +106,22 @@
 <div id="arrow">
 </div>
 <div id="tutorialAdvisor">
-    <div id="advisorImage" class="<?=$class?>"><a href="javascript:;" id="tutorialAdvisorLink" title="Hướng dẫn"></a></div>
+    <div id="advisorImage" class="<?=$class?>"><a href="javascript:;" id="tutorialAdvisorLink" title="Training"></a></div>
 </div>
 <div id="tutorialMessage">
-    <h3>Hướng dẫn</h3>
+    <h3>Training</h3>
     <a href="javascript:;" id="tutorialAdvisorCloseLink"></a>
     <div class="content">
-<p>Xin chào,<br>
-Bây giờ chúng ta đã có lý do để tự bảo vệ bản thân, đã đến lúc đưa các lực lượng đi thử nghiệm. Trên đảo có một <b>làng barbarian</b>. Chúng ta nên tấn công vào đó. Nếu thành công, tôi tin chắc là sẽ <b>thu được tài nguyên có giá trị</b> mà những tên man rợ này đang tích trữ.<br>
-Để tấn công <b>làng barbarian</b>, bạn phải chuyển sang trang <b>hòn đảo</b>. Nhấp vào làng barbarian và chọn <b>cướp bóc</b>. Để thực hiện được mệnh lệnh trên, hãy chọn <b>3 lính phóng lao</b> và ít nhất <b>1 tàu giao thương</b> để chuyên chở những gì bạn cướp được</p>
+<p>Hey,<br>
+<br>
+now that you are able to defend yourself, it's time to start testing the troops. There is a village of barbarians on the island. We have to<b>to attack</b> village using several fighters. If our attempt is successful, the reward will be some of the resources these fiends must have hoarded.<br>
+<br>
+To attack a barbarian village, click on the Island button to view the view of the island. Click on the barbarian village and select the Attack command on the left side of the menu. A screen will appear where you can set the number and types of troops that will participate in the battle.<br>
+<br>
+Do not forget that your soldiers will need transports to load the loot on the way back. So send enough ships to attack!<br>
+And be careful, with each attack the Barbarians become stronger before disappearing forever from the island.</p>
 
-        <div class="centerButton"><a href="javascript:;" id="okButton" class="button">ОК</a></div>
+        <div class="centerButton"><a href="javascript:;" id="okButton" class="button">OK</a></div>
     <div class="footer"></div>
     </div>
 </div>

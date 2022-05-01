@@ -102,18 +102,18 @@
 <div id="arrow">
 </div>
 <div id="tutorialAdvisor">
-    <div id="advisorImage" class="allAdvisors"><a href="javascript:;" id="tutorialAdvisorLink" title="Hướng dẫn"></a></div>
+    <div id="advisorImage" class="allAdvisors"><a href="javascript:;" id="tutorialAdvisorLink" title="Training"></a></div>
 </div>
 <div id="tutorialMessage">
-    <h3>Hướng dẫn</h3>
+    <h3>Training</h3>
     <a href="javascript:;" id="tutorialAdvisorCloseLink"></a>
     <div class="content">
-    <p>Chào mừng đến với quốc đảo,<br />
-Chúng tôi là cố vấn của bạn và chúng tôi sẽ cho bạn biết về tất cả các sự kiện quan trọng kết nối với các thành phố, các hành động quân sự, nghiên cứu và ngoại giao.<br />
+    <p>Welcome to the island kingdom<br />
+We are your advisers and we will tell you about all the important events related to cities, military operations, research and diplomacy.<br />
 <br />
-Ngoài ra, chúng tôi sẽ bắt đầu trò chơi và cho bạn biết về những bước quan trọng đầu tiên trong trò chơi. Nếu bạn cần trợ giúp của chúng tôi, nhấp chuột vào biểu tượng ở phía trên bên trái của cửa sổ game. </p>
+We will also appear at the beginning of the game and tell you about the first important steps in the game. If you need our help, click on the symbols in the upper left part of the game window.</p>
 
-        <div class="centerButton"><a href="javascript:;" id="okButton" class="button">ОК</a></div>
+        <div class="centerButton"><a href="javascript:;" id="okButton" class="button">OK</a></div>
     <div class="footer"></div>
     </div>
 </div>

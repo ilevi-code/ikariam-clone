@@ -107,18 +107,18 @@
 <div id="arrow">
 </div>
 <div id="tutorialAdvisor">
-    <div id="advisorImage" class="<?=$class?>"><a href="javascript:;" id="tutorialAdvisorLink" title="Hướng dẫn"></a></div>
+    <div id="advisorImage" class="<?=$class?>"><a href="javascript:;" id="tutorialAdvisorLink" title="Training"></a></div>
 </div>
 <div id="tutorialMessage">
-    <h3>Hướng dẫn</h3>
+    <h3>Training</h3>
     <a href="javascript:;" id="tutorialAdvisorCloseLink"></a>
     <div class="content">
-    <p>Xin chào,<br />
-Để nhận được thêm điểm nghiên cứu, nhà khoa học sẽ được thuê từ dân chúng. Nhà khoa học là một trong những nghề quan trọng nhất mà dân chúng của bạn có được, cũng như nhưng tùy chỉnh của Ikariam đều được mở qua cây nghiên cứu. Mỗi nhà khoa học sẽ liên tục sử dụng vàng của bạn, vì thế hãy theo lượng vàng hao phí, bạn có thể kiểm tra trong Tòa thị chính.<br>
+    <p>Hey,<br />
+my name is Lysias and I will represent the scientific and technological progress of your empire. It is my responsibility to keep you informed of the current status of our research.<br>
 <br>
-<b>Thăm học viện ngay bây giờ và thuê 8 nhà khoa học.<b></p>
+If you visit our fantastic academy, you will not meet very smart people there, but you can give people the opportunity to<b>start research</b>. After the scientists collect the necessary information about the study, my photo will be highlighted in yellow. We can find a detailed description of each study in the academy library.</p>
 
-        <div class="centerButton"><a href="javascript:;" id="okButton" class="button">ОК</a></div>
+        <div class="centerButton"><a href="javascript:;" id="okButton" class="button">OK</a></div>
     <div class="footer"></div>
     </div>
 </div>

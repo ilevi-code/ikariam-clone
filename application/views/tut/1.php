@@ -106,18 +106,17 @@
 </div>
 
 <div id="tutorialAdvisor">
-    <div id="advisorImage" class="<?=$class?>"><a href="javascript:;" id="tutorialAdvisorLink" title="Hướng dẫn"></a></div>
+    <div id="advisorImage" class="<?=$class?>"><a href="javascript:;" id="tutorialAdvisorLink" title="Training"></a></div>
 </div>
 <div id="tutorialMessage">
-    <h3>Hướng dẫn</h3>
+    <h3>Training</h3>
     <a href="javascript:;" id="tutorialAdvisorCloseLink"></a>
     <div class="content">
-    <p>Xin chào, tôi là Peleus, người giám sát xưởng gỗ.<br />
+    <p>Hey,<br />
 <br />
-Nơi đây, những người công nhân cần cù của chúng ta đều đặn xuất xưởng vật liệu xây dựng để xây và mở rộng các công trình hay để đóng thuyền. Chúng ta cũng cần vật liệu xây dựng để cung cấp nhà cửa, áo giáp và dụng cụ tập luyện cho binh sỹ.
-Hãy đến xưởng gỗ qua nút `Hòn đảo` và quyết định để bao nhiêu người dân để làm việc tại đây. Để trở về thành phố, hãy click vào `Thành phố`</p>
+I'm Peleus, head of the sawmill. Our diligent workers work here to create building materials for buildings and ships. Building materials are also needed to train our soldiers. Go to the sawmill through the button`Island` and designate how many of your residents will work there. To return to the city, press the button`City`.</p>
 
-        <div class="centerButton"><a href="javascript:;" id="okButton" class="button">ОК</a></div>
+        <div class="centerButton"><a href="javascript:;" id="okButton" class="button">OK</a></div>
     <div class="footer"></div>
     </div>
 </div>

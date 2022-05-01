@@ -106,15 +106,15 @@
 <div id="arrow">
 </div>
 <div id="tutorialAdvisor">
-    <div id="advisorImage" class="<?=$class?>"><a href="javascript:;" id="tutorialAdvisorLink" title="Hướng dẫn"></a></div>
+    <div id="advisorImage" class="<?=$class?>"><a href="javascript:;" id="tutorialAdvisorLink" title="Training"></a></div>
 </div>
 <div id="tutorialMessage">
-    <h3>Hướng dẫn</h3>
+    <h3>Training</h3>
     <a href="javascript:;" id="tutorialAdvisorCloseLink"></a>
     <div class="content">
-    <p>Bạn giờ bạn đã có những lưu trữ về nghiên cứu và làm cho có thêm sức chứa tài nguyên, bạn có thể bắt đầu tuyển binh lính để bảo vệ thành phố một cách tốt hơn. Vì thế tôi đề nghị bạn hãy xây trại lính. Để thực hiện, hãy chọn một lá cờ đỏ lần nữa và chọn <b>xây trại lính<b>.</p>
+    <p>Fine! Now learned minds will infiltrate your city! But now you need to focus on the defense of the city.<b>Build barracks</b>, by clicking on the red flag, select the barracks in the building menu.</p>
 
-        <div class="centerButton"><a href="javascript:;" id="okButton" class="button">ОК</a></div>
+        <div class="centerButton"><a href="javascript:;" id="okButton" class="button">OK</a></div>
     <div class="footer"></div>
     </div>
 </div>
@@ -245,12 +245,12 @@ Event.onDOMReady(function() {
     var MyTutorial = new Tutorial();
         MyTutorial.registerDefaultBehavior();
        // MyTutorial.animateArrow();
-<?php if ($active){?>
+<?if ($active){?>
     MyTutorial.showMessageAndGoToNextState();
     MyTutorial.animateArrowOnClose();
-<?php }else{ ?>
+<?}else{?>
     MyTutorial.animateArrow();
-<?php } ?>
+<?}?>
 });
 
 </script>

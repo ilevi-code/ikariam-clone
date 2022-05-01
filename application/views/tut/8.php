@@ -106,17 +106,17 @@
 <div id="arrow">
 </div>
 <div id="tutorialAdvisor">
-    <div id="advisorImage" class="<?=$class?>"><a href="javascript:;" id="tutorialAdvisorLink" title="Hướng dẫn"></a></div>
+    <div id="advisorImage" class="<?=$class?>"><a href="javascript:;" id="tutorialAdvisorLink" title="Training"></a></div>
 </div>
 <div id="tutorialMessage">
-    <h3>Hướng dẫn</h3>
+    <h3>Training</h3>
     <a href="javascript:;" id="tutorialAdvisorCloseLink"></a>
     <div class="content">
-    <p>Xây dựng công trình mới rất quan trọng nhưng mở rộng công trình hiện có là điều sống còn. Tôi <b>đề nghị</b> <b>hãy mở rộng kho hàng</b> ngay bây giờ để hàng hóa được an toàn hơn.<br>
-Hãy nhấp vào <b>một trong những công trình sau</b> và <b>mệnh lệnh và công việc việc nâng cấp</b>.<br>
-Vui lòng nhớ rằng chỉ có một công trình có thể được mở rộng trong một thời điểm. Và bạn hãy <b>đóng góp</b> <b>cho tương lai</b> để giúp <b>mở rộng</b> xưởng gỗ, mỏ hàng hóa xa xỉ và kỳ quan. <b>Diễn đàn đảo</b> là nơi bạn có thể tìm thấy tổng quan về việc sự dụng một cách cân bằng giữa những người chơi.</p>
+    <p>It is important not only to build new buildings, but also to develop them. To do this, enter one of the buildings and click on the button<b>raise</b>..<br>
+<br>
+And don't forget: You can only upgrade one building at a time. It is also important that you take part in improving the sawmill, resource quarry and altar. These island structures are used by all players equally and therefore should be upgraded by all players. If you do not take part in this, you may offend other players.</p>
 
-        <div class="centerButton"><a href="javascript:;" id="okButton" class="button">ОК</a></div>
+        <div class="centerButton"><a href="javascript:;" id="okButton" class="button">OK</a></div>
     <div class="footer"></div>
     </div>
 </div>

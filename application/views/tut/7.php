@@ -106,18 +106,20 @@
 <div id="arrow">
 </div>
 <div id="tutorialAdvisor">
-    <div id="advisorImage" class="<?=$class?>"><a href="javascript:;" id="tutorialAdvisorLink" title="Hướng dẫn"></a></div>
+    <div id="advisorImage" class="<?=$class?>"><a href="javascript:;" id="tutorialAdvisorLink" title="Training"></a></div>
 </div>
 <div id="tutorialMessage">
-    <h3>Hướng dẫn</h3>
+    <h3>Training</h3>
     <a href="javascript:;" id="tutorialAdvisorCloseLink"></a>
     <div class="content">
-    <p>Xin chào, tên tôi là Issus.<br />
-Tôi có nhiệm vụ thông báo cho bạn về mối quan hệ ngoại giao với những nền văn minh khác. Vào thời điểm này bạn nên xây dựng một <b>cảng giao dịch<b>.<br>
+    <p>Hello,<br />
+my name is Issus. I will inform you about all the events happening with other civilizations.<br>
 <br>
-Tại đây bạn có thể thực hiện giao thương và mua tàu chở hàng. Bạn cũng cần tàu chở hàng để di chuyển quân lính đến ác đảo khác và thu thập tài nguyên cướp bóc.Để thực hiện, hãy nhấp chuột vào một trong những lá cờ màu xanh dương sát bãi biển.</p>
+At this stage, I would recommend that you build<b>trade port</b>. To do this, click on one of the blue checkboxes. Then you can go to the trade port and purchase a trade ship there. Trade ships are needed to transport goods to other cities, as well as to plunder resources.<br />
+<br>
+To transport goods and soldiers, use the button'World'. Select an island and then select a destination city. If you're having trouble navigating the world, I recommend you visit Wikipedia, especially the page about<a href="<?=$this->config->item('base_url')?>game/informations/12/"> Navigation</a>, where you will find answers to your questions.</p>
 
-        <div class="centerButton"><a href="javascript:;" id="okButton" class="button">ОК</a></div>
+        <div class="centerButton"><a href="javascript:;" id="okButton" class="button">OK</a></div>
     <div class="footer"></div>
     </div>
 </div>

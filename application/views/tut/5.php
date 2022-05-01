@@ -107,17 +107,19 @@
 <div id="arrow">
 </div>
 <div id="tutorialAdvisor">
-    <div id="advisorImage" class="<?=$class?>"><a href="javascript:;" id="tutorialAdvisorLink" title="Hướng dẫn"></a></div>
+    <div id="advisorImage" class="<?=$class?>"><a href="javascript:;" id="tutorialAdvisorLink" title="Training"></a></div>
 </div>
 <div id="tutorialMessage">
-    <h3>Hướng dẫn</h3>
+    <h3>Training</h3>
     <a href="javascript:;" id="tutorialAdvisorCloseLink"></a>
     <div class="content">
-    <p>Xin chào,<br />
+    <p>Hello,<br />
 <br>
-Tôi có thể cung cấp cho bạn thông tin về hoạt động của các hạm đội mà chúng ta quan sát được, cũng như diễn biến hay kết quả của các trận đánh. Để chuẩn bị cho tương lại, tôi đề nghị bạn hãy làm quen với những nguyên tắc cơ bản của chiến tranh.</p>
+My name is Ajax. I can tell you about all the movements of the fleet that I know, as well as ongoing and completed battles. There is nothing to fear in this for you, since the gods are constantly watching you with<a href="<?=$this->config->item('base_url')?>game/informations/11/"> heaven</a>, protecting your empire from encroachment.<br />
+<br>
+But in order to be ready for future events, I recommend that you familiarize yourself with the basic features of warfare. The first thing you need to do is<b>hire some fighters</b>. In order to do this, you need to go to the barracks and start training soldiers. Then click on the yellow flag in your city to build<b>city wall</b>.</p>
 
-        <div class="centerButton"><a href="javascript:;" id="okButton" class="button">ОК</a></div>
+        <div class="centerButton"><a href="javascript:;" id="okButton" class="button">OK</a></div>
     <div class="footer"></div>
     </div>
 </div>

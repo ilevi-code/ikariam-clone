@@ -106,18 +106,18 @@
 <div id="arrow">
 </div>
 <div id="tutorialAdvisor">
-    <div id="advisorImage" class="<?=$class?>"><a href="javascript:;" id="tutorialAdvisorLink" title="Hướng dẫn"></a></div>
+    <div id="advisorImage" class="<?=$class?>"><a href="javascript:;" id="tutorialAdvisorLink" title="Training"></a></div>
 </div>
 <div id="tutorialMessage">
-    <h3>Hướng dẫn</h3>
+    <h3>Training</h3>
     <a href="javascript:;" id="tutorialAdvisorCloseLink"></a>
     <div class="content">
-    <p>Xin chào, tôi là Herodotus.<br />
-Tôi sẽ thông báo cho bạn biết tấ cả những thông tin quan trọng liên quan về các thành phố của bạn. Trong thời gian này tôi đề nghị bạn hãy xây học viện.<br>
+    <p>Hey,<br />
+I'm Manuron, administrator. Of course, I always know what's going on here. I'm going to tell you about all the important events that are happening in your cities.<br>
 <br>
-<b>Nhấp vào lá cờ đỏ và chọn học viện.</b>.</p>
+Now I recommend you<b>build an academy</b>. To do this, click on one of the red flags and select an academy there.</p>
 
-        <div class="centerButton"><a href="javascript:;" id="okButton" class="button">ОК</a></div>
+        <div class="centerButton"><a href="javascript:;" id="okButton" class="button">OK</a></div>
     <div class="footer"></div>
     </div>
 </div>
