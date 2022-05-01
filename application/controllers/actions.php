@@ -1986,8 +1986,7 @@ class Actions extends CI_Controller
 		}
 	}
 	
-	// ambasciata
-	function embassy($action = '', $alleanza_id)
+	function embassy($action = '', $alliance_id = 0)
 	{
 	    switch($action)
 		{
@@ -1995,15 +1994,15 @@ class Actions extends CI_Controller
 		             if (!empty($_POST['ally_tag']) and !empty($_POST['ally_name']))
 	                  {
 					 $tag = $_POST['ally_tag'];
-                      $alleanza = $_POST['ally_name'];
+                      $alliance = $_POST['ally_name'];
 					 $data = array(
-                          'ally_name' => $alleanza ,
+                          'ally_name' => $alliance ,
                           'ally_tag' => $tag ,
                           'ally_created' => time() ,
 						  'ally_founder' =>	$this->Player_Model->user->login
 						);
                      $this->db->insert($this->session->userdata('universe').'_alliance', $data);
-				     $utenti = $this->db->get_where($this->session->userdata('universe').'_alliance', array('ally_name' => $alleanza));
+				     $utenti = $this->db->get_where($this->session->userdata('universe').'_alliance', array('ally_name' => $alliance));
    					 foreach ($utenti->result() as $row)
                      {
 					 $founder = 'Founder';
@@ -2042,8 +2041,8 @@ class Actions extends CI_Controller
 		    if (!empty($_POST['ally_tag']) and !empty($_POST['ally_name']))
 	                  {   
 			   $tag = $_POST['ally_tag'];
-               $alleanza = $_POST['ally_name'];
-		       $ricerca = $this->db->get_where($this->session->userdata('universe').'_alliance', array('ally_name' => $alleanza, 'ally_tag' => $tag));
+               $alliance = $_POST['ally_name'];
+		       $ricerca = $this->db->get_where($this->session->userdata('universe').'_alliance', array('ally_name' => $alliance, 'ally_tag' => $tag));
 			   $this->ricerca = $ricerca->row();
 			   if($this->ricerca == TRUE) {
 			   foreach ($ricerca->result() as $row)
@@ -2058,7 +2057,7 @@ class Actions extends CI_Controller
                } 
 			   else
                {
-               $this->show('not_found_ally', 'Non esiste un alleanza con questi dati');
+               $this->show('not_found_ally', 'Non esiste un alliance con questi dati');
                }			  
                   }		   
 		  redirect($this->config->item('base_url').'game', 'refresh');
@@ -2066,14 +2065,14 @@ class Actions extends CI_Controller
 		  case 'editextpage':
            $testo = $_POST['editextpage'];
            $this->db->set('ally_ext_page', $testo);
-		   $this->db->where(array('ally_id' => $alleanza_id));
+		   $this->db->where(array('ally_id' => $alliance_id));
            $this->db->update($this->session->userdata('universe').'_alliance');      
 		   redirect($this->config->item('base_url').'game', 'refresh');
 		   break;
 		  case 'editintpage':
            $testo = $_POST['editintpage'];
            $this->db->set('ally_int_page', $testo);
-		   $this->db->where(array('ally_id' => $alleanza_id));
+		   $this->db->where(array('ally_id' => $alliance_id));
            $this->db->update($this->session->userdata('universe').'_alliance');      
 		   redirect($this->config->item('base_url').'game', 'refresh');
 		   break;
@@ -2084,7 +2083,7 @@ class Actions extends CI_Controller
 		   $this->db->set('ally_name', $nome);
 		   $this->db->set('ally_tag', $tag);
 		   $this->db->set('ally_description', $descrizione);
-		   $this->db->where(array('ally_id' => $alleanza_id));
+		   $this->db->where(array('ally_id' => $alliance_id));
            $this->db->update($this->session->userdata('universe').'_alliance');      
 		   redirect($this->config->item('base_url').'game', 'refresh');
 		   break;
@@ -2092,7 +2091,7 @@ class Actions extends CI_Controller
 		    if (isset($_POST['msgType']) and isset($_POST['content']))
                 {
                     $this->db->select('user_id');
-			        $this->db->where('ally_id', $alleanza_id);
+			        $this->db->where('ally_id', $alliance_id);
 			        $select = $this->db->get($this->session->userdata('universe').'_alliance_users');
  			        $row = $select->row(); 
 			      
@@ -2114,7 +2113,7 @@ class Actions extends CI_Controller
 	}
 	
 	
-	function messages($id_alleanza, $action = '', $id = 0, $relocation = 'diplomacyAdvisor')
+	function messages($id_alliance, $action = '', $id = 0, $relocation = 'diplomacyAdvisor')
     {
         $this->Player_Model->Load_User_Messages();
         switch($action)
