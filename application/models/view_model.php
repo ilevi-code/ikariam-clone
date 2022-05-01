@@ -55,7 +55,7 @@ class View_Model extends CI_Model
      * @param <string> $location
      * @param <int> $position
      */
-    function show_view($location = 'city', $param1, $param2, $param3)
+    function show_view($location = 'city', $param1 = 0, $param2 = 0, $param3 = 0)
     {
        	switch($location) {
             case 'worldmap_iso': $this->load->view('view/'.$location, array('x' => $param1, 'y' => $param2)); break;
@@ -146,7 +146,7 @@ class View_Model extends CI_Model
      * Отображение левой части
      * @param <string> $location
      */
-    function show_sidebox($location = 'city', $param1, $param2, $param3)
+    function show_sidebox($location = 'city', $param1 = 0, $param2 = 0, $param3 = 0)
     {
         switch($location)
         {
@@ -225,7 +225,7 @@ class View_Model extends CI_Model
 
     
 	
-	function show_bread($location = 'city', $param1, $param2, $param3)
+	function show_bread($location = 'city', $param1 = 0, $param2 = 0, $param3 = 0)
     {
        switch($location)
         {
