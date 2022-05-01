@@ -473,6 +473,7 @@ class Actions extends CI_Controller
         }
         if (isset($_POST['rw']) or isset($_POST['tw']))
         {
+            $this->Player_Model->Load_Production();
             $this->load->model('Island_Model');
             $this->Island_Model->Load_Island($id);
         }
