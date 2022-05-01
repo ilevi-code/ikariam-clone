@@ -76,7 +76,7 @@ class Data_Model extends CI_Model
 		}
     }
     
-    function Load_Missions($id = 0, $towns)
+    function Load_Missions($id = 0, $towns = NULL)
     {
         if (is_array($towns) and $id > 0){
                 $where = '';
@@ -740,7 +740,7 @@ class Data_Model extends CI_Model
      * @param <int> $level
      * @return <array>
      */
-    function building_cost($id = 1, $level = 0, $research, $levels)
+    function building_cost($id = 1, $level = 0, $research = NULL, $levels = 0)
     {
         if ($level < 0){ $level = 0; }
         $wood = $wine = $marble = $crystal = $sulfur = $time = ''; $max_level = 0;
@@ -1010,7 +1010,7 @@ class Data_Model extends CI_Model
      * @param <array> $buildings
      * @return <int>
      */
-    function get_position($type = 0, $town)
+    function get_position($type = 0, $town = NULL)
     {
         $return = 0;
         for ($i = 0; $i <= 14; $i++)
@@ -1031,7 +1031,7 @@ class Data_Model extends CI_Model
      * @param <array> $research
      * @return <array>
      */
-    function get_research($way = 1, $id = 1, $research)
+    function get_research($way = 1, $id = 1, $research = NULL)
     {
         if ($way == 1 and $id > 14){$id = 14;}
         if ($way == 2 and $id > 15){$id = 15;}
