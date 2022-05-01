@@ -14,8 +14,8 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost';
-$config['installed'] = 'no';
+$config['base_url'] = '';
+$config['installed'] = 'yes';
 /*
 |--------------------------------------------------------------------------
 | Index File
