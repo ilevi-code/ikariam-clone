@@ -578,9 +578,10 @@ class Game extends CI_Controller {
     {
        if($island > 0 and $id >= 0 or $id == 'barbarian_village')
        {
-           if($id != 'barbarian_village' and isset($this->Data_Model->temp_towns_db[$id]) and $this->Data_Model->temp_towns_db[$id]->user == $this->Player_Model->user->id )
+           // TODO Check if player is raidable
+           if(isset($this->Data_Model->temp_towns_db[$id]) and $this->Data_Model->temp_towns_db[$id]->user == $this->Player_Model->user->id )
            {
-               $this->show('error', 'Невозможно ограбить свой город!');
+               $this->show('error', 'It is impossible to raid your city!!'. $this->Data_Model->temp_towns_db[$id]->user);
            }
            else
            {
