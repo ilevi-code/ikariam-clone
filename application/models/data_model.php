@@ -1003,6 +1003,7 @@ class Data_Model extends CI_Model
                 }
                 return $army_line;
             }
+            return array();
     }
 
     /**
