@@ -356,7 +356,9 @@ class Update_Model extends CI_Model
                                    $army_line = ($army[0]['type'] < 10) ? substr($army_line, 5) : substr($army_line, 6);
                                }
                                $army = $this->Data_Model->load_army_line($army_line);
-                               $army_start = $army_start + ($army[0]['count']*$cost['time']);
+                               if (sizeof(($army)) > 0) {
+                                   $army_start = $army_start + ($army[0]['count']*$cost['time']);
+                               }
                            }
                            else
                            {

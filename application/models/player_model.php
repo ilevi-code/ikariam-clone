@@ -50,7 +50,7 @@ class Player_Model extends CI_Model {
             $this->db->or_where('defender =', $id);
 			$this->db->order_by("date", "desc");  
             $this->reports = $this->db->get();
-			$this->reports_count = count($this->reports);
+			$this->reports_count = count($this->reports->result_array());
 			
 			//Potrei caricare le note scritte dall'utente
 			$notes_query = $this->db->get_where($this->session->userdata('universe').'_notes', array('user' => $id));
