@@ -152,7 +152,7 @@ CREATE TABLE `alpha_config` (
   `admin_email` text CHARACTER SET utf8 NOT NULL,
   `board_link` varchar(30) NOT NULL,
   `head_news` varchar(30) NOT NULL,
-  `game_speed` int(11) NOT NULL DEFAULT '50',
+  `game_speed` int(11) NOT NULL DEFAULT '1',
   `easter_design` enum('0', '1') NOT NULL,
   `double_login` enum('0', '1') NOT NULL,
   `standard_capacity` int(11) NOT NULL,
