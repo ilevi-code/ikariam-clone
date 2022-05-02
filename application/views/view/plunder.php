@@ -1,4 +1,9 @@
-<?$position = $param1?>
+<?php
+$segments = explode("/", $_SERVER['REQUEST_URI']);
+$island = $segments[3];
+$position = $segments[4];
+$is_local_island = $island == $this->Player_Model->now_town->island;
+?>
 <script type="text/javascript" src="<?=$this->config->item('base_url')?>design/js/transportController.js"></script>
 
 <script type="text/javascript">
@@ -118,13 +123,14 @@ function plusMinus(obj) {
     // Parameter min iund max stehen als StyleClass im Quelltext
     var arr = splitParameterStringToArray(thisObj.plusMinusObj.inputObj.className);
     var min = (Number(arr['min']))?parseInt(arr['min']):0;
-    var max = (Number(arr['max']) || arr['max']==0)?parseInt(arr['max']):999;
+    // var max = (Number(arr['max']) || arr['max']==0)?parseInt(arr['max']):999;
+    var max = <?=$this->Player_Model->user->transports?>;
 
     thisObj.action = '';
     //alert(thisObj.plusMinusObj.innerHTML);
 
     this.setMax = function(val) {
-    	max = val;
+		max = <?=$this->Player_Model->user->transports?>;
     }
 
     this.setValue = function(val, avoidFireAction) {
@@ -140,7 +146,6 @@ function plusMinus(obj) {
     }
 
     this.minus = function() {
-        //alert(thisObj.plusMinusObj.inputObj.value);
         if (thisObj.plusMinusObj.inputObj.value>min) {
             thisObj.setValue(parseInt(thisObj.getValue())-1);
         } else {
@@ -217,6 +222,7 @@ function plusMinus(obj) {
         thisObj.testValue();
         thisObj.setValueAction(thisObj.getValue());
     });
+    thisObj.plusMinusObj.inputObj.onchange= (e) => console.log("eee", e)
 }
 </script>
 
@@ -226,7 +232,7 @@ function plusMinus(obj) {
 	var tempUnitTime = 0;
 
 	var textOk = "rob the city!";
-    var textNoTransporters = "Not enough dry cargo. Therefore, the loot of your troops will not be delivered.";
+    var textNoTransporters = "No merchant ships selected. Your pillaging troops will not take home any loot.";
 	var textNoTroops = "Troops not selected.";
 
     var jsClassOk = 'ok';
@@ -235,10 +241,10 @@ function plusMinus(obj) {
 
 	Event.onDOMReady(function() {
 		transporterDisplay = new armyTransportController(
-			0,
+			<?=$this->Player_Model->user->transports?>,
 			500,
-			Dom.get("transporterCount"),
-			Dom.get("extraTransporter"),
+			Dom.get("neededShips"),
+			Dom.get("extraShips"),
 			Dom.get("sumTransporter"),
 			Dom.get("totalFreight"),
 			600,
@@ -250,7 +256,7 @@ function plusMinus(obj) {
 			null,
 			Dom.get('plunderbutton')
 			);
-		});
+    });
 
 </script>
 
@@ -298,8 +304,12 @@ function plusMinus(obj) {
                                         });
                                         Event.onDOMReady(function() {
 											var s=sliders["slider_<?=$i?>"];
-											s.upkeep=<?=number_format($cost['gold'])?>;
-											s.weight=0;
+                                            s.upkeep=<?=number_format($cost['gold'])?>;
+<? if ($is_local_island){?>
+                                            s.weight=0;
+<?}else{?>
+                                            s.weight=<?=$cost['capacity']?>;
+<?}?>
 											s.unitJourneyTime=600;
                                             transporterDisplay.registerSlider(s);
                                         });
@@ -324,9 +334,9 @@ function plusMinus(obj) {
                     <div class="newSummary">
                         <div class="transporter">
                             <span class="textLabel">Transporter: </span>
-                            <div class="neededTransporter"><span id="transporterCount">0</span></div>
+                            <div class="neededTransporter"><span id="neededShips">0</span></div>
                             <div id="plusminus" class="plusminus">
-                                <input class="value text min=0 max=0" type="text" size="3" maxlength="4" value="0" name="transporter" id="extraTransporter"/>
+                                <input class="value text min=0 max=5" type="text" size="3" maxlength="4" value="0" name="transporter" id="extraShips"/>
                                 <a href="javascript:;" class="plus"></a>
                                 <a href="javascript:;" class="minus"></a>
                             </div>
@@ -342,7 +352,7 @@ function plusMinus(obj) {
                         </div>
                             		<script type="text/javascript">
                                             var temp = new plusMinus(document.getElementById('plusminus'), 10, 40);
-                                            var transporterCountElem = Dom.get('transporterCount');
+                                            var neededShipsElem = Dom.get('neededShips');
                                             var totalFreightElem = Dom.get('totalFreight');
                                             temp.setValueAction = function(val) {
                                                 val = Number(val);
@@ -351,7 +361,7 @@ function plusMinus(obj) {
                                                 	temp.setValue(0);
                                                 	return;
                                                 }
-                                                tempMath = (val+ parseInt(transporterCountElem.innerHTML));
+                                                tempMath = (val+ parseInt(neededShipsElem.innerHTML));
                                                 Dom.get('sumTransporter').innerHTML = tempMath;
                                                 if(tempMath > 0 && tempUnitTime < 600) {
                                                 	Dom.get('journeyTime').innerHTML = getTimestring(600*1000, 3);
@@ -365,8 +375,8 @@ function plusMinus(obj) {
 	                                                	Dom.get('returnTime').innerHTML = "-";
 	                                                }
                                                 }
-                                                temp.setMax(0-parseInt(transporterCountElem.innerHTML));
-                                                totalFreightElem.innerHTML = (val+ parseInt(transporterCountElem.innerHTML))*500;
+                                                temp.setMax(0-parseInt(neededShipsElem.innerHTML));
+                                                totalFreightElem.innerHTML = (val+ parseInt(neededShipsElem.innerHTML))*500;
                                                 if(tempUnitTime > 0 && tempMath > 0) {
                                                 		Dom.get('plunderbutton').className = "ok";
                                                 		Dom.get('plunderbutton').title = textOk;

@@ -88,9 +88,9 @@ function upkeepController(
 function armyTransportController(
   freeTrans,
   capacity,
-  displayElem,
-  extraTransporterElem,
-  sumTransporterElem,
+  neededShipsElem,
+  extraShipsElem,
+  totalShipsElem,
   totalFreightElem,
   transportJourneyTime,
   journeyTimeElem,
@@ -107,7 +107,6 @@ function armyTransportController(
     defload = defaultLoad;
   }
   var that = this;
-  var display = displayElem;
 
   var registeredSliders = new Array();
   var disableChanged = false;
@@ -115,12 +114,7 @@ function armyTransportController(
   var totalCapacity = freeTrans * capacity;
 
   var usedCapacity = defload;
-  var extraTransporter = extraTransporterElem;
-  var sumTransporterValue = 0;
-
-  if (extraTransporterElem != null)
-    var sumTransporterValue = extraTransporter.value;
-  var sumTransporter = sumTransporterElem;
+  var neededShips = 0;
 
   var totalFreight = totalFreightElem;
   var transportJourneyTimeValue = transportJourneyTime;
@@ -134,18 +128,14 @@ function armyTransportController(
     missionTime = missionTimeParam;
   }
   var sendButton = sendButtonElem;
+  var extraShips = 0;
 
   this.getMaxLoadable = function (s) {
     //alert(Math.min(s.maxValue, Math.floor((totalCapacity - usedCapacity)/(s.weight)) ));
     if (s.weight == 0) {
       return s.maxValue;
     }
-    return Math.min(
-      s.maxValue,
-      Math.floor(
-        (totalCapacity - (usedCapacity - s.actualValue * s.weight)) / s.weight
-      )
-    );
+    return Math.min(s.maxValue, Math.floor(totalCapacity / s.weight));
   };
 
   this.registerSlider = function (s) {
@@ -155,7 +145,7 @@ function armyTransportController(
     s.subscribe("valueChange", that.sliderChanged);
     s.subscribe("valueChange", that.sliderEnd);
   };
-
+  
   this.sliderChanged = function () {
     usedCapacity = 0;
     tempJourneyTime = 0;
@@ -176,31 +166,36 @@ function armyTransportController(
       );
       totalWeight += Math.floor(
         registeredSliders[i].actualValue * registeredSliders[i].weight
-      );
-    }
-
+        );
+      }
+      
     tempUnitTime = tempJourneyTime;
 
-    if (display != null) display.innerHTML = Math.ceil(usedCapacity / capacity);
-    tempExtraTransporter = 0;
-    if (extraTransporter != null)
-      tempExtraTransporter = parseInt(extraTransporter.value);
-    sumTransporterValue =
-      Math.ceil(usedCapacity / capacity) + tempExtraTransporter;
-    if (sumTransporterValue > freeTrans) {
-      if (extraTransporter != null)
-        extraTransporter.value = Math.min(
-          extraTransporter.value,
-          freeTrans - Math.ceil(usedCapacity / capacity)
-        );
-      sumTransporterValue = freeTrans;
+    totalShips = 0;
+    // TODO handle cases when there more troops then ships available
+    neededShips = Math.ceil(usedCapacity / capacity);
+    if (neededShips > freeTrans) {
+      neededShips = freeTrans;
     }
-
-    if (sumTransporterValue > 0 && transportJourneyTimeValue > tempJourneyTime)
+    if (neededShipsElem != null) {
+      neededShipsElem.innerHTML = neededShips;
+	  }
+    totalShips += neededShips;
+    if (extraShipsElem != null) {
+      extraShips = parseInt(extraShipsElem.value);
+      extraShips = Math.min(extraShips, freeTrans - neededShips);
+      extraShipsElem.value = extraShips;
+      totalShips += extraShips;
+    }
+    if (totalShipsElem != null) {
+      totalShipsElem.innerHTML = totalShips;
+    }
+  
+    if (neededShips > 0 && transportJourneyTimeValue > tempJourneyTime)
       tempJourneyTime = transportJourneyTimeValue;
-    if (sumTransporter != null) sumTransporter.innerHTML = sumTransporterValue;
-    if (totalFreight != null)
-      totalFreight.innerHTML = sumTransporterValue * capacity;
+    if (totalFreight != null) {
+      totalFreight.innerHTML = totalShips * capacity;
+    }
     if (journeyTime != null)
       journeyTime.innerHTML =
         tempJourneyTime > 0 ? getTimestring(tempJourneyTime * 1000, 3) : "-";
@@ -212,13 +207,15 @@ function armyTransportController(
       displaySum.innerHTML = Math.ceil(
         (totalUpkeep / 3600) * (tempJourneyTime + missionTime)
       );
-    if (displayWeight != null) displayWeight.innerHTML = totalWeight;
+    if (displayWeight != null) {
+      displayWeight.innerHTML = totalWeight;
+    }
 
     if (sendButton != null) {
-      if (sumTransporterValue > 0 && totalUpkeep > 0) {
+      if (neededShipsValue > 0 && totalUpkeep > 0) {
         sendButton.className = jsClassOk;
         sendButton.title = textOk;
-      } else if (sumTransporterValue <= 0 && totalUpkeep > 0) {
+      } else if (neededShipsValue <= 0 && totalUpkeep > 0) {
         sendButton.className = jsClassNoTransporters;
         sendButton.title = textNoTransporters;
       } else {
@@ -247,20 +244,16 @@ function armyTransportController(
 
 function weightController(
   upkeepMultiplier,
-  sumMultiplier,
   displayUpkeepElem,
-  displaySumElem,
   displayWeightElem
 ) {
   var that = this;
   var displayUpkeep = Dom.get(displayUpkeepElem);
-  var displaySum = Dom.get(displaySumElem);
   var displayWeight = Dom.get(displayWeightElem);
   var registeredSliders = new Array();
   var totalUpkeep = 0;
   var totalCosts = 0;
   var totalWeight = 0;
-  this.sumMultiplier = sumMultiplier;
   this.upkeepMultiplier = upkeepMultiplier;
 
   this.getMaxLoadable = function (s) {
@@ -291,8 +284,6 @@ function weightController(
     }
 
     displayUpkeep.innerHTML = totalUpkeep;
-    //displaySum.innerHTML      = totalCosts;
-    //alert(totalWeight);
     displayWeight.innerHTML = totalWeight;
   };
 }
