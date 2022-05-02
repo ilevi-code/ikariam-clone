@@ -1,0 +1,4 @@
+FROM tomsik68/xampp:8
+COPY my.cnf /opt/lampp/etc/my.cnf
+COPY php.ini /opt/lampp/etc/php.ini
+COPY bashrc /root/.bashrc

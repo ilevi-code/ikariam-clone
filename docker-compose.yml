@@ -1,0 +1,11 @@
+version: "3.3"
+services:
+  ikariam:
+    image: ikariam
+    ports:
+      - "80:80"
+      - "2222:22"
+    volumes:
+      - .:/opt/lampp/htdocs
+      - /tmp/ikariam_bash_hist:/root/.bash_history
+      # - ./ik_game:/opt/lampp/var/mysql/ik_game
