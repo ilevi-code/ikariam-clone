@@ -36,7 +36,7 @@
                     <td class="worker1 text"><?=number_format($town->workers)?> / <?=number_format($wood['workers'])?></td>
                     <td class="worker2 text"><?=number_format($town->tradegood)?> / <?=number_format($trade['workers'])?></td>
                     <td class="scientists text"><?=number_format($town->scientists)?> / <?=number_format($this->Data_Model->scientists_by_level($this->Player_Model->levels[$town->id][3]))?></td>
-                    <td class="satisfaction"><img src="<?=$this->config->item('style_url')?>skin/smilies/<?=$this->Data_Model->good_class_by_count($this->Player_Model->good[$town->id])?>_x25.gif" alt="<?=$this->Data_Model->good_name_by_count($this->Player_Model->good[$town->id])?>" title="<?=$this->Data_Model->good_name_by_count($this->Player_Model->good[$town->id])?>" /></td>
+                    <td class="satisfaction"><img src="<?=$this->config->item('style_url')?>skin/smilies/<?=$this->Data_Model->good_name_by_count($this->Player_Model->good[$town->id])?>_x25.gif" alt="<?=$this->Data_Model->good_name_by_count($this->Player_Model->good[$town->id])?>" title="<?=$this->Data_Model->good_name_by_count($this->Player_Model->good[$town->id])?>" /></td>
                 </tr>
 <?$town_id++?>
 <?}?>

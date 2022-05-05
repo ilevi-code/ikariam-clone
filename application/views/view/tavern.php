@@ -91,7 +91,7 @@ savedWine = new Array();
                                 <div class="centerButton">
                                     <input type="submit" value="To your health!" class="button">
                                 </div>
-                                <div id="citySatisfaction"  class="<?=$this->Data_Model->good_class_by_count($this->Player_Model->good[$this->Player_Model->town_id])?>">
+                                <div id="citySatisfaction"  class="<?=$this->Data_Model->good_name_by_count($this->Player_Model->good[$this->Player_Model->town_id])?>">
                                 </div>
                             </div>
                             <div id="serve" class="textfield">

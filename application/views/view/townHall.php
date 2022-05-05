@@ -95,7 +95,7 @@
                         <span title="decline: situation at the moment"><?=number_format($this->Player_Model->corruption[$this->Player_Model->town_id]*100)?>%</span>
                     </span>
                 </li>
-                <li class="happiness happiness_<?=$this->Data_Model->good_class_by_count($this->Player_Model->good[$this->Player_Model->town_id])?>">
+                <li class="happiness happiness_<?=$this->Data_Model->good_name_by_count($this->Player_Model->good[$this->Player_Model->town_id])?>">
                     <span class="textLabel">Level of satisfaction with life: </span><?=$this->Data_Model->good_name_by_count($this->Player_Model->good[$this->Player_Model->town_id])?>
                 </li>
             </ul>
@@ -255,7 +255,7 @@
                 </div>
 
 								
-                <div class="happiness happiness_<?=$this->Data_Model->good_class_by_count($this->Player_Model->good[$this->Player_Model->town_id])?>">
+                <div class="happiness happiness_<?=$this->Data_Model->good_name_by_count($this->Player_Model->good[$this->Player_Model->town_id])?>">
                     <h4>General level of satisfaction:</h4>		
                     <div class="value"><?=number_format($this->Player_Model->good[$this->Player_Model->town_id])?></div>
                     <div class="text"><?=$this->Data_Model->good_name_by_count($this->Player_Model->good[$this->Player_Model->town_id])?></div>
