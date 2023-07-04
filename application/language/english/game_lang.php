@@ -55,6 +55,7 @@ $lang['army24_name'] = 'Steam Ram';
 $lang['army25_name'] = 'Rocket Ship';
 $lang['army26_name'] = 'Balloon Carrier';
 $lang['army27_name'] = 'Tender';
+$lang['army28_name'] = 'Wall';
 $lang['cargo_ship'] = 'Cargo ship';
 
 $lang['building1_desc'] = 'At the heart of the town you can find the town hall through which the town grows and flourishes. The smart civil servants, who work here, love to give you information about your local population Every expansion of the town hall increases the maximum number of citizens in this town.';

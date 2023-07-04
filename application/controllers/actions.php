@@ -1295,11 +1295,11 @@ class Actions extends CI_Controller
         {
             if ($this->Player_Model->missions[$mission]->mission_start == 0)
             {
-                // Колонизация
-                // Если еще не погрузили удаляем город и возвращаем ресурсы
+                // Colonization
+                // If not loaded yet, delete the city and return the resources
                 if($this->Player_Model->missions[$mission]->mission_type == 1)
                 {
-                    // Удаляем город
+                    // Delete the city
                     $town_query = $this->db->get_where($this->session->userdata('universe').'_towns', array('id' => $this->Player_Model->missions[$mission]->to));
                     $town = $town_query->row();
                     $this->db->set('city'.$town->position, 0);
@@ -1307,7 +1307,7 @@ class Actions extends CI_Controller
                     $this->db->update($this->session->userdata('universe').'_islands');
                     $this->db->query('DELETE FROM '.$this->session->userdata('universe').'_towns where `id`="'.$this->Player_Model->missions[$mission]->to.'"');
                 }
-                    // возвращаем ресурсы
+                    // return resources
                     $this->db->set('wood', $this->Player_Model->towns[$this->Player_Model->missions[$mission]->from]->wood + $this->Player_Model->missions[$mission]->wood);
                     $this->db->set('wine', $this->Player_Model->towns[$this->Player_Model->missions[$mission]->from]->wine + $this->Player_Model->missions[$mission]->wine);
                     $this->db->set('marble', $this->Player_Model->towns[$this->Player_Model->missions[$mission]->from]->marble + $this->Player_Model->missions[$mission]->marble);

@@ -695,12 +695,12 @@ class Update_Model extends CI_Model
                             $this->db->insert($this->session->userdata('universe').'_army', array('city' => $mission->to));
                             
 							// Step 3. Invio il messaggio
-                            $text = 'Мы основали новый город (<a href="'.$this->config->item('base_url').'game/island/'.$this->Data_Model->temp_towns_db[$mission->to]->island.'/'.$mission->to.'/">'.$this->Data_Model->temp_towns_db[$mission->to]->name.'</a>). Ваш торговый флот выгрузил: <ul class="resources">';
-                            $text .= '<li class="wood"><span class="textLabel">Стройматериалы: </span>'.($mission->wood-1000).'</li>';
-                            if ($mission->wine > 0){$text .= '<li class="wine"><span class="textLabel">Виноград: </span>'.($mission->wine).'</li>';}
-                            if ($mission->marble > 0){$text .= '<li class="marble"><span class="textLabel">Мрамор: </span>'.($mission->marble).'</li>';}
-                            if ($mission->crystal > 0){$text .= '<li class="glass"><span class="textLabel">Хрусталь: </span>'.($mission->crystal).'</li>';}
-                            if ($mission->sulfur > 0){$text .= '<li class="sulfur"><span class="textLabel">Сера: </span>'.($mission->sulfur).'</li>';}
+                            $text = 'We founded a new city (<a href="'.$this->config->item('base_url').'game/island/'.$this->Data_Model->temp_towns_db[$mission->to]->island.'/'.$mission->to.'/">'.$this->Data_Model->temp_towns_db[$mission->to]->name.'</a>). Your merchant fleet unloaded: <ul class="resources">';
+                            $text .= '<li class="wood"><span class="textLabel">building materials: </span>'.($mission->wood-1000).'</li>';
+                            if ($mission->wine > 0){$text .= '<li class="wine"><span class="textLabel">Wine: </span>'.($mission->wine).'</li>';}
+                            if ($mission->marble > 0){$text .= '<li class="marble"><span class="textLabel">Marble: </span>'.($mission->marble).'</li>';}
+                            if ($mission->crystal > 0){$text .= '<li class="glass"><span class="textLabel">Crystal: </span>'.($mission->crystal).'</li>';}
+                            if ($mission->sulfur > 0){$text .= '<li class="sulfur"><span class="textLabel">sulfur: </span>'.($mission->sulfur).'</li>';}
                             $text .= '</ul>';
                             $town_message = array(
                                     'user' => $mission->user,
