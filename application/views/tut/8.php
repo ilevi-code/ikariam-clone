@@ -112,7 +112,7 @@
     <h3>Training</h3>
     <a href="javascript:;" id="tutorialAdvisorCloseLink"></a>
     <div class="content">
-    <p>It is important not only to build new buildings, but also to develop them. To do this, enter one of the buildings and click on the button<b>raise</b>..<br>
+    <p>It is important not only to build new buildings, but also to develop them. To do this, enter one of the buildings and click on the button <b>raise</b>..<br>
 <br>
 And don't forget: You can only upgrade one building at a time. It is also important that you take part in improving the sawmill, resource quarry and altar. These island structures are used by all players equally and therefore should be upgraded by all players. If you do not take part in this, you may offend other players.</p>
 

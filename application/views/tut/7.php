@@ -115,9 +115,9 @@
     <p>Hello,<br />
 my name is Issus. I will inform you about all the events happening with other civilizations.<br>
 <br>
-At this stage, I would recommend that you build<b>trade port</b>. To do this, click on one of the blue checkboxes. Then you can go to the trade port and purchase a trade ship there. Trade ships are needed to transport goods to other cities, as well as to plunder resources.<br />
+At this stage, I would recommend that you build a <b>trade port</b>. To do this, click on one of the blue checkboxes. Then you can go to the trade port and purchase a trade ship there. Trade ships are needed to transport goods to other cities, as well as to plunder resources.<br />
 <br>
-To transport goods and soldiers, use the button'World'. Select an island and then select a destination city. If you're having trouble navigating the world, I recommend you visit Wikipedia, especially the page about<a href="<?=$this->config->item('base_url')?>game/informations/12/"> Navigation</a>, where you will find answers to your questions.</p>
+To transport goods and soldiers, use the button 'World'. Select an island and then select a destination city. If you're having trouble navigating the world, I recommend you visit Wikipedia, especially the page about<a href="<?=$this->config->item('base_url')?>game/informations/12/"> Navigation</a>, where you will find answers to your questions.</p>
 
         <div class="centerButton"><a href="javascript:;" id="okButton" class="button">OK</a></div>
     <div class="footer"></div>
