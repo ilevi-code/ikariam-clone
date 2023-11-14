@@ -11,6 +11,10 @@
         $over_max = ($over_max < $all) ? $over_max : $all;
         $over_max = floor($over_max);
     }
+    else
+    {
+        $over_max = $max;
+    }
     $production = $this->Player_Model->resource_production[$this->Player_Model->town_id]*3600;
 ?>
 <div id="mainview">
@@ -124,9 +128,9 @@ The sawmill is improved by all the inhabitants of the island. The larger the saw
             resourceicon : "resicon",
             width : 140
         });
-        res.setIcons(Math.floor(slider.actualValue/(1+0.05*slider.actualValue)));
+        res.setIcons(Math.floor(slider.actualValue/(0.95+0.05*slider.actualValue)));
         slider.subscribe("valueChange", function() {
-            res.setIcons(Math.floor(slider.actualValue/(1+0.05*slider.actualValue)));
+            res.setIcons(Math.floor(slider.actualValue/(0.95+0.05*slider.actualValue)));
         });
         var startSlider = slider.actualValue;
         var valueWorkers = Dom.get("valueWorkers");
