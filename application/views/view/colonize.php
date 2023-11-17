@@ -66,7 +66,7 @@ Event.onDOMReady( function() {
                 </ul>
             </div>
 <?$errors = array()?>
-<?if($this->Player_Model->now_town->peoples < 40){ $errors[] = $this->lang->line('not_peoples_1').' <strong>'.number_format(40-$this->Player_Model->now_town->peoples).' '.$this->lang->line('not_peoples_2').'</strong>.<em>'.$this->lang->line('not_peoples_3').'</em>';} ?>
+<?if($this->Player_Model->now_town->peoples < 40){ $errors[] = $this->lang->line('not_peoples_1').' <strong>'.number_format(40-$this->Player_Model->now_town->peoples).' '.$this->lang->line('not_peoples_2').'.<br/></strong><em>'.$this->lang->line('not_peoples_3').'</em>';} ?>
 <?if($this->Player_Model->user->gold < 9000){ $errors[] = $this->lang->line('not_gold_1').' <strong>'.number_format(9000-$this->Player_Model->user->gold).' '.$this->lang->line('not_gold_2').'</strong>!';} ?>
 <?if($this->Player_Model->now_town->wood < 1250){ $errors[] = $this->lang->line('not_wood_1').' <strong>'.number_format(1250-$this->Player_Model->now_town->wood).' '.$this->lang->line('not_wood_2').'</strong>!';} ?>
 <?if($this->Player_Model->user->transports < 3){ $errors[] = $this->lang->line('not_tradeships_1').' <strong>'.number_format(3-$this->Player_Model->user->transports).' '.$this->lang->line('not_tradeships_2').'</strong>!';} ?>

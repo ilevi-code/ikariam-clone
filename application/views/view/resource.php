@@ -47,7 +47,7 @@ The sawmill is improved by all the inhabitants of the island. The larger the saw
                         <img src="<?=$this->config->item('style_url')?>skin/resources/icon_gold.gif" title="Gold" alt="Gold">
                         <span class="timeUnit"> per hour</span>
                     </li>
-                </ul> 
+                </ul>
                 <div id="overchargeMsg" class="status nooc ocready oced">Overload!</div>
                 <div class="slider" id="sliderbg">
                     <div class="actualValue" id="actualValue"></div>
@@ -58,7 +58,7 @@ The sawmill is improved by all the inhabitants of the island. The larger the saw
                 <a class="setMax" href="#max" onClick="sliders['default'].setActualValue(<?=$max?>); return false;" title="Max. number of workers"><span class="textLabel">max.</span></a>
 
                 <input class="textfield" id="inputWorkers" type="text" name="rw" maxlength="4" autocomplete="off">
-                <input class="button" id="inputWorkersSubmit" type="submit" value="Confirmation">
+                <input class="button" id="inputWorkersSubmit" type="submit" value="Confirm">
             </div>
             <div class="footer"></div>
         </div>

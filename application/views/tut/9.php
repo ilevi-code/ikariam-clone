@@ -114,7 +114,7 @@
     <div class="content">
 <p>Hey,<br>
 <br>
-now that you are able to defend yourself, it's time to start testing the troops. There is a village of barbarians on the island. We have to<b>to attack</b> village using several fighters. If our attempt is successful, the reward will be some of the resources these fiends must have hoarded.<br>
+now that you are able to defend yourself, it's time to start testing the troops. There is a village of barbarians on the island. We have to <b>attack</b> village using several fighters. If our attempt is successful, the reward will be some of the resources these fiends must have hoarded.<br>
 <br>
 To attack a barbarian village, click on the Island button to view the view of the island. Click on the barbarian village and select the Attack command on the left side of the menu. A screen will appear where you can set the number and types of troops that will participate in the battle.<br>
 <br>
