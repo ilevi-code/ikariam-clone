@@ -687,7 +687,6 @@ class Data_Model extends CI_Model
     }
 
     /**
-     * Цены, время на шахты, количество работников
      * @param <int> $id
      * @param <int> $level
      * @return <array>

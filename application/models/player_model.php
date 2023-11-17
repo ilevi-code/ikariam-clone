@@ -326,9 +326,6 @@ class Player_Model extends CI_Model {
         }
     }
 	
-	/**
-	 * Funzione che controlla le costruzioni
-	 */
 	function correct_buildings()
     {
         $this->now_town = $this->towns[$this->town_id];
@@ -415,7 +412,7 @@ class Player_Model extends CI_Model {
             }
             else
             {
-                $this->tradegood_production[$town->id] = ($town->tradegood/3)*(1-$this->corruption[$town->id]);
+                $this->tradegood_production[$town->id] = ($town->tradegood/3600)*(1-$this->corruption[$town->id]);
             }
             $this->tradegood_production_bonus[$town->id] = $this->tradegood_production[$town->id]*($this->$plus_name);
         }
