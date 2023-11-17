@@ -46,26 +46,29 @@ if ($position > 0 or ($position == 0 and $page == 'townHall')){
         </ul>
         <ul class="actions">
             <li class="upgrade">
-<?if(($this->Player_Model->now_town->build_line != '' and $this->Player_Model->user->premium_account == 0) or
-     ($class == 4 and $this->Player_Model->armys[$this->Player_Model->town_id]->ships_line != '') or
-     ($class == 5 and $this->Player_Model->armys[$this->Player_Model->town_id]->army_line != '') or
-     ($class == 14 and $this->Player_Model->towns[$this->Player_Model->town_id]->spyes_start > 0) or
-     ($real_level > $cost['max_level'])){?>
+<?
+    $town_id = $this->Player_Model->town_id;
+    if(($this->Player_Model->now_town->build_line != '' and $this->Player_Model->user->premium_account == 0) or
+     ($class == 4 and $this->Player_Model->armys[$town_id]->ships_line != '') or
+     ($class == 5 and $this->Player_Model->armys[$town_id]->army_line != '') or
+     ($class == 14 and $this->Player_Model->towns[$town_id]->spyes_start > 0) or
+     ($real_level > $cost['max_level']) or ! $this->Action_Model->enough_resource_for_upgrade_position($position)){?>
                 <a class="disabled" href="#" title="<?=$this->lang->line('no_expand')?>"></a>
-<?}else{?>
-                <a href="<?=$this->config->item('base_url')?>actions/upgrade/<?=$position?>/" title="<?=$this->lang->line('level_up')?>"><span class="textLabel"><?if($real_level != $level){?><?=$this->lang->line('in_queue')?><?}else{?><?=$this->lang->line('upgrade')?><?}?></span></a>
+<?}else{?> <a href="<?=$this->config->item('base_url')?>actions/upgrade/<?=$position?>/" title="<?=$this->lang->line('level_up')?>"><span class="textLabel"><?if($real_level != $level){?><?=$this->lang->line('in_queue')?><?}else{?><?=$this->lang->line('upgrade')?><?}?></span></a>
 <?}?>
             </li>
             <li class="downgrade">
-<?if (($this->Player_Model->now_town->build_line != '' and $this->Player_Model->build_line[$this->Player_Model->town_id][0]['position'] == $position) or
-        ($position == 0) or
+<?
+if ($position != 0) {
+    if (($this->Player_Model->now_town->build_line != '' and $this->Player_Model->build_line[$this->Player_Model->town_id][0]['position'] == $position) or
         ($class == 4 and $this->Player_Model->armys[$this->Player_Model->town_id]->ships_line != '') or
         ($class == 5 and $this->Player_Model->armys[$this->Player_Model->town_id]->army_line != '') or
         ($class == 14 and $this->Player_Model->towns[$this->Player_Model->town_id]->spyes_start > 0) ){?>
-                <a class="disabled" href="#" title="<?=$this->lang->line('no_demolish')?>"></a>
-<?}else{?>
-                <a href="<?=$this->config->item('base_url')?>game/demolition/<?=$position?>/" title="<?=$this->lang->line('level_down')?>"><span class="textLabel"><?=$this->lang->line('demolish')?></span></a>
-<?}?>
+            <a class="disabled" href="#" title="<?=$this->lang->line('no_demolish')?>"></a>
+    <?}else{?>
+            <a href="<?=$this->config->item('base_url')?>game/demolition/<?=$position?>/" title="<?=$this->lang->line('level_down')?>"><span class="textLabel"><?=$this->lang->line('demolish')?></span></a>
+    <?}
+}?>
             </li>
 	</ul>
     </div>

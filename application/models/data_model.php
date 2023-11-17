@@ -346,7 +346,7 @@ class Data_Model extends CI_Model
                 if ($research->res4_14 > 0) { $minus_gold = $minus_gold +(0.02*$research->res4_14); }
             }
         }
-        // плотницкая мастерская
+        // carpentry workshop
         if ($levels[21] > 0)
         {
             $minus_wood = $minus_wood + (0.01*$levels[21]);

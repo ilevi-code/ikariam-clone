@@ -17,6 +17,7 @@ class Game extends CI_Controller {
         header("Pragma: no-cache");
 
         $this->load->model('Player_Model');
+        $this->load->model('Action_Model');
         if (!$this->session->userdata('login'))
         {
             $this->Player_Model->Error($this->lang->line('error_session'));
