@@ -10,19 +10,19 @@
             <ul id="units">
                 <li class="unit">
                     <div class="unitinfo">
-                        <h4>Dry load</h4>
+                        <h4>Cargo ship</h4>
                         <a title="Learn more about Bulk Cargo..." href="<?=$this->config->item('base_url')?>game/shipDescription/23/">
                             <img src="<?=$this->config->item('style_url')?>skin/characters/fleet/120x100/ship_transport_r_120x100.gif">
                         </a>
                         <div class="unitcount"><span class="textLabel">Available: </span><?=$this->Player_Model->all_transports?></div>
-                        <p>Trade ships are one of the most important elements for the development of an empire. They can be used both for the transportation of peaceful goods and for military needs.</p>
+                        <p>Trade ships are the most important support for your island empire. No matter whether they have to transport good, units or news: your seaman will make sure, that everything arrives at its destination quick and safely</p>
                     </div>
                     <label for="textfield_">Buy a merchant ship:</label>
 
                     <div class="forminput">Maximum: 160<br>
 <?if($this->Player_Model->user->gold >= $this->Data_Model->transport_cost_by_count($this->Player_Model->all_transports)){?>
                         <div class="leftButton">
-                            <a href="<?=$this->config->item('base_url')?>actions/transporter/<?=$position?>/" class="button bigButton">Buy a merchant ship</a>
+                            <a onclick="fetch('<?=$this->config->item('base_url')?>actions/transporter/',{method: 'POST'}).then(function(res){ location.reload(); })" class="button bigButton">Buy a merchant ship</a>
                         </div>
 <?}else{?>
 Not enough resources

@@ -13,6 +13,7 @@ class Actions extends CI_Controller
         parent::__construct();
 
         $this->load->model('Player_Model');
+        $this->load->model('Action_Model');
         if (!$this->session->userdata('login'))
         {
             $this->Player_Model->Error('Ваша сессия истекла, войдите снова!');
@@ -1000,7 +1001,7 @@ class Actions extends CI_Controller
         $this->show('tavern', $position);
     }
 
-    function transporter($position = 0)
+    function transporter()
     {
         $cost = $this->Data_Model->transport_cost_by_count($this->Player_Model->all_transports);
         if ($cost > 0 and $this->Player_Model->user->gold >= $cost)
@@ -1015,7 +1016,6 @@ class Actions extends CI_Controller
             $this->db->where(array('id' => $this->Player_Model->user->id));
             $this->db->update($this->session->userdata('universe').'_users');
         }
-        $this->show('port', $position);
     }
 
     function saveAvatarNotes()
