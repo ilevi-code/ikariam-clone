@@ -495,11 +495,11 @@ $lang['military_review'] = 'Panorama army';
 $lang['military_review_text1'] = 'When suddenly the right wing forces to occupy key moves left, it was time to better structure corps. This overview of the main features is the general staff, which helps you to make the military command for his troops. ';
  
 $lang['transport_capacity'] = 'shipping capacity';
-$lang['capacity_ship'] = 'There is no capacity for each shipment';
-$lang['transport_capacity_text'] = 'trade ships are available when they need it.';
-$lang['loading_speed'] = 'Speed';
-$lang['loading_speed_text'] = 'Speed convey said the cargo ship was unloading cargo or slow down how fast your in port.';
-$lang['goods_min'] = 'every minute Goods';
+$lang['capacity_ship'] = 'Capacity for each ship';
+$lang['transport_capacity_text'] = 'Cargo ships are available when you need it.';
+$lang['loading_speed'] = 'Loading speed';
+$lang['loading_speed_text'] = 'Loading speed indicates how quickly cargo ships are loading cargo in your port.';
+$lang['goods_min'] = 'goods per minute';
  
 $lang['get_ambrosy'] = 'Exchange Ambrosia';
 $lang['back'] = 'Back';
