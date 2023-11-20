@@ -446,7 +446,7 @@ class Update_Model extends CI_Model
                    $res_level = ($is == 0) ? 'wood_level' : 'trade_level';
                    $res_count = ($is == 0) ? 'wood_count' : 'trade_count';
                    $res_start = ($is == 0) ? 'wood_start' : 'trade_start';
-                   $res_name = ($is == 0) ? 'Лесопилка' : $this->Data_Model->island_building_by_resource($island->trade_resource);
+                   $res_name = ($is == 0) ? 'Sawmill' : $this->Data_Model->island_building_by_resource($island->trade_resource);
                    
 				   // Цены для улучшения леса
                    $cost = $this->Data_Model->island_cost($is,$island->$res_level);
@@ -465,16 +465,8 @@ class Update_Model extends CI_Model
                            $this->db->set($res_start, 0);
                            $this->db->where(array('id' => $this->Player_Model->islands[$island->id]->id));
                            $this->db->update($this->session->userdata('universe').'_islands');
-                           // Отправляем сообщения
                            $users_sended = array();
-                           // Склонения
-                           switch($island->trade_resource)
-                           {
-                               case 1: $word = 'расширились'; break;
-                               case 2: $word = 'расширился'; break;
-                               default: $word = 'расширилась'; break;
-                           }
-                           $text = '<b>'.$res_name.'</b> расширилась на острове <a href="'.$this->config->item('base_url').'game/island/'.$island->id.'/">'.$island->name.' ('.$island->x.':'.$island->y.')</a>!';
+                           $text = '<b>'.$res_name.'</b> was expanded on the island <a href="'.$this->config->item('base_url').'game/island/'.$island->id.'/">'.$island->name.' ('.$island->x.':'.$island->y.')</a>!';
                            for ($i = 0; $i <= 15; $i++)
                            {
                                $town_text = 'city'.$i;
