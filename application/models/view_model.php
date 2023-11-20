@@ -236,7 +236,7 @@ class View_Model extends CI_Model
         if(isset($param1) and !is_array($param1) and !is_object($param1))
 		{
 		    $pos_text = 'pos'.$param1.'_type';
-            $type = ($param1 > 0 and $param1 <= 15) ? $this->Player_Model->now_town->$pos_text : $this->Data_Model->building_type_by_class($location);
+            $type = ($param1 > 0 and $param1 < 15) ? $this->Player_Model->now_town->$pos_text : $this->Data_Model->building_type_by_class($location);
 		}
         switch($location)
         {
