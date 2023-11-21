@@ -1,5 +1,5 @@
 <div id="civilopedia_menu" class="dynamic" style="margin-bottom:10px;">
-    <h3 class="header">Икипедия</h3>
+    <h3 class="header">Help</h3>
     <div class="main">
         <ul>
             <li>
