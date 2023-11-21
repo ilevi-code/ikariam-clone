@@ -425,6 +425,8 @@ li{width:100px;height:26px;padding-left:32px;line-height:26px;background-repeat:
 #container ul.resources
 .glass{background-image:url(resources/icon_glass.gif);background-position:4px 2px}
 #container ul.resources
+.crystal{background-image:url(resources/icon_glass.gif);background-position:4px 2px}
+#container ul.resources
 .sulfur{background-image:url(resources/icon_sulfur.gif);background-position:2px 2px}
 #container ul.resources
 .population{background-image:url(resources/icon_population.gif);padding-left:40px;background-position:2px 0px}
@@ -481,7 +483,7 @@ auto;width:180px;font-weight:bold;font-size:12px;text-align:center;color:#542c0f
 h1{margin:0
 auto 0 375px;font-weight:bold;font-size:18px;line-height:40px;color:#b03937}
 #mainview
-.buildingDescription{position:relative;height:auto;min-height:120px;margin:0px
+.buildingDescription{position:relative;height:auto;margin:0px
 10px 10px 10px}
 #mainview .buildingDescription
 p{margin-right:160px}
