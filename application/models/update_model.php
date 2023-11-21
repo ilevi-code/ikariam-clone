@@ -1270,8 +1270,8 @@ class Update_Model extends CI_Model
                                     'to' => $spy->to,
                                     'mission' => $spy->mission_type,
                                     'date' => $spy->mission_start + $time,
-                                    'desc' => 'Ваш шпион прибыл в '.$town->name.'.',
-                                    'text' => 'Ваш шпион прибыл в '.$town->name.'.'
+                                    'desc' => 'Your spy has arrived to '.$town->name.'.',
+                                    'text' => 'Your spy has arrived to '.$town->name.'.'
                                 );
                                 $this->Player_Model->spyes[$town_id][$spy->id]->mission_type = 0;
                                 $this->Player_Model->spyes[$town_id][$spy->id]->mission_start = 0;

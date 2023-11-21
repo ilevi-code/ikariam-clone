@@ -3,9 +3,9 @@
         $config['total_rows'] = SizeOf($this->Player_Model->towns_messages);
         $config['per_page'] = '10';
         $config['num_links'] = 3;
-g       $config['next_link'] = '<img src="'.$this->config->item('style_url').'skin/img/resource/btn_max.png" title="Next">';
+        $config['next_link'] = '<img src="'.$this->config->item('style_url').'skin/img/resource/btn_max.png" title="Next 10...">';
         $config['last_link'] = '<img src="'.$this->config->item('style_url').'skin/img/resource/btn_max.png" title="Last">';
-        $config['prev_link'] = '<img src="'.$this->config->item('style_url').'skin/img/resource/btn_min.png" title="Previous">';
+        $config['prev_link'] = '<img src="'.$this->config->item('style_url').'skin/img/resource/btn_min.png" title="Previous 10...">';
         $config['first_link'] = '<img src="'.$this->config->item('style_url').'skin/img/resource/btn_min.png" title="First">';
         $this->pagination->initialize($config);
         $msg_id = $param1;
