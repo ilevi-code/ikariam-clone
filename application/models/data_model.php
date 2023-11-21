@@ -237,7 +237,7 @@ class Data_Model extends CI_Model
             case 23: return 'ship_transport'; break;
         }
     }
-	
+
     /**
      * Цены на армию
      * @param <int> $type
@@ -258,7 +258,11 @@ class Data_Model extends CI_Model
         $crystal = '0 0 0 0 0 0 0 0 0 0 0 0 0 450 0 0 0 0 0 0 0 750 0';
         $gold = '3 12 1 4 2 4 3 15 25 30 15 45 10 20 0 40 30 90 45 50 130 70 0';
         $time = '300 900 300 814 600 850 631 1383 2068 2040 1197 2700 929 2293 0 2400 1800 2400 3000 3000 3000 3600 0';
-        
+        $required_level = [4, 12, 1, 6, 2, 7, 13, 3, 8, 14, 10, 11, 5, 9, 0, 1, 4, 13, 3, 3, 17, 19, 15, 11, 7, 9];
+        $required_research = [[4, 3], [4, 12], null, [4, 3], null, [4, 6], [4, 11],
+            [4, 4], [4, 7], [4, 13], [3, 12], [3, 15], [2, 9], [3, 8], null, null, [1, 8], [1, 12],
+            [1, 2], [1, 9], [1, 14], [3, 14], [1, 15], [4, 11], [1, 16], [1, 13]];
+
 		// Параметры
         $defence = '1 3 0 0 0 0 0 1 0 0 0 0 0 0 1 6 3 8 4 0 2 3 0';
         $health = '56 184 13 18 8 16 12 88 54 32 29 40 22 12 12 120 110 236 132 86 56 47 30';
@@ -305,6 +309,8 @@ class Data_Model extends CI_Model
         $return['crystal'] = ($crystal_array[$type] > 0) ? $crystal_array[$type] : 0;
         $return['gold'] = ($gold_array[$type] > 0) ? $gold_array[$type] : 0;
         $return['time'] = ($time_array[$type] > 0) ? $time_array[$type] : 0;
+        $return['required_level'] = count($required_level) > $type ? $required_level[$type] : 0;
+        $return['required_research'] = count($required_research) > $type ? $required_research[$type] : 0;
 
         $return['defence'] = ($defence_array[$type] > 0) ? $defence_array[$type] : 0;
         $return['health'] = ($health_array[$type] > 0) ? $health_array[$type] : 0;
@@ -1034,7 +1040,7 @@ class Data_Model extends CI_Model
      */
     function get_research($way = 1, $id = 1, $research = NULL)
     {
-        if ($way == 1 and $id > 14){$id = 14;}
+        if ($way == 1 and $id > 17){$id = 17;}
         if ($way == 2 and $id > 15){$id = 15;}
         if ($way == 3 and $id > 16){$id = 16;}
         if ($way == 4 and $id > 14){$id = 14;}
@@ -1132,15 +1138,34 @@ class Data_Model extends CI_Model
                     case 13:
                         $return['name'] = $this->lang->line('research1_13_name');
                         $return['desc'] = $this->lang->line('research1_13_desc');
-                        $return['points'] = 93240;
+                        $return['points'] = 53000;
                         if ($research->res1_12 == 0){ $return['need_way'] = 1; $return['need_id'] = 12; }
-                        elseif ($research->res3_9 == 0){ $return['need_way'] = 3; $return['need_id'] = 9; }
                     break;
                     case 14:
                         $return['name'] = $this->lang->line('research1_14_name');
                         $return['desc'] = $this->lang->line('research1_14_desc');
-                        $return['points'] = 532800;
+                        $return['points'] = 93240;
                         if ($research->res1_13 == 0){ $return['need_way'] = 1; $return['need_id'] = 13; }
+                        elseif ($research->res3_9 == 0){ $return['need_way'] = 3; $return['need_id'] = 9; }
+                    break;
+                    case 15:
+                        $return['name'] = $this->lang->line('research1_15_name');
+                        $return['desc'] = $this->lang->line('research1_15_desc');
+                        $return['points'] = 120000;
+                        if ($research->res1_14 == 0){ $return['need_way'] = 1; $return['need_id'] = 14; }
+                    break;
+                    case 16:
+                        $return['name'] = $this->lang->line('research1_16_name');
+                        $return['desc'] = $this->lang->line('research1_16_desc');
+                        $return['points'] = 475000;
+                        if ($research->res1_15 == 0){ $return['need_way'] = 1; $return['need_id'] = 15; }
+                        elseif ($research->res3_15 == 0){ $return['need_way'] = 3; $return['need_id'] = 15; }
+                    break;
+                    case 17:
+                        $return['name'] = $this->lang->line('research1_17_name');
+                        $return['desc'] = $this->lang->line('research1_17_desc');
+                        $return['points'] = 532800;
+                        if ($research->res1_16 == 0){ $return['need_way'] = 1; $return['need_id'] = 16; }
                         elseif ($research->res2_14 == 0){ $return['need_way'] = 2; $return['need_id'] = 14; }
                         elseif ($research->res3_15 == 0){ $return['need_way'] = 3; $return['need_id'] = 15; }
                         elseif ($research->res4_13 == 0){ $return['need_way'] = 4; $return['need_id'] = 13; }
@@ -1246,7 +1271,7 @@ class Data_Model extends CI_Model
                         $return['desc'] = $this->lang->line('research2_15_desc');
                         $return['points'] = 532800;
                         if ($research->res2_14 == 0){ $return['need_way'] = 2; $return['need_id'] = 14; }
-                        elseif ($research->res1_13 == 0){ $return['need_way'] = 1; $return['need_id'] = 13; }
+                        elseif ($research->res1_16 == 0){ $return['need_way'] = 1; $return['need_id'] = 16; }
                         elseif ($research->res3_15 == 0){ $return['need_way'] = 3; $return['need_id'] = 15; }
                         elseif ($research->res4_13 == 0){ $return['need_way'] = 4; $return['need_id'] = 13; }
                     break;
@@ -1360,7 +1385,7 @@ class Data_Model extends CI_Model
                         $return['desc'] = $this->lang->line('research3_16_desc');
                         $return['points'] = 610560;
                         if ($research->res3_15 == 0){ $return['need_way'] = 3; $return['need_id'] = 15; }
-                        elseif ($research->res1_13 == 0){ $return['need_way'] = 3; $return['need_id'] = 13; }
+                        elseif ($research->res1_16 == 0){ $return['need_way'] = 3; $return['need_id'] = 16; }
                         elseif ($research->res2_14 == 0){ $return['need_way'] = 2; $return['need_id'] = 14; }
                         elseif ($research->res4_13 == 0){ $return['need_way'] = 4; $return['need_id'] = 13; }
                     break;
@@ -1457,7 +1482,7 @@ class Data_Model extends CI_Model
                         $return['desc'] = $this->lang->line('research4_14_desc');
                         $return['points'] = 532800;
                         if ($research->res4_13 == 0){ $return['need_way'] = 4; $return['need_id'] = 13; }
-                        elseif ($research->res1_13 == 0){ $return['need_way'] = 1; $return['need_id'] = 13; }
+                        elseif ($research->res1_16 == 0){ $return['need_way'] = 1; $return['need_id'] = 16; }
                         elseif ($research->res2_14 == 0){ $return['need_way'] = 2; $return['need_id'] = 14; }
                         elseif ($research->res3_15 == 0){ $return['need_way'] = 3; $return['need_id'] = 15; }
                     break;
