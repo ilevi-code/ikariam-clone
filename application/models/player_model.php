@@ -282,7 +282,7 @@ class Player_Model extends CI_Model {
 				$this->Check_Double_Login($user, $_POST['universe']);
                 if($user->blocked_time > 0 and $user->blocked_time > time())
                 {
-                    $this->Error('Ваш аккаунт заблокирован до '.date("m.d.y H:i:s", $user->blocked_time).'!<br>Причина: '.$user->blocked_why);
+                    $this->Error('Your account is blocked until'.date("m.d.y H:i:s", $user->blocked_time).'!<br>Cause: '.$user->blocked_why);
                 }
                 else
                 {
@@ -298,7 +298,7 @@ class Player_Model extends CI_Model {
             }
             else
             {
-                $this->Error('Неверные логин или пароль.');
+                $this->Error('Incorrect username or password.');
             }
         }
     }
@@ -310,7 +310,7 @@ class Player_Model extends CI_Model {
             $this->db->insert($universe.'_double_login', array('account_from' => $this->session->userdata('id'),'account_to' => $user->id,'login_time' => time(), 'ip_address' => $_SERVER['REMOTE_ADDR']));
             $user->double_login++;
             $user->blocked_time = ($user->double_login < 5) ? time()+3600 : time()+(3600*30);
-            $user->blocked_why = ($user->double_login < 5) ? 'Подозрение в мультоводстве!' : 'Мультоводство!';
+            $user->blocked_why = ($user->double_login < 5) ? 'Suspicion of account farming' : 'Account farming';
             $this->db->set('double_login', $user->double_login);
             $this->db->set('blocked_time', $user->blocked_time);
             $this->db->set('blocked_why', $user->blocked_why);

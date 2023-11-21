@@ -116,7 +116,7 @@ class Main extends CI_Controller {
                 {
                     $island = $island_query->row();
                     
-					// Находим позицию
+					// Find a position
                     $position = -1;
                     for ($i = 0; $i <= 15; $i++)
                     {

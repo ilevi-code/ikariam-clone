@@ -1772,10 +1772,10 @@ class Actions extends CI_Controller
                         case 3:
                             $this->Data_Model->Load_User($town->user);
                             $user = $this->Data_Model->temp_users_db[$town->user];
-                            $text = 'Доступно в этом городе '.number_format($user->gold).' <img alt="Золото" src="'.$this->config->item('style_url').'skin/resources/icon_gold.gif">';
+                            $text = 'Available in this city: '.number_format($user->gold).' <img alt="gold" src="'.$this->config->item('style_url').'skin/resources/icon_gold.gif">';
                         break;
                         case 4:
-                            $text = '<table cellpadding="0" cellspacing="0" class="reportTable" id="resources"><tr><th class="unitname">Ресурс</th><th class="count">Кол-во</th></tr><tr><td class="unitname"><img src="'.$this->config->item('style_url').'skin/resources/icon_wood.gif" alt="Стройматериалы" title="Стройматериалы"></td><td class="count">'.number_format($town->wood).'</td></tr><tr><td class="unitname"><img src="'.$this->config->item('style_url').'skin/resources/icon_wine.gif" alt="Виноград" title="Виноград"></td><td class="count">'.number_format($town->wine).'</td></tr><tr><td class="unitname"><img src="'.$this->config->item('style_url').'skin/resources/icon_marble.gif" alt="Мрамор" title="Мрамор"></td><td class="count">'.number_format($town->marble).'</td></tr><tr><td class="unitname"><img src="'.$this->config->item('style_url').'skin/resources/icon_glass.gif" alt="Хрусталь" title="Хрусталь"></td><td class="count">'.number_format($town->crystal).'</td></tr><tr><td class="unitname"><img src="'.$this->config->item('style_url').'skin/resources/icon_sulfur.gif" alt="Сера" title="Сера"></td><td class="count">'.number_format($town->sulfur).'</td></tr></table>';
+                            $text = '<table cellpadding="0" cellspacing="0" class="reportTable" id="resources"><tr><th class="unitname">Resource</th><th class="count">Qty</th></tr><tr><td class="unitname"><img src="'.$this->config->item('style_url').'skin/resources/icon_wood.gif" alt="Construction materials" title="Construction materials"></td><td class="count">'.number_format($town->wood).'</td></tr><tr><td class="unitname"><img src="'.$this->config->item('style_url').'skin/resources/icon_wine.gif" alt="Wine" title="Wine"></td><td class="count">'.number_format($town->wine).'</td></tr><tr><td class="unitname"><img src="'.$this->config->item('style_url').'skin/resources/icon_marble.gif" alt="Marble" title="Marble"></td><td class="count">'.number_format($town->marble).'</td></tr><tr><td class="unitname"><img src="'.$this->config->item('style_url').'skin/resources/icon_glass.gif" alt="Crystal" title="Crystal"></td><td class="count">'.number_format($town->crystal).'</td></tr><tr><td class="unitname"><img src="'.$this->config->item('style_url').'skin/resources/icon_sulfur.gif" alt="Sulfur" title="Sulfur"></td><td class="count">'.number_format($town->sulfur).'</td></tr></table>';
                         break;
                         case 5:
                             $this->Data_Model->Load_Research($town->user);
@@ -1811,12 +1811,12 @@ class Actions extends CI_Controller
                             {
                                 $ways_names[$i] = $this->ways[$i]['name'];
                             }
-                            $text = '<table cellpadding="0" cellspacing="0" class="reportTable"><tr><th class="unitname">Область исследований</th><th class="count">Текущее исследование</th></tr><tr><td class="unitname">Мореходство</td><td class="count">'.$ways_names[1].'</td></tr><tr><td class="unitname">Экономика</td><td class="count">'.$ways_names[2].'</td></tr><tr><td class="unitname">Наука</td><td class="count">'.$ways_names[3].'</td></tr><tr><td class="unitname">Милитаризм</td><td class="count">'.$ways_names[4].'</td></tr></table>';
+                            $text = '<table cellpadding="0" cellspacing="0" class="reportTable"><tr><th class="unitname">Reseaches/th><th class="count">Current research</th></tr><tr><td class="unitname">Seafaring</td><td class="count">'.$ways_names[1].'</td></tr><tr><td class="unitname">Economy</td><td class="count">'.$ways_names[2].'</td></tr><tr><td class="unitname">Science</td><td class="count">'.$ways_names[3].'</td></tr><tr><td class="unitname">Militarism</td><td class="count">'.$ways_names[4].'</td></tr></table>';
                         break;
                         case 6:
                             $this->Data_Model->Load_User($town->user);
                             $user = $this->Data_Model->temp_users_db[$town->user];
-                            $text = ((time() - $user->last_visit) <= 300) ? 'Предводитель находится в режиме онлайн.' : 'Предводитель находится в режиме оффлайн, поэтому он не сможет принять никаких мер для отражения нашего нападения!';
+                            $text = ((time() - $user->last_visit) <= 300) ? 'The leader is online' : 'The leader is offline, so he will not be able to take any measures to repel our attack!';
                         break;
                         case 7:
                             $this->Data_Model->Load_Army($town->id);

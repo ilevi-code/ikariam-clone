@@ -2,19 +2,19 @@
 
 $lang['content'] = 'EN';
 
-$lang['head_description'] = 'Ikariam, il BriwserGame gratuito. Lo scopo del gioco è quello di far nascere e crescere il proprio impero, composto da città, combattendo contro altri giocatori militarmente e strategicamente.';
-$lang['head_title'] = 'Ikariam, the free BrowserGame';
+$lang['head_description'] = 'Ikariam, the free browser game. The aim of the game is to create and grow your own empire, made up of cities, fighting against other players militarily and strategically.';
+$lang['head_title'] = 'Ikariam, a free browser game';
 
 $lang['link_login_title'] = 'Enter';
 $lang['link_login_text'] = 'Login';
-$lang['link_register_title'] = 'Registrati!';
-$lang['link_register_text'] = 'Registrati';
-$lang['link_tour_title'] = 'Un piccolo tour attraverso il mondo di Ikariam';
+$lang['link_register_title'] = 'Register!';
+$lang['link_register_text'] = 'Register';
+$lang['link_tour_title'] = 'A little tour through the world of Ikariam';
 $lang['link_tour_text'] = 'Tour';
 $lang['link_playnow_title'] = 'Play now!';
 $lang['link_playnow_text'] = 'Play now for free!';
-$lang['link_lost_title'] = 'Qui è possibile richiedere una nuova password';
-$lang['link_lost_text'] = 'Password dimenticata?';
+$lang['link_lost_title'] = 'Here you can request a new password';
+$lang['link_lost_text'] = 'Forgoet password?';
 
 $lang['welcome_title'] = ' Live the ancient world!';
 $lang['welcome_text'] = 'The sound of the sea, a white sandy beach and sun! On a small island somewhere in the Mediterranean, an ancient civilisation arises. Under your leadership an era of wealth and discovery begins. Welcome to Ikariam.';
@@ -25,23 +25,23 @@ $lang['password'] = 'Password';
 $lang['login'] = 'Login';
 $lang['email'] = 'E-Mail';
 
-$lang['request_password'] = 'Richiedi una password';
+$lang['request_password'] = 'Restore password';
 
-$lang['error_email'] = 'Inserisci il tuo indirizzo E-Mail';
-$lang['error_email2'] = 'L\'indirizzo E-Mail non &egrave; valido!';
+$lang['error_email'] = 'Please enter your email address';
+$lang['error_email2'] = 'The e-mail address is unavailable';
 $lang['error_email3'] = 'E-Mail hhhhh da tradurre!';
-$lang['error_universe'] = 'Scegli un\'universo!';
-$lang['error_order'] = 'Devi scegliere un nome utente!';
-$lang['error_name_length'] = 'Il nome utente deve avere minimo 3 e massimo 30 caratteri';
-$lang['error_password_length'] = 'La password deve avere minimo 3 e massimo 30 caratteri';
-$lang['error_blocked_text_1'] = 'Il tuo account &egrave; stato bannato';
-$lang['error_blocked_text_2'] = 'Motivo';
-$lang['error_world_text_1'] = 'nel mondo';
-$lang['error_world_text_2'] = 'non ci sono posti per regolamento!';
-$lang['error_name'] = 'Nome utente gi&agrave; utilizzato!';
-$lang['error_activation'] = 'Attivazione account errata!';
+$lang['error_universe'] = 'Choose a universe!';
+$lang['error_order'] = 'You need to choose a username!';
+$lang['error_name_length'] = 'The username must have a minimum of 3 and a maximum of 30 characters';
+$lang['error_password_length'] = 'The password must have a minimum of 3 and a maximum of 30 characters';
+$lang['error_blocked_text_1'] = 'Your account is been banned';
+$lang['error_blocked_text_2'] = 'Reason';
+$lang['error_world_text_1'] = 'The world ';
+$lang['error_world_text_2'] = ' is full';
+$lang['error_name'] = 'Username is already taken';
+$lang['error_activation'] = 'Incorrect account activation!';
 
-$lang['success_password'] = 'Una password generata &egrave; stata inviata all1\'indirizzo e-mail';
+$lang['success_password'] = 'A generated password is was sent to the email address';
 
 $lang['register_title'] = 'Benvenuti in Ikariam';
 $lang['register_text'] = 'Per iniziare il gioco &egrave; necessario inserire il nome utente, password e indirizzo e-mail e accettare le regole del gioco.';

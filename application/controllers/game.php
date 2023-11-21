@@ -473,7 +473,7 @@ class Game extends CI_Controller {
         $position = $this->Data_Model->get_position(5, $this->Player_Model->now_town);
         if ($position == 0)
         {
-            $this->show('error','Казарма еще не построена!');
+            $this->show('error','The barracks have not yet been built!');
         }
         else
         {
@@ -486,7 +486,7 @@ class Game extends CI_Controller {
         $position = $this->Data_Model->get_position(4, $this->Player_Model->now_town);
         if ($position == 0)
         {
-            $this->show('error','Верфь еще не построена!');
+            $this->show('error','The shipyard has not yet been built!');
         }
         else
         {
@@ -531,12 +531,12 @@ class Game extends CI_Controller {
             }
             else
             {
-                $this->show('error','Игрок не найден!');
+                $this->show('error','Player not found!');
             }
         }
         else
         {
-            $this->show('error','Вы не сможете отправить сообщение самому себе!');
+            $this->show('error','You cant send a message to yourself!');
         }
     }
 
@@ -555,7 +555,7 @@ class Game extends CI_Controller {
         $pos_type = 'pos'.$position.'_type';
         if ($position == 0 or $this->Player_Model->now_town->$pos_type != 6)
         {
-            $this->show('error','Склад еще не построен!');
+            $this->show('error','The warehouse has not yet been built!');
         }
         else
         {
