@@ -303,6 +303,7 @@ $lang['military_advisor'] = 'Military Advisor';
 $lang['error'] = 'Error';
 $lang['finances'] = 'Table financial settlement';
 $lang['research_detail'] = 'page detailed research';
+$lang['units_breadcrumb'] = 'units details';
 $lang['merchant_navy'] = 'ship trade';
 $lang['transport'] = 'Shipping';
 $lang['send_spy'] = 'Send spies';
@@ -315,8 +316,9 @@ $lang['back_island'] = 'Back to the island';
 $lang['back_town'] = 'Back to the city';
 $lang['full_info'] = 'General information about Ikariam';
 $lang['village'] = 'Barbarian Village';
-$lang['research_info'] = 'page detailed research';
+$lang['research_info'] = 'Research details';
 $lang['saw_mill'] = 'Saw Mill';
+$lang['info_units_breadcrumb'] = 'Unit details';
 
 $lang['error_session'] = 'Your login session has expired, please login via the Start!';
 $lang['error_academy_null'] = 'unbuilt Academy';
@@ -478,7 +480,7 @@ $lang['in_turn'] = 'In queue';
 $lang['premium_turn'] = 'A Premium account is needed to use the construction list.';
 $lang['dismiss_units'] = 'Sacked soldier';
 $lang['dismiss_ships'] = 'Firing boats';
- 
+
 $lang['upgrade'] = 'Upgrade';
 $lang['is_upgrading'] = 'is being upgraded!';
 $lang['level'] = 'level';

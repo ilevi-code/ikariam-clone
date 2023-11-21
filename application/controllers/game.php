@@ -427,6 +427,11 @@ class Game extends CI_Controller {
         $this->show('researchDetail', $id);
     }
 
+    function unitDescription($id = 1)
+    {
+        $this->show('unitDescription', $id);
+    }
+
     /**
      * Карта мира
      * @param <int> $x

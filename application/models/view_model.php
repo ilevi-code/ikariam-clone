@@ -128,6 +128,7 @@ class View_Model extends CI_Model
 			case 'highscore':
 			case 'allyHighscore':
 			case 'sendAllyMex':
+            case 'unitDescription':
                 $this->load->view('view/'.$location);
             break;
             case 'acp_index':
@@ -157,8 +158,11 @@ class View_Model extends CI_Model
             case 'demolition': $this->load->view('sidebox/'.$location, array('position' => $param1)); break;
             case 'worldmap_iso': $this->load->view('sidebox/'.$location, array('x' => $param1, 'y' => $param2)); break;
             case 'researchDetail':
-            case 'buildingDetail':
-            case 'informations': $this->load->view('sidebox/'.$location, array('id' => $param1)); break;
+            case 'buildingDetail': $this->load->view('sidebox/'.$location, array('id' => $param1)); break;
+            case 'unitDescription':
+                $param1 = 46;
+            case 'informations':
+                $this->load->view('sidebox/informations', array('id' => $param1)); break;
             case 'cityMilitary':
                 $this->load->view('sidebox/cityMilitary', array('type' => $param1)); break;
             case 'academy':
@@ -288,6 +292,7 @@ class View_Model extends CI_Model
             case 'premiumDetails':
 			case 'premiumPayment': $caption = $this->lang->line('ikariam_plus'); $file = 'null'; break;
             case 'researchDetail': $caption = $this->lang->line('research_detail'); $file = 'null'; break;
+            case 'unitDescription': $caption = $this->lang->line('units_breadcrumb'); $file = 'null'; break;
             case 'merchantNavy': $caption = $this->lang->line('merchant_navy'); $file = 'null'; break;
             case 'transport': $caption = $this->lang->line('transport'); $file = '_island'; break;
             case 'sendSpy': $caption = $this->lang->line('send_spy'); $file = '_island'; break;
