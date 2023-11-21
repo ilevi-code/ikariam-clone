@@ -49,5 +49,11 @@ class Action_Model extends CI_Model {
 
         return $this->engouh_resource_for_upgrade($building_class, $building_level);
     }
+
+    public function have_researched($category, $research_num)
+    {
+        $research_name = "res".$category."_".$research_num;
+        return $this->Player_Model->research->$research_name > 0;
+    }
 }
 

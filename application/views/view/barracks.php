@@ -6,30 +6,22 @@
             <h3 class="header"><?=$this->lang->line('recruit_units')?></h3>
             <div class="content">
                 <ul id="units">
-<?for($i = 1; $i <= 14; $i++){?>
-<?
-    if (($i == 1 and $this->Player_Model->research->res4_3 > 0) or // 4
-        ($i == 2 and $this->Player_Model->research->res4_12 > 0) or // 12
-        ($i == 3) or // 1
-        ($i == 4 and $this->Player_Model->research->res4_3 > 0) or // 6
-        ($i == 5) or // 2
-        ($i == 6 and $this->Player_Model->research->res4_6 > 0) or // 7
-        ($i == 7 and $this->Player_Model->research->res4_11 > 0) or // 13
-        ($i == 8 and $this->Player_Model->research->res4_4 > 0) or // 3
-        ($i == 9 and $this->Player_Model->research->res4_7 > 0) or // 8
-        ($i == 10 and $this->Player_Model->research->res4_13 > 0) or // 14
-        ($i == 11 and $this->Player_Model->research->res3_12 > 0) or // 10
-        ($i == 12 and $this->Player_Model->research->res3_15 > 0) or // 11
-        ($i == 13 and $this->Player_Model->research->res2_9 > 0) or // 5
-        ($i == 14 and $this->Player_Model->research->res3_8 > 0)){ // 9
-?>
-<?
+<?for($i = 1; $i <= 14; $i++){
+    $researched = true;
+
+    $cost = $this->Data_Model->army_cost_by_type($i, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
+    $cost_research = $cost['required_research'];
+    if (!is_null($cost_research)) {
+        [$category, $research_num] = $cost_research;
+        $researched = $this->Action_Model->have_researched($category, $research_num);
+    }
+
+    if ($researched) {
     $max_wood = 0;
     $max_sulfur = 0;
     $max_wine = 0;
     $max_crystal = 0;
     $max_peoples = 0;
-    $cost = $this->Data_Model->army_cost_by_type($i, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
     $class = $this->Data_Model->army_class_by_type($i);
     if ($cost['wood'] > 0){ $max_wood = floor($this->Player_Model->now_town->wood/$cost['wood']);}
     if ($cost['sulfur'] > 0){ $max_sulfur = floor($this->Player_Model->now_town->sulfur/$cost['sulfur']); }
@@ -82,19 +74,7 @@
                             <?=$this->lang->line('is_upgrading')?>
                         </div>
 <?}else{?>
-<?if(   ($i == 1 and $level < 4) or // 4
-        ($i == 2 and $level < 12) or // 12
-        ($i == 4 and $level < 6) or // 6
-        ($i == 5 and $level < 2) or // 2
-        ($i == 6 and $level < 7) or // 7
-        ($i == 7 and $level < 13) or // 13
-        ($i == 8 and $level < 3) or // 3
-        ($i == 9 and $level < 8) or // 8
-        ($i == 10 and $level < 14) or // 14
-        ($i == 11 and $level < 10) or // 10
-        ($i == 12 and $level < 11) or // 11
-        ($i == 13 and $level < 5) or // 5
-        ($i == 14 and $level < 9)){ // 9?>
+<?if ($cost['required_level'] > $level) {?>
                         <div class="forminput"><?=$this->lang->line('building_low')?></div>
 <?}else{?>
                         <div class="forminput">
