@@ -110,6 +110,7 @@ class View_Model extends CI_Model
             case 'safehouseMissions':
             case 'safehouseReports':
             case 'islandBoard':
+            case 'newAgoraPost':
 			case 'diplomacyAdvisor':
             case 'diplomacyAdvisorOutBox':
             case 'sendIKMessage':
@@ -271,6 +272,7 @@ class View_Model extends CI_Model
    			case 'winegrower':
             case 'alchemist':
             case 'warehouse': $file = 'town'; break;
+            case 'newAgoraPost': $file = 'islandBoard'; break;
             case 'cityMilitary': $caption = $this->lang->line('military_advisor_title'); $file = 'town'; break;
             case 'buildingDetail': $caption = $this->lang->line('building_info'); $file = 'world'; break;
             case 'researchAdvisor': $caption = $this->lang->line('research_advisor'); $file = 'world'; break;

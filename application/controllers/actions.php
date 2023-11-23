@@ -1964,25 +1964,26 @@ class Actions extends CI_Controller
             redirect($this->config->item('base_url').'game/safehouse/', 'refresh');
         }
     }
-    
+
 	// agora
-	function islandBoard()
+	function postAgora()
 	{
-	    if (isset($_POST['commento']))
+        // TODO verify that the user indeed has a town in this island
+	    if (isset($_POST['subject']) && isset($_POST['message']))
 	    {
-            $content = $_POST['comment'];
-            $author  = $this->Player_Model->user->login;
             $data = array(
-                    'author' => $author,
-                    'content' => $content,
-                    'island' => $this->Player_Model->island_id 
+                    'author' => $this->Player_Model->user->id,
+                    'message' => strip_tags($_POST['message']),
+                    'subject' => strip_tags($_POST['subject']),
+                    'island_id' => $this->Player_Model->island_id,
+                    'post_date' => time(),
        		);
 
-            $this->db->insert($this->session->userdata('universe').'_agora', $data); 
-            redirect($this->config->item('base_url').'game/islandBoard/', 'refresh');
-		}  
+            $this->db->insert($this->session->userdata('universe').'_agora', $data);
+            redirect($this->config->item('base_url').'game/islandBoard/'.$this->Player_Model->island_id, 'refresh');
+		}
         else
-		{ 
+		{
             $this->show('error');
 		}
 	}

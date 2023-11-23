@@ -1,0 +1,54 @@
+.bold {
+  font-weight: 700;
+}
+.tinyFont {
+  font-size: 10px;
+  text-decoration: none !important;
+}
+#diplomacyIslandBoard .content {
+  word-wrap: break-word;
+}
+#diplomacyIslandBoard .newMessage {
+  margin: 20px;
+}
+#diplomacyIslandBoard .postMessage {
+  margin: 10px 20px;
+}
+#diplomacyIslandBoard .newMessage .textfield {
+  width: 500px;
+}
+.textfield:focus, html .message_chat:focus {
+  border: 1px solid #c9a584;
+    border-top-color: rgb(201, 165, 132);
+    border-left-color: rgb(201, 165, 132);
+  border-top-color: #5d4c2f;
+  border-left-color: #5d4c2f;
+}
+
+input.textfield, textarea, textarea.textfield, select, select.textfield, html .message_chat {
+  border: 1px solid #c9a584;
+    border-top-color: rgb(201, 165, 132);
+    border-left-color: rgb(201, 165, 132);
+  border-top-color: #5d4c2f;
+  border-left-color: #5d4c2f;
+  padding: 2px;
+  background: #ffffeb;
+  font: normal 14px Arial, Helvetica, sans-serif;
+}
+
+#diplomacyIslandBoard .newMessage textarea {
+  height: 100px;
+  margin: 0;
+  width: 500px;
+  resize: none;
+}
+input.textfield, textarea, textarea.textfield, select, select.textfield, html .message_chat {
+  border: 1px solid #c9a584;
+    border-top-color: rgb(201, 165, 132);
+    border-left-color: rgb(201, 165, 132);
+  border-top-color: #5d4c2f;
+  border-left-color: #5d4c2f;
+  padding: 2px;
+  background: #ffffeb;
+  font: normal 14px Arial, Helvetica, sans-serif;
+}

@@ -764,15 +764,22 @@ class Game extends CI_Controller {
         }	
 	
 	}
-    
+
 	// agora
 	function islandBoard($id = 0)
 	{
         $this->load->model('Island_Model');
         $this->Island_Model->Load_Island($id);
-		$this->show('islandBoard');
-	}	
-	
+		$this->show('islandBoard', $id);
+	}
+
+    function newAgoraPost($id = 0)
+    {
+        $this->load->model('Island_Model');
+        $this->Island_Model->Load_Island($id);
+		$this->show('newAgoraPost', $id);
+    }
+
 	function safehouseMissions($spy = 0)
     {
         if ($spy > 0 and isset($this->Player_Model->spyes[$this->Player_Model->town_id][$spy]))

@@ -18,12 +18,14 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 CREATE TABLE `alpha_agora` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `autore` text COLLATE latin1_general_ci NOT NULL,
-  `contenuto` text COLLATE latin1_general_ci NOT NULL,
-  `isola` varchar(4) COLLATE latin1_general_ci NOT NULL,
-  `data` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `ora` varchar(15) COLLATE latin1_general_ci NOT NULL,
-  PRIMARY KEY (`id`)
+  `author` int(11) COLLATE latin1_general_ci NOT NULL,
+  `subject` varchar(50) COLLATE latin1_general_ci NOT NULL,
+  `message` varchar(1000) COLLATE latin1_general_ci NOT NULL,
+  `island_id` int(11) NOT NULL,
+  `post_date` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (author) REFERENCES alpha_users(id),
+  FOREIGN KEY (island_id) REFERENCES alpha_islands(id)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 -- --------------------------------------------------------

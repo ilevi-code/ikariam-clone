@@ -94,6 +94,21 @@ class Data_Model extends CI_Model
         }
     }
 
+    function Load_Agora($island_id, $offset = 0)
+    {
+        $universe = $this->session->userdata('universe');
+        $agora = $universe.'_agora';
+        $users = $universe.'_users';
+        $query = $this->db->query('SELECT '.$agora.'.*, '.$users.'.login FROM '.$agora.' INNER JOIN '.$users.' ON '. $agora.'.author = '.$users.'.id '.
+                        'WHERE island_id = '.$island_id.' ORDER BY `post_date` DESC LIMIT 5 OFFSET '.$offset);
+        $messages = array();
+        foreach ($query->result() as $message)
+        {
+            array_push($messages, $message);
+        }
+        return $messages;
+    }
+
     function Load_Trade_Routes($id = 0)
     {
         if ($id > 0){if (!isset($temp_trade_routes_db[$id])){
@@ -1793,6 +1808,14 @@ class Data_Model extends CI_Model
             case 10: return 0; break;
 
         }
+    }
+
+    function count_message_in_agora($island_id)
+    {
+        $universe = $this->session->userdata('universe');
+        $agora = $universe.'_agora';
+        $query = $this->db->query('SELECT count(*) as count FROM '.$agora.' WHERE island_id = '.$island_id);
+        return $query->row()->count;
     }
 
 }
