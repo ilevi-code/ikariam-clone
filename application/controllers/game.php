@@ -789,7 +789,7 @@ class Game extends CI_Controller {
         }
         else
         {
-            $this->show('error','Шпион не найден!');
+            $this->show('error','No spies in this town');
         }
     }
 

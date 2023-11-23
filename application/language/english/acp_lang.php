@@ -21,7 +21,7 @@ $lang['config_town_queue_size']             = 'Town queue size';
 $lang['config_army_queue_size']             = 'Army queue size';
 $lang['config_notes_default']               = 'Notes default';
 $lang['config_notes_premium']               = 'Notes premium';
-$lang['config_trade_route_time']            = 'Trade route time';
+$lang['config_trade_route_time']            = 'Trade route duration';
 $lang['config_head_news']                   = 'News header text';
 $lang['config_research_rate']               = 'Research rate';
 

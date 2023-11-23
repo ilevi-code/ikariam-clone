@@ -1285,7 +1285,7 @@ class Actions extends CI_Controller
         }
         else
         {
-            $this->Error('Недостаточно баллов действий!');
+            $this->Error('No action points!');
         }
     }
 
