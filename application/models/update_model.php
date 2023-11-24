@@ -11,6 +11,7 @@ class Update_Model extends CI_Model
     function __construct()
     {
         parent::__construct();
+        include_once('application/libraries/town_message.php');
         $this->Update_Player($this->session->userdata('id'));
     }
 
@@ -84,6 +85,7 @@ class Update_Model extends CI_Model
     function Update_Towns()
     {
            $towns_messages = array();
+           $new_town_messages = array();
            // Пробегаемся по городам
            foreach($this->Player_Model->towns as $town)
            {
@@ -192,7 +194,7 @@ class Update_Model extends CI_Model
                            $crystal = $this->Player_Model->towns[$i]->crystal - $new_cost['crystal'];
                            $sulfur = $this->Player_Model->towns[$i]->sulfur - $new_cost['sulfur'];
                        }
-                       // Если время строить
+
                        if (($this->Player_Model->towns[$i]->build_start + $cost['time']) <= time())
                        {
                            if (($step == 0) or ($step > 0 and $wood >= 0 and $marble >= 0 and $wine >= 0 and $crystal >= 0 and $sulfur >= 0))
@@ -207,14 +209,18 @@ class Update_Model extends CI_Model
                                     $this->db->set($level_text, $this->Player_Model->towns[$i]->$level_text);
                                     $this->db->set($type_text, $this->Player_Model->towns[$i]->$type_text);
                                     // Отправляем сообщение
-                                    $message = ($this->Player_Model->towns[$i]->$level_text == 1) ? 'Construction "<a href="'.$this->config->item('base_url').'game/city/'.$i.'/'.$this->Data_Model->building_class_by_type($buildings[0]['type']).'/'.$buildings[0]['position'].'/">'.$this->Data_Model->building_name_by_type($buildings[0]['type']).'</a>" completed!' : 'The level of the building "<a href="'.$this->config->item('base_url').'game/city/'.$i.'/'.$this->Data_Model->building_class_by_type($buildings[0]['type']).'/'.$buildings[0]['position'].'/">'.$this->Data_Model->building_name_by_type($buildings[0]['type']).'</a>" increased to '.$this->Player_Model->towns[$i]->$level_text.'!';
                                     $town_message = array(
-                                        'user' => $this->Player_Model->user->id,
-                                        'town' => $i,
+                                        'user_id' => $this->Player_Model->user->id,
+                                        'town_id' => $i,
                                         'date' => $this->Player_Model->towns[$i]->build_start + $cost['time'],
-                                        'text' => $message
+                                        'type' => TownMessageType::BUILDING_EXPANDED->value,
+                                        'data' => json_encode(array(
+                                            'type' => $buildings[0]['type'],
+                                            'pos' => $buildings[0]['position'],
+                                            'level' => $this->Player_Model->towns[$i]->$level_text
+                                        )),
                                     );
-                                    $towns_messages[] = $town_message;
+                                    $new_town_messages[] = $town_message;
 
                                     // Если не первое здание в очереди
                                     if ($step > 0 and SizeOf($buildings) > 1 and ($cost['wood'] > 0 or $cost['wine'] > 0 or $cost['marble'] > 0 or $cost['crystal'] > 0 or $cost['sulfur'] > 0))
@@ -432,6 +438,7 @@ class Update_Model extends CI_Model
 
                $this->Update_Spyes($town->id);
            }
+           $this->store_new_messages($new_town_messages);
            $this->Send_Messages($towns_messages);
     }
 
@@ -1168,6 +1175,14 @@ class Update_Model extends CI_Model
            {
                $this->db->insert($this->session->userdata('universe').'_town_messages', $message_data);
            }
+    }
+
+    function store_new_messages($messages)
+    {
+       foreach($messages as $message_data)
+       {
+           $this->db->insert($this->session->userdata('universe').'_town_messages_new', $message_data);
+       }
     }
 
     function Send_Spyes_Messages($spyes_messages)

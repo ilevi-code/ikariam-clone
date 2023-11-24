@@ -735,6 +735,19 @@ CREATE TABLE `alpha_town_messages` (
   PRIMARY KEY (`id`,`user`,`town`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
+CREATE TABLE `alpha_town_messages_new` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `user_id` int(11) NOT NULL,
+    `town_id` int(11) NOT NULL,
+    `viewed` BOOLEAN NOT NULL DEFAULT FALSE,
+    `date` int(11) NOT NULL,
+    `type` int(11) NOT NULL,
+    `data` JSON NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`user_id`) REFERENCES alpha_users(id),
+    FOREIGN KEY (`town_id`) REFERENCES alpha_towns(id)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
 
 
 -- --------------------------------------------------------

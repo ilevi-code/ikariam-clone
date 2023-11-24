@@ -496,7 +496,8 @@ class Game extends CI_Controller {
 
     function tradeAdvisor($message_id = 0)
     {
-        // Загружаем сообщения
+        $this->load->model('Data_Model');
+        include_once('application/libraries/town_message.php');
         $this->Player_Model->Load_Town_Messages();
         $this->load->library('pagination');
         $this->show('tradeAdvisor', $message_id);

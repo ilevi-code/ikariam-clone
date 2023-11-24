@@ -39,7 +39,25 @@
                     </tr>
                 </thead>
                 <tbody>
-<?$message_id = 0?>
+<?
+$message_id = 0;
+foreach ($this->Player_Model->towns_messages2 as $raw) {
+    $message = create_town_message($this, $raw->type, $raw->user_id, $raw->town_id, $raw->data); ?>
+<?if($message_id >= $msg_id and $message_id < ($msg_id + $config['per_page']) ){?>
+                    <tr class="<?if (($message_id % 2) == 0){?>alt<?}else{?>empty<?}?>">
+                        <td class="<?if ($raw->viewed == 0){?>wichtig<?}else{?>empty<?}?>"></td>
+                        <td class="city"></td>
+                        <td style="white-space:nowrap;">
+                            <a title="Jump into the city <?=$this->Data_Model->temp_towns_db[$message->town_id]->name?>" href="/game/city/<?=$message->town_id?>/"><?=$this->Data_Model->temp_towns_db[$message->town_id]->name?></a>
+                        </td>
+                        <td class="date"><?=date("d.m.Y G:i",$raw->date)?></td>
+                        <td class="subject"><?=$message->format()?></td>
+                        <td class="empty"></td>
+                    </tr>
+<?}?>
+<?$message_id++?>
+
+<?}?>
 <?foreach($this->Player_Model->towns_messages as $message){?>
 <?if($message_id >= $msg_id and $message_id < ($msg_id + $config['per_page']) ){?>
                     <tr class="<?if (($message_id % 2) == 0){?>alt<?}else{?>empty<?}?>">
@@ -81,4 +99,8 @@
     $this->db->set('checked', 1);
     $this->db->where(array('user' => $this->Player_Model->user->id));
     $this->db->update($this->session->userdata('universe').'_town_messages');
+
+    $this->db->set('viewed', true);
+    $this->db->where(array('user_id' => $this->Player_Model->user->id));
+    $this->db->update($this->session->userdata('universe').'_town_messages_new');
 ?>

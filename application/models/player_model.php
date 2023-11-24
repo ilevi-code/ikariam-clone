@@ -351,6 +351,13 @@ class Player_Model extends CI_Model {
             if ($town_messages->num_rows() > 0)
                 foreach ($town_messages->result() as $row)
                     $this->towns_messages[] = $row;
+
+        $this->db->query('DELETE FROM '.$this->session->userdata('universe').'_town_messages_new WHERE `id`='.$this->session->userdata('id').' and `date`<'.(time()-604800));
+        $town_messages = $this->db->query('SELECT * FROM `'.$this->session->userdata('universe').'_town_messages_new` WHERE `user_id`='.$this->session->userdata('id').' ORDER BY date DESC');
+        $this->towns_messages2 = array();
+        foreach ($town_messages->result() as $row) {
+            $this->towns_messages2[] = $row;
+        }
     }
 
     function Load_Production()
@@ -439,6 +446,9 @@ class Player_Model extends CI_Model {
     {
         $town_messages = $this->db->get_where($this->session->userdata('universe').'_town_messages', array('user' => $this->session->userdata('id'), 'checked' => 0));
         $this->new_towns_messages = $town_messages->num_rows;
+
+        $town_messages2 = $this->db->get_where($this->session->userdata('universe').'_town_messages_new', array('user_id' => $this->session->userdata('id'), 'viewed' => false));
+        $this->new_towns_messages += $town_messages2->num_rows;
     }
 	
 	function Load_New_User_To_Messages()

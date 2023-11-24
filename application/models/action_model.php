@@ -16,6 +16,7 @@ class Action_Model extends CI_Model {
     public function count_queue_upgrades($building_position)
     {
         $queued_upgrades = 0;
+        $building_class = $this->building_position_to_class($building_position);
         for ($i = 0; $i < SizeOf($this->Player_Model->build_line[$this->Player_Model->town_id]); $i++)
         {
             if ($building_class == $this->Player_Model->build_line[$this->Player_Model->town_id][$i]['type'])
