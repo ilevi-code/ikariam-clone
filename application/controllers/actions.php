@@ -1,6 +1,7 @@
 <?php
 
 require_once "game.php";
+require_once "application/libraries/buildings.php";
 
 /**
  * Контроллер действий
@@ -127,7 +128,7 @@ class Actions extends CI_Controller
         }
 
         $level -= 1;
-        $cost = $this->Data_Model->building_cost($type,$level,$this->Player_Model->research,$this->Player_Model->levels[$this->Player_Model->town_id]);
+        $cost = $this->Data_Model->building_cost($type,$level,$this->Player_Model->research,$this->Player_Model->levels[$this->Player_Model->town->id]);
 
         //If this is an academy, reset the scientists
         if ($type == 3 and $level == 0)
@@ -1134,17 +1135,23 @@ class Actions extends CI_Controller
         $this->db->update($this->session->userdata('universe').'_users');
     }
 
-    function occupy_town($island_id, $postion, $user_id)
+    function colonize_position($island_id, $position, $user_id)
     {
-        $this->db->insert($this->session->userdata('universe').'_towns', array('user' => $user_id, 'island' => $island_id, 'position' => $position, 'pos0_level' => 0));
+        $town_values = array(
+            'user' => $user_id,
+            'island' => $island_id,
+            'position' => $position,
+            'last_update' => time(),
+            'pos0_level' => 0,
+        );
+        $this->db->insert($this->session->userdata('universe').'_towns', $town_values);
 
-        $town_query = $this->db->get_where($this->session->userdata('universe').'_towns', array('island' => $this->Island_Model->island->id, 'position' => $position));
+        $town_query = $this->db->get_where($this->session->userdata('universe').'_towns', array('island' => $island_id, 'position' => $position));
         $town = $town_query->row();
 
         $city_text = 'city'.$position;
-        $this->Island_Model->island->$city_text = $town->id;
         $this->db->set('city'.$position, $town->id);
-        $this->db->where(array('id' => $this->Island_Model->island->id));
+        $this->db->where(array('id' => $island_id));
         $this->db->update($this->session->userdata('universe').'_islands');
         return $town;
     }
@@ -1208,57 +1215,69 @@ class Actions extends CI_Controller
         header('Location: /game/island/'.$island_id);
     }
 
-	function colonize($id = 0, $position = -1)
+    function colonize()
     {
-        $new_island = $this->Data_Model->Load_Island($this->get_param('id'));
+        $new_island = $this->Data_Model->Load_Island($this->get_param('island_id'));
+        $position = floor($this->get_param('island_position'));
         $old_island = $this->Data_Model->Load_Island($this->Player_Model->now_town->island);
 
-        if ($this->Player_Model->now_town->actions > 0)
+        if ($this->Player_Model->now_town->actions == 0)
         {
             $this->Error('No action points!');
             return;
         }
 
-        if(SizeOf($this->Player_Model->towns)-1 < $this->Player_Model->levels[$this->Player_Model->capital_id][10])
-        {
-            $resrouces = array(
-                'wood' => floor($_POST['sendresource']) + 1250,
-                'wine' => floor($_POST['sendwine']),
-                'marble' => floor($_POST['sendmarble']),
-                'crystal' => floor($_POST['sendcrystal']),
-                'sulfur' => floor($_POST['sendsulfur']),
-                'peoples' => 40,
-                'actions' => 1,
-            );
-            $ship_count = $this->Action_Model->calc_ships($resources);
-            $user_resources = array(
-                'transports' => $ship_count,
-                'gold' => 9000
-            );
-
-            if (!$this->Action_Model->does_town_have_spare($this->Player_Model->now_town->id, $resources) or
-                !$this->Action_Model->does_town_have_spare($this->Player_Model->user->id, $user_resources) or
-                $this->Action_Model->is_town_occupied($this->Island_Model->island->id, $position))
-            {
-                $this->Error("No enough resources");
-                return;
-            }
-            $town = $this->occupy_town($this->Island_Model->island->id, $position, $this->Player_Model->user->id);
-            $this->remove_resources_from_town($resources);
-            $this->remove_resources_from_user($resources);
-
-            unset($resources['gold']);
-            unset($resources['actions']);
-            $mission_values = array_merge($resources, array(
-                'from' => $this->Player_Model->now_town->id,
-                'to' => $town->id,
-                'next_stage_time' => time(),
-                'mission_type' => MissionType::COLONIZE->value,
-                'peoples' => 40,
-                'ships' => $ship_count,
-            ));
-            $this->db->insert($this->session->userdata('universe').'_missions', $mission_values);
+        $ports_levels = $this->Action_Model->levels_of_building_type($this->Player_Model->now_town->id, BUILDING::PORT);
+        if (count($ports_levels) == 0) {
+            $this->Error('No ports in current city');
+            return;
         }
+
+        if(SizeOf($this->Player_Model->towns) - 1 >= $this->Player_Model->levels[$this->Player_Model->capital_id][10])
+        {
+            $this->Error('Maximum amount of colonies for current palace level');
+            return;
+        }
+
+
+        $resources = array(
+            'wood' => floor($this->get_param('sendresource')) + 1250,
+            'wine' => floor($this->get_param('sendwine')),
+            'marble' => floor($this->get_param('sendmarble')),
+            'crystal' => floor($this->get_param('sendcrystal')),
+            'sulfur' => floor($this->get_param('sendsulfur')),
+            'peoples' => 40,
+            'actions' => 1,
+        );
+        $ship_count = $this->Action_Model->calc_ships($resources);
+        $user_resources = array(
+            'transports' => $ship_count,
+            'gold' => 9000
+        );
+
+        if (!$this->Action_Model->does_town_have_spare($this->Player_Model->now_town->id, $resources) or
+            !$this->Action_Model->does_user_have_spare($this->Player_Model->user->id, $user_resources) or
+            $this->Action_Model->is_town_occupied($new_island->id, $position))
+        {
+            $this->Error("No enough resources");
+            return;
+        }
+        $town = $this->colonize_position($new_island->id, $position, $this->Player_Model->user->id);
+        $this->remove_resources_from_town($this->Player_Model->now_town->id, $resources);
+        $this->remove_resources_from_user($this->Player_Model->user->id, $user_resources);
+
+        unset($resources['actions']);
+        $resource_count = $this->Action_Model->count_resources($resources);
+        $mission_values = array_merge($resources, array(
+            'from' => $this->Player_Model->now_town->id,
+            'to' => $town->id,
+            'state' => MissionState::LOADING->value,
+            'type' => MissionType::COLONIZE->value,
+            'next_stage_time' => time() + $this->Action_Model->calc_load_time($ports_levels, $resource_count),
+            'peoples' => 40,
+            'ships' => $ship_count,
+        ));
+        $this->db->insert($this->session->userdata('universe').'_missions', $mission_values);
         header('Location: /game/island/'.$id);
     }
 

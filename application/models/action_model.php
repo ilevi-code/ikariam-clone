@@ -1,5 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+require_once "application/libraries/buildings.php";
+
 class Action_Model extends CI_Model {
 	public function __construct()
 	{
@@ -11,6 +13,21 @@ class Action_Model extends CI_Model {
         $type_text = 'pos'.$building_position.'_type';
         $building_class = $this->Player_Model->now_town->$type_text;
         return $building_class;
+    }
+
+    public function levels_of_building_type(int $town_id, Building $building_type)
+    {
+        $town = $this->Data_Model->Load_Town($town_id);
+        $levels = array();
+        for ($i = 0; $i <= 14; $i++)
+        {
+            $type_name = 'pos'.$i.'_type';
+            if ($town->$type_name == $building_type->value) {
+                $level_name = 'pos'.$i.'_level';
+                $levels[] = $town->$level_name;
+            }
+        }
+        return $levels;
     }
 
     public function count_queue_upgrades($building_position)
@@ -85,26 +102,22 @@ class Action_Model extends CI_Model {
         return true;
     }
 
-    public function does_user_have_spare($user_id, $resrouce)
+    public function does_user_have_spare($user_id, $resources)
     {
         $user = $this->Data_Model->Load_User($user_id);
-        return $user->transports > $ship_count;
-    }
-
-    public function calc_ships($resources)
-    {
-        $total = 0.0;
         foreach ($resources as $resource => $count) {
-            $total -= $count;
+            if ($user->$resource < $count) {
+                return false;
+            }
         }
-        return ceil(($total) / getConfig('transport_capacity'));
+        return true;
     }
 
     public function is_town_occupied($island_id, $position)
     {
         $position_name = 'city'.$position;
         $island = $this->Data_Model->Load_Island($island_id);
-        return $isalnd->$position_name == 0;
+        return $island->$position_name != 0;
     }
 
     public function is_under_construction($town_id, $position)
@@ -117,6 +130,30 @@ class Action_Model extends CI_Model {
             }
         }
         return false;
+    }
+
+    public function count_resources($resources)
+    {
+        $total = 0.0;
+        foreach ($resources as $resource => $count) {
+            $total += $count;
+        }
+        return $total;
+    }
+
+    public function calc_ships($resources)
+    {
+        return ceil($this->count_resources($resources) / getConfig('transport_capacity'));
+    }
+
+    public function calc_load_time($ports_levels, $resource_count)
+    {
+        $loading_speed = 0.0;
+        foreach ($ports_levels as $port_level) {
+            $loading_speed += $this->Data_Model->speed_by_port_level($port_level);
+
+        }
+        return ceil($resource_count / $loading_speed) * 60; // minutes to seconds
     }
 }
 

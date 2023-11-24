@@ -650,6 +650,7 @@ $lang['colony_error'] = 'You do not meet all the necessary conditions to build a
 $lang['not_peoples_1'] = 'You do not have enough people to send to your new colony. You need to add ';
 $lang['not_peoples_2'] = 'people';
 $lang['not_peoples_3'] = 'Note: Workers are not scientists! Perhaps you can recall a number of workers or scientists, to get the amount of people you need? ';
+$lang['no_ports'] = 'You must a port in your town to load the resources for your colony!';
 $lang['not_tradeships_1'] = 'You do not have enough trade ships! You need';
 $lang['not_tradeships_2'] = 'trade ships!';
 $lang['not_gold_1'] = 'You do not have enough gold! You still need ';

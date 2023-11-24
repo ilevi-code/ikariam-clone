@@ -32,13 +32,8 @@ class Data_Model extends CI_Model
 		    if (!isset($this->temp_towns_db[$id]))
             {
                 $town_table = $this->session->userdata('universe').'_towns';
-                $colonies_table = $this->session->userdata('universe').'_colonies';
-                $query = sprintf("SELECT %s.*, (%s.id is not null) as is_colony ".
-                    "FROM %s LEFT JOIN %s ON %s.id = %s.town_id WHERE %s.id = %d",
-                    $town_table, $colonies_table, $town_table, $colonies_table, $town_table, $colonies_table,
-                $town_table, $id);
-                $result = $this->db->query($query);
-                $return = $result->row();
+                $query = $this->db->get_where($town_table, array('id' => $id));
+                $return = $query->row();
                 $this->temp_towns_db[$id] = $return;
                 return $return;
             }

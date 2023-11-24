@@ -67,12 +67,29 @@ Event.onDOMReady( function() {
                     <li class="wood"><span class="textLabel"><?=$this->lang->line('wood')?>: </span>1,250</li>
                 </ul>
             </div>
-<?$errors = array()?>
-<?if($this->Player_Model->now_town->peoples < 40){ $errors[] = $this->lang->line('not_peoples_1').' <strong>'.number_format(40-$this->Player_Model->now_town->peoples).' '.$this->lang->line('not_peoples_2').'.<br/></strong><em>'.$this->lang->line('not_peoples_3').'</em>';} ?>
-<?if($this->Player_Model->user->gold < 9000){ $errors[] = $this->lang->line('not_gold_1').' <strong>'.number_format(9000-$this->Player_Model->user->gold).' '.$this->lang->line('not_gold_2').'</strong>!';} ?>
-<?if($this->Player_Model->now_town->wood < 1250){ $errors[] = $this->lang->line('not_wood_1').' <strong>'.number_format(1250-$this->Player_Model->now_town->wood).' '.$this->lang->line('not_wood_2').'</strong>!';} ?>
-<?if($this->Player_Model->user->transports < 3){ $errors[] = $this->lang->line('not_tradeships_1').' <strong>'.number_format(3-$this->Player_Model->user->transports).' '.$this->lang->line('not_tradeships_2').'</strong>!';} ?>
-<?if(SizeOf($this->Player_Model->towns)-1 >= $this->Player_Model->levels[$this->Player_Model->capital_id][10]){ $errors[] = $this->lang->line('not_palace_1').' '.(SizeOf($this->Player_Model->towns)-1).' '.$this->lang->line('not_palace_2').' '.$this->Player_Model->levels[$this->Player_Model->capital_id][10].$this->lang->line('not_palace_3');} ?>
+<?php
+require_once "application/libraries/buildings.php";
+$errors = array();
+$ports_levels = $this->Action_Model->levels_of_building_type($this->Player_Model->now_town->id, BUILDING::PORT);
+if (count($ports_levels) == 0) {
+    $errors[] = $this->lang->line('no_ports');
+}
+if ($this->Player_Model->now_town->peoples < 40){
+    $errors[] = $this->lang->line('not_peoples_1').' <strong>'.number_format(40-$this->Player_Model->now_town->peoples).' '.$this->lang->line('not_peoples_2').'.<br/></strong><em>'.$this->lang->line('not_peoples_3').'</em>';
+}
+if ($this->Player_Model->user->gold < 9000) {
+    $errors[] = $this->lang->line('not_gold_1').' <strong>'.number_format(9000-$this->Player_Model->user->gold).' '.$this->lang->line('not_gold_2').'</strong>!';
+}
+if ($this->Player_Model->now_town->wood < 1250) {
+    $errors[] = $this->lang->line('not_wood_1').' <strong>'.number_format(1250-$this->Player_Model->now_town->wood).' '.$this->lang->line('not_wood_2').'</strong>!';
+}
+if ($this->Player_Model->user->transports < 3) {
+    $errors[] = $this->lang->line('not_tradeships_1').' <strong>'.number_format(3-$this->Player_Model->user->transports).' '.$this->lang->line('not_tradeships_2').'</strong>!';
+}
+if (SizeOf($this->Player_Model->towns)-1 >= $this->Player_Model->levels[$this->Player_Model->capital_id][10]) {
+    $errors[] = $this->lang->line('not_palace_1').' '.(SizeOf($this->Player_Model->towns)-1).' '.$this->lang->line('not_palace_2').' '.$this->Player_Model->levels[$this->Player_Model->capital_id][10].$this->lang->line('not_palace_3');
+}
+?>
 
 <?if(SizeOf($errors)> 0){?>
             <div class="errors">
@@ -337,7 +354,7 @@ Event.onDOMReady(function() {transporterDisplay = new transportController(<?=$th
         <span><input id="transporterCount" name="transporters" size="3" maxlength="3" readonly="readonly" value="3" /> / <?=number_format($this->Player_Model->user->transports)?></span>
     </div>
 </div>
-<div class="centerButton">			 
+<div class="centerButton">
     <input id="colonizeBtn" name="action" class="button" type="submit" value="<?=$this->lang->line('base_colony')?>">
 </div>
 </form>
