@@ -79,7 +79,7 @@ class Action_Model extends CI_Model {
         $this->load->model('Data_Model');
         $src_town = $this->Data_Model->Load_Town($src_town_id);
         $dst_town = $this->Data_Model->Load_Town($dst_town_id);
-        return get_travel_time($src_town->island, $dest_town->island);
+        return $this->get_travel_time($src_town->island, $dst_town->island);
 
     }
 
@@ -88,7 +88,7 @@ class Action_Model extends CI_Model {
         $src_island = $this->Data_Model->Load_Island($src_island_id);
         $dst_island = $this->Data_Model->Load_Island($dst_island_id);
         $cost = $this->Data_Model->army_cost_by_type(22, null, null);
-        return $this->Data_Model->time_by_coords($src_island->x, $dst_island->x, $src_island->y, $src_island->y1, $cost['speed']);
+        return $this->Data_Model->time_by_coords($src_island->x, $dst_island->x, $src_island->y, $src_island->y, $cost['speed']);
     }
 
     public function does_town_have_spare($town_id, $resources)

@@ -444,6 +444,7 @@ CREATE TABLE `alpha_missions` (
   `to` varchar(30) NOT NULL,
   `state` int(11) NOT NULL,
   `type` int(11) NOT NULL,
+  `prev_stage_time` BIGINT NOT NULL,
   `next_stage_time` BIGINT NOT NULL,
   `wood` int(11) unsigned NOT NULL DEFAULT '0',
   `wine` int(11) unsigned NOT NULL DEFAULT '0',

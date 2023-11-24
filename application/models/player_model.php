@@ -1,5 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+require_once "application/libraries/mission_data.php";
+
 class Player_Model extends CI_Model {
 
     /**
@@ -74,8 +76,8 @@ class Player_Model extends CI_Model {
                 $town = $this->Data_Model->Load_Town($town->id);
                 $this->warehouses_levels[$town->id] = array();
                 if ($town->pos0_level == 0)
-                { 
-                    continue; 
+                {
+                    continue;
                 }
 
                 $this->capacity[$town->id] = getConfig('standard_capacity');

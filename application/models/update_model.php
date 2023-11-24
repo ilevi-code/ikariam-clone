@@ -1,4 +1,7 @@
 <?php
+
+require_once "application/libraries/mission_data.php";
+
 /**
  * Модель обновления
  */
@@ -516,57 +519,41 @@ class Update_Model extends CI_Model
     {
         $travel_time = $mission->get_travel_time();
         $mission->next_stage_time += $travel_time;
-        $mission->state = MissionState::EN_ROUTE;
+        $mission->state = MissionState::EN_ROUTE->value;
 
         $this->db->set('next_stage_time', $mission->next_stage_time);
         $this->db->set('state', $mission->state->value);
         $this->db->where(array('id' => $mission->id));
-        $this->db->update($this->session->userdata('universe').'_users');
+        $this->db->update($this->session->userdata('universe').'_missions');
     }
 
-    function update_missoin_arrived(Mission $mission)
+    function update_mission_arrived(Mission $mission)
     {
         $dest_town = $this->Data_Model->Load_Town($mission->to);
         $resources = $mission->get_resources();
 
         $update_values = array();
-        foreach ($resources as $resource => $cout)
+        foreach ($resources as $resource => $count)
         {
-            $dest_town[$resource] += $count;
-            array_push($update_values, '`'.$resource.'` = `'.$resource.' + '.$count.' ');
+            $dest_town->$resource += $count;
+            array_push($update_values, '`'.$resource.'` = `'.$resource.'` + '.$count.' ');
         }
 
         $dest_user = $this->Data_Model->Load_User($dest_town->user);
-        $$dest_user['gold'] += $mission->gold;
-        $this->db->query('UPDATE '.$this->session->userdata('universe').'_towns SET '.implode(',',$update_values).' WHERE `id`='.$dest_town);
+        $dest_user->gold += $mission->gold;
+        $this->db->query('UPDATE '.$this->session->userdata('universe').'_towns SET '.implode(',',$update_values).' WHERE `id`='.$dest_town->id);
         $this->db->query('UPDATE '.$this->session->userdata('universe').'_users SET `gold`=`gold`+'.$mission->gold.' WHERE `id`='.$dest_user->id);
-        $mission->state = MissionState::FINISHED;
+        $mission->state = MissionState::FINISHED->value;
     }
 
     function update_transport(Mission $mission)
     {
         switch ($mission->state)
         {
-        case MissionState::LOADING:
-            // TODO insert the town and colony entry
+        case MissionState::LOADING->value;
             $this->update_mission_en_route($mission);
             break;
-        case MissionState::EN_ROUTE:
-            array(
-                'user' => $this->Player_Model->user->id,
-                'from' => $this->Player_Model->now_town->id,
-                'to' => $town->id, 'loading_from_start' => time(),
-                'mission_type' => 1,
-                'wood' => $sendresource+1250,
-                'wine' => $sendwine,
-                'marble' => $sendmarble,
-                'crystal' => $sendcrystal,
-                'sulfur' => $sendsulfur,
-                'gold' => 9000,
-                'peoples' => 40,
-                'ship_transport' => $transporters
-            );
-            $this->db->insert($this->session->userdata('universe').'_missions', values);
+        case MissionState::EN_ROUTE->value;
             $this->update_mission_arrived($misison);
             break;
         }
@@ -576,45 +563,51 @@ class Update_Model extends CI_Model
     {
         switch ($mission->state)
         {
-        case MissionState::LOADING:
+        case MissionState::LOADING->value;
             $this->update_mission_en_route($mission);
             break;
-        case MissionState::EN_ROUTE:
+        case MissionState::EN_ROUTE->value;
             $this->load->model('Island_Model');
-            $island = $this->Island_Model->Load_Island($id);
-            $this->update_missoin_arrived($mission);
+                    $this->db->set('pos0_level', 1);
+                    $this->db->where(array('id' => $mission->to));
+                    $this->db->update($this->session->userdata('universe').'_towns');
+            $this->db->insert($this->session->userdata('universe').'_army', array('city' => $mission->to));
+            $this->update_mission_arrived($mission);
             break;
         }
     }
 
     function update_mission(Mission $mission)
     {
-        while ($mission->state != MissionState::FINISHED and $mission->next_stage_time < time()) {
+        /* while ($mission->state != MissionState::FINISHED and $mission->next_stage_time < time()) { */
             switch ($mission->type)
             {
-            case MissionType::TRANSPORT:
+            case MissionType::TRANSPORT->value;
                 $this->update_transport($mission);
                 return;
+            case MissionType::COLONIZE->value:
+                $this->update_colonization($mission);
+                return;
             }
-        }
+        /* } */
     }
 
     function Update_Missions()
     {
         $towns_messages = array();
-        $next_loading = 0;
-     	$this->load->model('Battle_Model');
+        $finished = array();
         foreach($this->Player_Model->missions as $mission_data)
         {
-            $this->update_mission(new Mission($this, $mission_data));
-        }
-        foreach($this->Player_Model->missions as $mission)
-        {
-            $mission = new Mission($mission_data);
-            if ($mission->state == MissionState::FINISHED) {
-                unset($this->Player_Model->missions[$mission->id]);
-                $this->db->query('DELETE FROM '.$this->session->userdata('universe').'_missions where `id`="'.$mission->id.'"');
+            $mission = new Mission($this, (array)$mission_data);
+            $this->update_mission($mission);
+            if ($mission->state == MissionState::FINISHED->value) {
+                $finished[] = $mission->id;
             }
+        }
+        foreach($finished as $mission_id)
+        {
+            unset($this->Player_Model->missions[$mission->id]);
+            $this->db->query('DELETE FROM '.$this->session->userdata('universe').'_missions where `id`="'.$mission->id.'"');
         }
     }
 

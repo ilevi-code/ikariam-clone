@@ -95,9 +95,9 @@ class Data_Model extends CI_Model
                     $where .= '`id`=0';
                 $query = $this->db->query('SELECT * FROM '.$this->session->userdata('universe').'_missions WHERE '.$where.' ORDER BY `next_stage_time` ASC');
                 $this->temp_missions_db[$id] = array();
-                foreach ($query->result() as $return)
+                foreach ($query->result() as $mission)
                 {
-                    $this->temp_missions_db[$id][$return->id] = $return;
+                    $this->temp_missions_db[$id][$mission->id] = $mission;
                 }
         }
     }
@@ -1730,18 +1730,6 @@ class Data_Model extends CI_Model
         if ($distance < 0){ $distance = 0; }
         $time = ($distance+1)*300;
         return $time;
-    }
-
-    function mission_name_by_type($type = 0)
-    {
-        switch($type)
-        {
-            case 1: return $this->lang->line('mission_1'); break;
-            case 2: return $this->lang->line('mission_2'); break;
-            case 3: return $this->lang->line('mission_3'); break;
-            case 4: return $this->lang->line('mission_4'); break;
-			case 5: return $this->lang->line('mission_5'); break;
-        }
     }
 
     function spy_mission_name_by_type($type = 0)

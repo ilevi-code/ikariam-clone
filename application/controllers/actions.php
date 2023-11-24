@@ -1,6 +1,7 @@
 <?php
 
 require_once "game.php";
+require_once "application/libraries/mission_data.php";
 require_once "application/libraries/buildings.php";
 
 /**
@@ -1273,6 +1274,7 @@ class Actions extends CI_Controller
             'to' => $town->id,
             'state' => MissionState::LOADING->value,
             'type' => MissionType::COLONIZE->value,
+            'prev_stage_time' => time(),
             'next_stage_time' => time() + $this->Action_Model->calc_load_time($ports_levels, $resource_count),
             'peoples' => 40,
             'ships' => $ship_count,

@@ -59,22 +59,18 @@ Not enough resources
         <h3 class="header"><span class="textLabel">Fleets on load</span></h3>
         <div class="content master">
             <div class="tcap">My merchant ships</div>
-<?$m_id = 0?>
-<?if($this->Player_Model->missions_loading > 0){?>
-<?foreach($this->Player_Model->missions as $mission){
-if ($mission->mission_start == 0){?>
-<?
-    $wood = $mission->wood;
-    $marble = $mission->marble;
-    $wine = $mission->wine;
-    $crystal = $mission->crystal;
-    $sulfur = $mission->sulfur;
-    $peoples = $mission->peoples;
-    $all_resources = $wood + $marble + $wine + $crystal + $sulfur + $peoples;
-    $per_sec = $speed / 60;
-    $all_time = ($all_resources/$per_sec);
-    $elapsed = (time() - $mission->loading_from_start);
-    if($all_time <= $elapsed){ $time = 0; } else { $time = $all_time - $elapsed; }
+<?php
+$m_id = 0;
+foreach($this->Player_Model->missions as $mission){
+    if ($mission->from == $this->Player_Model->now_town->id and $mission->state == MissionState::LOADING->value){
+        $wood = $mission->wood;
+        $marble = $mission->marble;
+        $wine = $mission->wine;
+        $crystal = $mission->crystal;
+        $sulfur = $mission->sulfur;
+        $peoples = $mission->peoples;
+        $elapsed = (time() - $mission->prev_stage_time);
+        $time_left = $mission->next_stage_time - time();
 ?>
             <table cellpadding="0" cellspacing="0" class="table01">
                 <thead>
@@ -88,7 +84,7 @@ if ($mission->mission_start == 0){?>
                     </tr>
                 </thead>
                 <tbody>
-<tr>            
+<tr>
     <td>Policy</td>
     <td>
         <div class="tooltip" style="position:absolute;width:100px;overflow:show;">
@@ -113,25 +109,25 @@ if ($mission->mission_start == 0){?>
                 <tr><td class='unit'><img src='<?=$this->config->item('style_url')?>skin/resources/icon_citizen.gif'></td><td class='count'><?=number_format($peoples)?></td></tr>
 <?}?>
             </table>
-        </div><?=$mission->ship_transport?>
+        </div><?=$mission->ships?>
     </td>
-    <td><?=$this->Data_Model->mission_name_by_type($mission->mission_type)?></td>
+    <td><?=mission_name_by_type($mission->type)?></td>
     <td>
 <?if($m_id == 0){?>
-        <div class="time" id="outgoingOwnCountDown"><?=format_time($time)?></div>
+        <div class="time" id="outgoingOwnCountDown"><?=format_time($time_left)?></div>
         <div class="progressBar"><div class="bar" id="outgoingOwnProgress"></div>
         </div>
 
         <script type="text/javascript">
             Event.onDOMReady(function() {
                 getCountdown({
-                    enddate: <?=time()+$time?>,
+                    enddate: <?=$mission->next_stage_time?>,
                     currentdate: <?=time()?>,
                     el: "outgoingOwnCountDown"
                 }, 2, " ", "", true, true);
                 var tmppbar = getProgressBar({
-                    startdate: <?=$mission->loading_from_start?>,
-                    enddate: <?=time()+$time?>,
+                    startdate: <?=$mission->prev_stage_time?>,
+                    enddate: <?=$mission->next_stage_time?>,
                     currentdate: <?=time()?>,
                     bar: "outgoingOwnProgress"
                 });
@@ -156,7 +152,7 @@ Expectation
             </table>
 <?$m_id++;?>
 <?}?>
-<?}}?>
+<?}?>
 <?if($m_id == 0){?>
             <p>No registered ships in the port</p>
 <?}?>
