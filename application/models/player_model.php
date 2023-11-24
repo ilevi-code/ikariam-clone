@@ -74,10 +74,10 @@ class Player_Model extends CI_Model {
                 $town = $this->Data_Model->Load_Town($town->id);
                 $this->warehouses_levels[$town->id] = array();
                 if ($town->pos0_level == 0)
-				{ 
-				    continue; 
+				{
+				    continue;
 				}
-                
+
 				$this->capacity[$town->id] = getConfig('standard_capacity');
                 
 				// Уровни зданий
@@ -383,9 +383,12 @@ class Player_Model extends CI_Model {
         if ($this->user->premium_sulfur > 0){$this->plus_sulfur = 1.2;}
         if ($this->user->premium_capacity > 0){$this->plus_capacity = 2;}
 
-        // Вычисляем коррупцию и производство
         foreach($this->towns as $town)
         {
+            if ($town->pos0_level == 0)
+            {
+                continue;
+            }
             $colonys = SizeOf($this->towns) - 1;
             if ($colonys > 0)
             {
