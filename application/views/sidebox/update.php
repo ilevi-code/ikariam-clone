@@ -54,7 +54,16 @@ if ($position > 0 or ($position == 0 and $page == 'townHall')){
      ($class == 14 and $this->Player_Model->towns[$town_id]->spyes_start > 0) or
      ($real_level > $cost['max_level']) or ! $this->Action_Model->enough_resource_for_upgrade_position($position)){?>
                 <a class="disabled" href="#" title="<?=$this->lang->line('no_expand')?>"></a>
-<?}else{?> <a href="<?=$this->config->item('base_url')?>actions/upgrade/<?=$position?>/" title="<?=$this->lang->line('level_up')?>"><span class="textLabel"><?if($real_level != $level){?><?=$this->lang->line('in_queue')?><?}else{?><?=$this->lang->line('upgrade')?><?}?></span></a>
+<?
+    }else{
+        ?>
+            <form id="upgrade_form" action="<?=$this->config->item('base_url')?>actions/upgrade" method="post">
+                <input type=hidden name="position" value="<?=$position?>">
+            </form>
+            <a href="javascript:{}" onclick="document.getElementById('upgrade_form').submit()"
+                title="<?=$this->lang->line('level_up')?>">
+                    <span class="textLabel"><?if($real_level != $level){?><?=$this->lang->line('in_queue')?><?}else{?><?=$this->lang->line('upgrade')?><?}?></span>
+</a>
 <?}?>
             </li>
             <li class="downgrade">

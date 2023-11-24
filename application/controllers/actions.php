@@ -89,13 +89,9 @@ class Actions extends CI_Controller
         }
     }
 
-    /**
-     * Повышение уровня здания
-     * @param <int> $position
-     */
-    function upgrade($position)
+    function upgrade()
     {
-        $position = floor($position);
+        $position = floor($this->get_param('position'));
         $level_text = 'pos'.$position.'_level';
         $type_text = 'pos'.$position.'_type';
         if ($this->Player_Model->now_town->$level_text > 0){
@@ -103,7 +99,7 @@ class Actions extends CI_Controller
         }
 	    else
         {
-            $this->Error('На позиции '.$position.' отсутствует здание для улучшения!');
+            $this->Error('No building here to imporove');
         }
     }
 
