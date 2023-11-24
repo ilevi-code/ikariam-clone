@@ -332,6 +332,7 @@ $lang['error_carpentering_null'] = 'carpentry workshop has not been built!';
 $lang['error_safehouse_null'] = 'not built warehouse!';
 $lang['error_branch_office_null'] = 'unbuilt office!';
 $lang['error_buildingground_null'] = 'There was construction on this land';
+$lang['colonization_in_progress'] = 'This town is in the progress on colonization';
 
 $lang['content'] = 'US';
 

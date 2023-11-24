@@ -1,92 +1,63 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-      	
-	// Пока что берем данные сухогруза, а потом будут братсья данные всех кораблей
-    $cost = $this->Data_Model->army_cost_by_type(23, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
-    
-	// Prelevo le coordinate delle due città
-    if(is_int($mission->to))
-	{
-	    $x1 = $this->Data_Model->temp_islands_db[$this->Data_Model->temp_towns_db[$mission->from]->island]->x;
-        $x2 = $this->Data_Model->temp_islands_db[$this->Data_Model->temp_towns_db[$mission->to]->island]->x;
-        $y1 = $this->Data_Model->temp_islands_db[$this->Data_Model->temp_towns_db[$mission->from]->island]->y;
-        $y2 = $this->Data_Model->temp_islands_db[$this->Data_Model->temp_towns_db[$mission->to]->island]->y;
-		// Ottengo il tempo di volo
-        $time = $this->Data_Model->time_by_coords($x1,$x2,$y1,$y2,$cost['speed']);
-	}
-	else
-	{
-	    $time = 300;
-	}
-    
-    $mission_elapsed = time() - $mission->mission_start;
-    
-	// Tempo di fine
-    $mission_end = $time - $mission_elapsed;
-    
-	// Если загрузки не было в начале значит она должна быть в конце пути
-    $loading_time = 0;
-   
-    // Получаем город
-    if(is_int($mission->to))
-	{
-	    $trade_town = $this->Data_Model->temp_towns_db[$mission->to];
-	}
-	else
-	    $trade_town = null;
-		
-    $from_town = $this->Data_Model->temp_towns_db[$mission->from];
-    if($mission->loading_from_start == $mission->mission_start)
-    {
-        if(is_int($mission->to))
-		{
-		    // Уровень порта в городе
-            $port_position = $this->Data_Model->get_position(2, $trade_town);
-            if($port_position == 1 or $port_position == 2)
-            {
-                $level_text = 'pos'.$port_position.'_level';
-                $port_level = $trade_town->$level_text;
-            }
-            else
-            {
-                $port_level = 0;
-            }
-            // Находим скорость загрузки в чужом порту
-            $port_speed = $this->Data_Model->speed_by_port_level($port_level);
-            // Длительность загрузки
-            $loading_time = ($all_resources/($port_speed / 60));
-		}
-    }
-    else
-    {
-        // Уровень порта в городе
-        $port_position = $this->Data_Model->get_position(2, $from_town);
-        if($port_position == 1 or $port_position == 2)
-        {
-            $level_text = 'pos'.$port_position.'_level';
-            $port_level = $from_town->$level_text;
+
+enum MissionState : int {
+    case LOADING = 0;
+    case EN_ROUTE = 1;
+    case IN_BATTLE = 2;
+    case RETURNING = 3;
+    case DISPERSED = 4;
+    case FINISHED = 5;
+}
+
+enum MissionType : int {
+{
+    case TRANSPORT = 0;
+    case STATION_TROOPS = 1;
+    case STATION_FLEET = 2;
+    case DEFEND_TWON = 3;
+    case DEFEND_PORT = 4;
+    case PLUNDER = 5;
+    case PLUNDER_BARBARIANS = 6;
+    case OCCUPY_TOWN = 7;
+    case OCCUPY_PORT = 8;
+    case COLONIZE = 9;
+}
+
+
+class Mission
+{
+    public $ctx = null;
+    public $from = 0;
+    public $to = 0;
+    public $state = 0;
+    public $type = 0;
+    public $next_stage_time = 0;
+    public $wood = 0;
+    public $wine = 0;
+    public $marble = 0;
+    public $crystal = 0;
+    public $sulfur = 0;
+    public $gold = 0;
+    public $peoples = 0;
+
+    public function __construct($ctx, Array $properties=array()){
+        $this->ctx = ctx;
+        foreach($properties as $key => $value){
+            $this->{$key} = $value;
         }
-        else
-        {
-            $port_level = 0;
-        }
-       // Находим скорость загрузки в чужом порту
-       $port_speed = $this->Data_Model->speed_by_port_level($port_level);
-       // Длительность загрузки
-       $loading_time = ($all_resources/($port_speed / 60));
     }
-    // Осталось до конца загрузки
-    $loading_end = $mission_end + $loading_time;
-    // Осталось до возврата
-    // $return_end = ($mission->return_start-$mission->mission_start)*$mission->percent;
-    // Se torniamo indietro
-    $return_end = ($mission->return_start-$mission->mission_start)*$mission->percent;
-    if ($mission->return_start > 0)
-    {
-        if ($mission->percent == 0) { $mission->percent = 1; }
-        // Время возврата
-        $return = $time * $mission->percent;
-        $return_elapsed = time() - $mission->return_start;
-        // Осталось до возврата
-        $return_end = ($return - $return_elapsed >= 0) ? $return - $return_elapsed : 0;
+
+    public function get_resources() {
+        return array(
+            'wood' => $this->wood,
+            'wine' => $this->wine,
+            'marble' => $this->marble,
+            'crystal' => $this->crystal,
+            'sulfur' => $this->sulfur,
+            'peoples' => $this->peoples,
     }
-?>
+
+    public function get_travel_time() {
+        return $ctx->Action_Model->get_city_travel_time($this->from, $this->to);
+    }
+}

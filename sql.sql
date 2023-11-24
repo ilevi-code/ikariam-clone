@@ -440,14 +440,11 @@ INSERT INTO `alpha_islands` VALUES(194, 'Neyduos', 20, 25, 2, 1, 8, 2, 2, 0, 0, 
 
 CREATE TABLE `alpha_missions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user` int(11) NOT NULL,
   `from` int(11) NOT NULL,
   `to` varchar(30) NOT NULL,
-  `loading_from_start` int(11) NOT NULL,
-  `loading_to_start` int(11) NOT NULL,
-  `mission_type` int(11) NOT NULL,
-  `mission_start` int(11) NOT NULL,
-  `return_start` int(11) NOT NULL,
+  `state` int(11) NOT NULL,
+  `type` int(11) NOT NULL,
+  `next_stage_time` BIGINT NOT NULL,
   `wood` int(11) unsigned NOT NULL,
   `wine` int(11) unsigned NOT NULL,
   `marble` int(11) unsigned NOT NULL,
@@ -455,42 +452,10 @@ CREATE TABLE `alpha_missions` (
   `sulfur` int(11) unsigned NOT NULL,
   `gold` int(11) NOT NULL DEFAULT '0',
   `peoples` int(11) NOT NULL,
-  `hoplite` int(11) NOT NULL,
-  `steamgiant` int(11) NOT NULL,
-  `spearman` int(11) NOT NULL,
-  `swordsman` int(11) NOT NULL,
-  `slinger` int(11) NOT NULL,
-  `archer` int(11) NOT NULL,
-  `carbineer` int(11) NOT NULL,
-  `ram` int(11) NOT NULL,
-  `catapult` int(11) NOT NULL,
-  `mortar` int(11) NOT NULL,
-  `gyrocopter` int(11) NOT NULL,
-  `bombardier` int(11) NOT NULL,
-  `cook` int(11) NOT NULL,
-  `doctor` int(11) NOT NULL,
-  `barbarian` int(11) NOT NULL,
-  `ram_ship` int(11) NOT NULL,
-  `fire_ship` int(11) NOT NULL,
-  `ship_steamboat` int(11) NOT NULL,
-  `ballista_ship` int(11) NOT NULL,
-  `catapult_ship` int(11) NOT NULL,
-  `mortar_ship` int(11) NOT NULL,
-  `diving_boat` int(11) NOT NULL,
-  `ship_transport` int(11) NOT NULL,
-  `percent` varchar(11) CHARACTER SET utf8 NOT NULL DEFAULT '0',
-  `trade_wood_count` int(11) NOT NULL,
-  `trade_wine_count` int(11) NOT NULL,
-  `trade_marble_count` int(11) NOT NULL,
-  `trade_crystal_count` int(11) NOT NULL,
-  `trade_sulfur_count` int(11) NOT NULL,
-  `trade_gold_count` int(11) NOT NULL,
-  `trade_wood_cost` int(11) NOT NULL,
-  `trade_wine_cost` int(11) NOT NULL,
-  `trade_marble_cost` int(11) NOT NULL,
-  `trade_crystal_cost` int(11) NOT NULL,
-  `trade_sulfur_cost` int(11) NOT NULL,
-  PRIMARY KEY (`id`,`user`,`from`,`to`)
+  `ships` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`from`) REFERENCES alpha_towns(id),
+  FOREIGN KEY (`to`) REFERENCES alpha_towns(id)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 -- --------------------------------------------------------
@@ -748,6 +713,12 @@ CREATE TABLE `alpha_town_messages_new` (
     FOREIGN KEY (`town_id`) REFERENCES alpha_towns(id)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
+CREATE TABLE `alpha_colonies` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `town_id` int(11) NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`town_id`) REFERENCES alpha_towns(id)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 
 -- --------------------------------------------------------

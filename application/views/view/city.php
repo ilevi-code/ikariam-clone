@@ -20,7 +20,7 @@ for ($i = 0; $i <= 14; $i++)
     $level = $this->Player_Model->now_town->$level_text;
     $type = $this->Player_Model->build_line[$this->Player_Model->town_id][0]['type'];
     $cost = $this->Data_Model->building_cost($type, $level, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
-    $end_date = $this->Player_Model->now_town->build_start + $cost['time'];
+    $end_date = $this->Player_Model->now_town->build_start + ($cost['time'] / getConfig('game_speed'));
     $ostalos = $end_date - time();
 ?>
 

@@ -231,6 +231,9 @@ if($this->Player_Model->now_town->build_start > 0){
                 <label for="citySelect"><?=$this->lang->line('current_town')?>:</label>
                 <select	id="citySelect"	class="citySelect smallFont" name="cityId" tabindex="1" onchange="this.form.submit()">
 <?php foreach($this->Player_Model->towns as $town){
+if ($town->is_colony) {
+    continue;
+}
 $island = $this->Player_Model->islands[$town->island];
 $selected = ($this->Player_Model->town_id == $town->id) ? 'selected="selected"' : ''?>
 <?php switch($this->Player_Model->user->options_select){

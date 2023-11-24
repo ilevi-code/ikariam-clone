@@ -512,659 +512,108 @@ class Update_Model extends CI_Model
            $this->Send_Messages($towns_messages);
     }
 
+    function update_mission_en_route(Mission $mission)
+    {
+        $mission->state = MissionState::EN_ROUTE;
+        $this->db->set('state', $mission->state->value);
+        $travel_time = $mission->get_travel_time();
+        $this->db->set('next_stage_time', $mission->next_stage_time);
+        $this->db->where(array('id' => $mission->id));
+        $this->db->update($this->session->userdata('universe').'_users');
+    }
+
+    function update_missoin_arrived(Mission $mission)
+    {
+        $dest_town = $this->Data_Model->Load_Town($mission->to);
+        $resources = $mission->get_resources();
+
+        $update_values = array();
+        foreach ($resources as $resource => $cout)
+        {
+            $dest_town[$resource] += $count;
+            array_push($update_values, '`'.$resource.'` = `'.$resource.' + '.$count.' ');
+        }
+
+        $dest_user = $this->Data_Model->Load_User($dest_town->user);
+        $$dest_user['gold'] += $mission->gold;
+        $this->db->query('UPDATE '.$this->session->userdata('universe').'_towns SET '.implode(',',$update_values).' WHERE `id`='.$dest_town);
+        $this->db->query('UPDATE '.$this->session->userdata('universe').'_users SET `gold`=`gold`+'.$mission->gold.' WHERE `id`='.$dest_user->id);
+        $mission->state = MissionState::FINISHED;
+    }
+
+    function update_transport(Mission $mission)
+    {
+        switch ($mission->state)
+        {
+        case MissionState::LOADING:
+            // TODO insert the town and colony entry
+            $this->update_mission_en_route($mission);
+            break;
+        case MissionState::EN_ROUTE:
+            array(
+                'user' => $this->Player_Model->user->id,
+                'from' => $this->Player_Model->now_town->id,
+                'to' => $town->id, 'loading_from_start' => time(),
+                'mission_type' => 1,
+                'wood' => $sendresource+1250,
+                'wine' => $sendwine,
+                'marble' => $sendmarble,
+                'crystal' => $sendcrystal,
+                'sulfur' => $sendsulfur,
+                'gold' => 9000,
+                'peoples' => 40,
+                'ship_transport' => $transporters
+            );
+            $this->db->insert($this->session->userdata('universe').'_missions', values);
+            $this->update_mission_arrived($misison);
+            break;
+        }
+    }
+
+    function update_colonization(Mission $mission)
+    {
+        switch ($mission->state)
+        {
+        case MissionState::LOADING:
+            $this->update_mission_en_route($mission);
+            break;
+        case MissionState::EN_ROUTE:
+            $this->load->model('Island_Model');
+            $island = $this->Island_Model->Load_Island($id);
+            $this->update_missoin_arrived($mission);
+            break;
+        }
+    }
+
+    function update_mission(Mission $mission)
+    {
+        while ($mission->state != MissionState::FINISHED and $mission->next_stage_time < now()) {
+            switch ($mission->type)
+            {
+            case MissionType::TRANSPORT:
+                $this->update_transport($mission);
+                return;
+            }
+        }
+    }
+
     function Update_Missions()
     {
         $towns_messages = array();
         $next_loading = 0;
      	$this->load->model('Battle_Model');
+        foreach($this->Player_Model->missions as $mission_data)
+        {
+            $this->update_mission(new Mission($this, $mission_data));
+        }
         foreach($this->Player_Model->missions as $mission)
         {
-            $all_resources = $mission->wood + $mission->marble + $mission->wine + $mission->crystal + $mission->sulfur + $mission->peoples;
-            require('mission_data.php');
-               
-		    // Если миссия не началась, значит мы грузим товары в порту
-            if ($mission->mission_start == 0 and $mission->user == $this->Player_Model->user->id)
-            {  
-                if ($next_loading > 0 and $mission->loading_from_start < $next_loading)
-                {
-                    $mission->loading_from_start = $next_loading;
-                }
-                $elapsed_mission = time() - $mission->loading_from_start - $loading_time;
-
-                // Se avete scaricato
-                if ($elapsed_mission >= 0)
-                {
-                    if ($next_loading == 0)
-                    {
-                        $this->Player_Model->missions[$mission->id]->mission_start = $mission->loading_from_start + $loading_time;
-                        $this->db->set('mission_start', $mission->loading_from_start + $loading_time);
-                    }
-                    $this->db->set('loading_from_start', $mission->loading_from_start);
-                    $this->db->where(array('id' => $mission->id));
-                    $this->db->update($this->session->userdata('universe').'_missions');
-                }
-                
-				$next_loading = $mission->loading_from_start + $loading_time;
+            $mission = new Mission($mission_data);
+            if ($mission->state == MissionState::FINISHED) {
+                unset($this->Player_Model->missions[$mission->id]);
+                $this->db->query('DELETE FROM '.$this->session->userdata('universe').'_missions where `id`="'.$mission->id.'"');
             }
-            elseif($mission->mission_start > 0)
-            {
-                // Se non sta tornando
-                if ($mission->return_start == 0)
-                {
-                    if ($mission->loading_to_start == 0)
-                    {
-                        if ($mission->mission_type == 1 or $mission->mission_type == 2 or $mission->mission_type == 4 or $mission->mission_type == 5)
-                        {
-                            // Quando la colonizzazione e la nave da trasporto in una città straniera non ha bisogno niente
-                            $mission->loading_to_start = $mission->mission_start + $time;
-                        }
-                        elseif($mission->mission_type == 3 and $mission_end <= 0)
-                        {
-                            $gold = 0;
-                            $start_gold = $mission->gold;
-                            if ($mission->trade_wood_count > 0 and $trade_town->branch_trade_wood_type == 1 and $trade_town->branch_trade_wood_cost <= $mission->trade_wood_cost)
-                            {
-                                $mission->trade_wood_count = ($trade_town->branch_trade_wood_count >= $mission->trade_wood_count) ? $mission->trade_wood_count : $trade_town->branch_trade_wood_count;
-                                $gold = $gold + $mission->trade_wood_count*$trade_town->branch_trade_wood_cost;
-                                $mission->gold = $mission->gold - $mission->trade_wood_count*$trade_town->branch_trade_wood_cost;
-                            }
-                            if ($mission->trade_wine_count > 0 and $trade_town->branch_trade_wine_type == 1 and $trade_town->branch_trade_wine_cost <= $mission->trade_wine_cost)
-                            {
-                                $mission->trade_wine_count = ($trade_town->branch_trade_wine_count >= $mission->trade_wine_count) ? $mission->trade_wine_count : $trade_town->branch_trade_wine_count;
-                                $gold = $gold + $mission->trade_wine_count*$trade_town->branch_trade_wine_cost;
-                                $mission->gold = $mission->gold - $mission->trade_wine_count*$trade_town->branch_trade_wine_cost;
-                            }
-                            if ($mission->trade_marble_count > 0 and $trade_town->branch_trade_marble_type == 1 and $trade_town->branch_trade_marble_cost <= $mission->trade_marble_cost)
-                            {
-                                $mission->trade_marble_count = ($trade_town->branch_trade_marble_count >= $mission->trade_marble_count) ? $mission->trade_marble_count : $trade_town->branch_trade_marble_count;
-                                $gold = $gold + $mission->trade_marble_count*$trade_town->branch_trade_marble_cost;
-                                $mission->gold = $mission->gold - $mission->trade_marble_count*$trade_town->branch_trade_marble_cost;
-                            }
-                            if ($mission->trade_crystal_count > 0 and $trade_town->branch_trade_crystal_type == 1 and $trade_town->branch_trade_crystal_cost <= $mission->trade_crystal_cost)
-                            {
-                                $mission->trade_crystal_count = ($trade_town->branch_trade_crystal_count >= $mission->trade_crystal_count) ? $mission->trade_crystal_count : $trade_town->branch_trade_crystal_count;
-                                $gold = $gold + $mission->trade_crystal_count*$trade_town->branch_trade_crystal_cost;
-                                $mission->gold = $mission->gold - $mission->trade_crystal_count*$trade_town->branch_trade_crystal_cost;
-                            }
-                            if ($mission->trade_sulfur_count > 0 and $trade_town->branch_trade_sulfur_type == 1 and $trade_town->branch_trade_sulfur_cost <= $mission->trade_sulfur_cost)
-                            {
-                                $mission->trade_sulfur_count = ($trade_town->branch_trade_sulfur_count >= $mission->trade_sulfur_count) ? $mission->trade_sulfur_count : $trade_town->branch_trade_sulfur_count;
-                                $gold = $gold + $mission->trade_sulfur_count*$trade_town->branch_trade_sulfur_cost;
-                                $mission->gold = $mission->gold - $mission->trade_sulfur_count*$trade_town->branch_trade_sulfur_cost;
-                            }
-                            if ($gold > 0)
-                            {
-                                // Quando lo shopping - carico nel porto di un'altra città
-                                $text = '';
-                                if ($mission->trade_wood_count > 0){ $text .= '<li class="wood"><span class="textLabel">Стройматериалы: </span>'.($mission->trade_wood_count).'</li> по цене:<li class="gold"><span class="textLabel">Золото: </span>'.$trade_town->branch_trade_wood_cost.'</li><br>';}
-                                if ($mission->trade_wine_count > 0){$text .= '<li class="wine"><span class="textLabel">Виноград: </span>'.($mission->trade_wine_count).'</li> по цене:<li class="gold"><span class="textLabel">Золото: </span>'.$trade_town->branch_trade_wine_cost.'</li><br>';}
-                                if ($mission->trade_marble_count > 0){$text .= '<li class="marble"><span class="textLabel">Мрамор: </span>'.($mission->trade_marble_count).'</li> по цене:<li class="gold"><span class="textLabel">Золото: </span>'.$trade_town->branch_trade_marble_cost.'</li><br>';}
-                                if ($mission->trade_crystal_count > 0){$text .= '<li class="glass"><span class="textLabel">Хрусталь: </span>'.($mission->trade_crystal_count).'</li> по цене:<li class="gold"><span class="textLabel">Золото: </span>'.$trade_town->branch_trade_crystal_cost.'</li><br>';}
-                                if ($mission->trade_sulfur_count > 0){$text .= '<li class="sulfur"><span class="textLabel">Сера: </span>'.($mission->trade_sulfur_count).'</li> по цене:<li class="gold"><span class="textLabel">Золото: </span>'.$trade_town->branch_trade_sulfur_cost.'</li><br>';}
-                                $text .= '</ul>';
-                                   
-					    	    // Сообщение отправителю
-                                $text_from = 'Ваш торговый флот из <a href="'.$this->config->item('base_url').'game/island/'.$this->Data_Model->temp_towns_db[$mission->from]->island.'/'.$mission->from.'/">'.$this->Data_Model->temp_towns_db[$mission->from]->name.'</a> прибыл в <a href="'.$this->config->item('base_url').'game/island/'.$this->Data_Model->temp_towns_db[$mission->to]->island.'/'.$mission->to.'/">'.$this->Data_Model->temp_towns_db[$mission->to]->name.'</a> и сейчас погружает: <ul class="resources">'.$text;
-                                $town_from_message = array(
-                                    'user' => $mission->user,
-                                    'town' => $mission->from,
-                                    'date' => $mission->mission_start + $time,
-                                    'text' => $text_from
-                                );
-                                if ($mission->user != $trade_town->user)
-                                {
-                                    // Сообщение получателю
-                                    $text_to = 'Торговый флот из <a href="'.$this->config->item('base_url').'game/island/'.$this->Data_Model->temp_towns_db[$mission->from]->island.'/'.$mission->from.'/">'.$this->Data_Model->temp_towns_db[$mission->from]->name.'</a> прибыл в ваш город <a href="'.$this->config->item('base_url').'game/island/'.$this->Data_Model->temp_towns_db[$mission->to]->island.'/'.$mission->to.'/">'.$this->Data_Model->temp_towns_db[$mission->to]->name.'</a> и сейчас погружает: <ul class="resources">'.$text;
-                                    $town_to_message = array(
-                                        'user' => $trade_town->user,
-                                        'town' => $mission->to,
-                                        'date' => $mission->mission_start + $time,
-                                        'text' => $text_to
-                                    );
-                                    $towns_messages[] = $town_to_message;
-                                }
-                                   $towns_messages[] = $town_from_message;
-                                   // Ресурсы
-                                   $mission->wood = $mission->trade_wood_count;
-                                   $mission->wine = $mission->trade_wine_count;
-                                   $mission->marble = $mission->trade_marble_count;
-                                   $mission->crystal = $mission->trade_crystal_count;
-                                   $mission->sulfur = $mission->trade_sulfur_count;
-                                   // Обновляем миссию
-                                   $this->db->set('loading_to_start', $mission->mission_start + $time);
-                                   $this->db->set('wood', $mission->trade_wood_count);
-                                   $this->db->set('wine', $mission->trade_wine_count);
-                                   $this->db->set('marble', $mission->trade_marble_count);
-                                   $this->db->set('crystal', $mission->trade_crystal_count);
-                                   $this->db->set('sulfur', $mission->trade_sulfur_count);
-                                   $this->db->set('gold', $mission->gold);
-                                   $this->db->set('trade_wood_count', 0);
-                                   $this->db->set('trade_wine_count', 0);
-                                   $this->db->set('trade_marble_count', 0);
-                                   $this->db->set('trade_crystal_count', 0);
-                                   $this->db->set('trade_sulfur_count', 0);
-                                   $this->db->where(array('id' => $mission->id));
-                                   $this->db->update($this->session->userdata('universe').'_missions');
-                                   // обновляем чужой город
-                                   $this->db->set('branch_trade_wood_count', $trade_town->branch_trade_wood_count - $mission->trade_wood_count);
-                                   $this->db->set('branch_trade_wine_count', $trade_town->branch_trade_wine_count - $mission->trade_wine_count);
-                                   $this->db->set('branch_trade_marble_count', $trade_town->branch_trade_marble_count - $mission->trade_marble_count);
-                                   $this->db->set('branch_trade_crystal_count', $trade_town->branch_trade_crystal_count - $mission->trade_crystal_count);
-                                   $this->db->set('branch_trade_sulfur_count', $trade_town->branch_trade_sulfur_count - $mission->trade_sulfur_count);
-                                   $this->db->where(array('id' => $mission->to));
-                                   $this->db->update($this->session->userdata('universe').'_towns');
-                                   // Обновляем игрока
-                                   $user = $this->Data_Model->temp_users_db[$trade_town->user];
-                                   $this->db->set('gold', $user->gold + $gold);
-                                   $this->db->where(array('id' => $user->id));
-                                   $this->db->update($this->session->userdata('universe').'_users');
-                            }
-                            else
-                            {
-                                   $text = 'Ваш торговый флот ушел из <a href="'.$this->config->item('base_url').'game/island/'.$this->Data_Model->temp_towns_db[$mission->to]->island.'/'.$mission->from.'/">'.$this->Data_Model->temp_towns_db[$mission->to]->name.'</a> пустым и теперь возвращается в <a href="'.$this->config->item('base_url').'game/island/'.$this->Data_Model->temp_towns_db[$mission->from]->island.'/'.$mission->to.'/">'.$this->Data_Model->temp_towns_db[$mission->from]->name.'</a>.';
-                                   $town_message = array(
-                                       'user' => $mission->user,
-                                       'town' => $mission->from,
-                                       'date' => $mission->mission_start + $time,
-                                       'text' => $text
-                                   );
-                                   $towns_messages[] = $town_message;
-                                   $mission->loading_to_start = $mission->mission_start + $time;
-                                   $loading_end = 0;
-                            }
-                        }
-                    }
-                    if ($mission->loading_to_start > 0 and $loading_end <= 0)
-                    {
-                        if($mission->mission_type == 1)
-                        {
-                            // Step 1. Fondo una nuova città
-                            $this->Data_Model->temp_towns_db[$mission->to]->pos0_level = 1;
-                            $this->db->set('pos0_level', 1);
-                            $this->db->set('wood', $mission->wood-1000);
-                            $this->db->set('wine', $mission->wine);
-                            $this->db->set('marble', $mission->marble);
-                            $this->db->set('crystal', $mission->crystal);
-                            $this->db->set('sulfur', $mission->sulfur);
-                            $this->db->set('last_update', $mission->mission_start + $time);
-                            $this->db->where(array('id' => $mission->to));
-                            $this->db->update($this->session->userdata('universe').'_towns');
-                              
-							// Step 2. Creo la tabella dell'esercito relativa alla città appena creata
-                            $this->db->insert($this->session->userdata('universe').'_army', array('city' => $mission->to));
-                            
-							// Step 3. Invio il messaggio
-                            $text = 'We founded a new city (<a href="'.$this->config->item('base_url').'game/island/'.$this->Data_Model->temp_towns_db[$mission->to]->island.'/'.$mission->to.'/">'.$this->Data_Model->temp_towns_db[$mission->to]->name.'</a>). Your merchant fleet unloaded: <ul class="resources">';
-                            $text .= '<li class="wood"><span class="textLabel">building materials: </span>'.($mission->wood-1000).'</li>';
-                            if ($mission->wine > 0){$text .= '<li class="wine"><span class="textLabel">Wine: </span>'.($mission->wine).'</li>';}
-                            if ($mission->marble > 0){$text .= '<li class="marble"><span class="textLabel">Marble: </span>'.($mission->marble).'</li>';}
-                            if ($mission->crystal > 0){$text .= '<li class="glass"><span class="textLabel">Crystal: </span>'.($mission->crystal).'</li>';}
-                            if ($mission->sulfur > 0){$text .= '<li class="sulfur"><span class="textLabel">sulfur: </span>'.($mission->sulfur).'</li>';}
-                            $text .= '</ul>';
-                            $town_message = array(
-                                    'user' => $mission->user,
-                                    'town' => $mission->from,
-                                    'date' => $mission->mission_start + $time + $loading_time,
-                                    'text' => $text
-                            );
-                            $towns_messages[] = $town_message;
-                            
-							// Step 4. Aggiungo alla città le navi da carico tornate dalla colonizzazione
-                            $this->db->query('UPDATE '.$this->session->userdata('universe').'_users set `transports`=`transports`+'.$mission->ship_transport.' WHERE `id`='.$mission->id);
-                            if($mission->user == $this->Player_Model->user->id)
-                            {
-                                $this->Player_Model->user->transports =  $this->Player_Model->user->transports + $mission->ship_transport;
-                            }
-                            $this->db->query('DELETE FROM '.$this->session->userdata('universe').'_missions where `id`="'.$mission->id.'"');
-                            unset($this->Player_Model->missions[$mission->id]);
-                        }
-                        elseif($mission->mission_type == 2)
-                        {
-                            // Trasporto e acquisto
-                            $this->db->set('wood', $this->Data_Model->temp_towns_db[$mission->to]->wood + $mission->wood);
-                            $this->db->set('wine', $this->Data_Model->temp_towns_db[$mission->to]->wine + $mission->wine);
-                            $this->db->set('marble', $this->Data_Model->temp_towns_db[$mission->to]->marble + $mission->marble);
-                            $this->db->set('crystal', $this->Data_Model->temp_towns_db[$mission->to]->crystal + $mission->crystal);
-                            $this->db->set('sulfur', $this->Data_Model->temp_towns_db[$mission->to]->sulfur + $mission->sulfur);
-                            $this->db->set('last_update', $mission->mission_start + $time);
-                            $this->db->where(array('id' => $mission->to));
-                            $this->db->update($this->session->userdata('universe').'_towns');
-                            
-							// Messaggio
-                            $text = '';
-                            if ($mission->wood > 0){ $text .= '<li class="wood"><span class="textLabel">Стройматериалы: </span>'.($mission->wood).'</li>';}
-                            if ($mission->wine > 0){$text .= '<li class="wine"><span class="textLabel">Виноград: </span>'.($mission->wine).'</li>';}
-                            if ($mission->marble > 0){$text .= '<li class="marble"><span class="textLabel">Мрамор: </span>'.($mission->marble).'</li>';}
-                            if ($mission->crystal > 0){$text .= '<li class="glass"><span class="textLabel">Хрусталь: </span>'.($mission->crystal).'</li>';}
-                            if ($mission->sulfur > 0){$text .= '<li class="sulfur"><span class="textLabel">Сера: </span>'.($mission->sulfur).'</li>';}
-                            $text .= '</ul>';
-                            $text_from = 'Ваш торговый флот из <a href="'.$this->config->item('base_url').'game/island/'.$this->Data_Model->temp_towns_db[$mission->from]->island.'/'.$mission->from.'/">'.$this->Data_Model->temp_towns_db[$mission->from]->name.'</a> прибыл в <a href="'.$this->config->item('base_url').'game/island/'.$this->Data_Model->temp_towns_db[$mission->to]->island.'/'.$mission->to.'/">'.$this->Data_Model->temp_towns_db[$mission->to]->name.'</a> и привез следующие товары: <ul class="resources">'.$text;
-                            if ($mission->user != $trade_town->user and is_int($mission->to))
-                            {        
-                                $text_to = 'Торговый флот из <a href="'.$this->config->item('base_url').'game/island/'.$this->Data_Model->temp_towns_db[$mission->from]->island.'/'.$mission->from.'/">'.$this->Data_Model->temp_towns_db[$mission->from]->name.'</a> прибыл в ваш город <a href="'.$this->config->item('base_url').'game/island/'.$this->Data_Model->temp_towns_db[$mission->to]->island.'/'.$mission->to.'/">'.$this->Data_Model->temp_towns_db[$mission->to]->name.'</a> и привез следующие товары: <ul class="resources">'.$text;
-                                $town_to_message = array(
-                                        'user' => $trade_town->user,
-                                        'town' => $mission->to,
-                                        'date' => $mission->mission_start + $time,
-                                        'text' => $text_to
-                                );
-                                $towns_messages[] = $town_to_message;
-                            }
-                            $town_from_message = array(
-                                        'user' => $mission->user,
-                                        'town' => $mission->from,
-                                        'date' => $mission->mission_start + $time,
-                                        'text' => $text_from
-                            );
-                            $towns_messages[] = $town_from_message;
-
-
-                            if ($this->Data_Model->temp_towns_db[$mission->to]->user == $mission->user)
-                            {
-                                $this->db->query('UPDATE '.$this->session->userdata('universe').'_users set `transports`=`transports`+'.$mission->ship_transport.' WHERE `id`='.$mission->id);
-                                if($mission->user == $this->Player_Model->user->id)
-                                {
-                                    $this->Player_Model->user->transports =  $this->Player_Model->user->transports + $mission->ship_transport;
-                                }
-                                $this->db->query('DELETE FROM '.$this->session->userdata('universe').'_missions where `id`="'.$mission->id.'"');
-                            }
-                            else
-                            {
-                                if($mission->return_start == 0)
-                                {
-                                    $this->db->set('return_start', $mission->mission_start + $time + $loading_time);
-                                    $this->db->set('loading_to_start', $mission->mission_start + $time + $loading_time);
-                                    $this->db->set('percent', 1);
-                                    $this->db->set('wood', 0);
-                                    $this->db->set('wine', 0);
-                                    $this->db->set('marble', 0);
-                                    $this->db->set('crystal', 0);
-                                    $this->db->set('sulfur', 0);
-                                    $this->db->where(array('id' => $mission->id));
-                                    $this->db->update($this->session->userdata('universe').'_missions');
-                                }
-                            }
-                            unset($this->Player_Model->missions[$mission->id]);
-                        }
-                        elseif($mission->mission_type == 3 and $mission->loading_to_start > 0)
-                        {
-                            if($mission->return_start == 0)
-                            {
-                                $this->db->set('return_start', $mission->mission_start + $time + $loading_time);
-                                $this->db->set('loading_to_start', $mission->mission_start + $time + $loading_time);
-                                $this->db->set('percent', 1);
-                                $this->db->where(array('id' => $mission->id));
-                                $this->db->update($this->session->userdata('universe').'_missions');
-                            }
-                        }
-                        elseif($mission->mission_type == 4)
-                        {
-                            $gold = 0;
-                            if ($mission->wood > 0 and $trade_town->branch_trade_wood_type == 0 and $mission->trade_wood_cost >= $trade_town->branch_trade_wood_cost)
-                            {
-                                $wood = ($mission->wood > $trade_town->branch_trade_wood_count) ? $trade_town->branch_trade_wood_count : $mission->wood;
-                                $mission->gold = $mission->wood*$mission->trade_wood_cost;
-                            }
-                            else
-                            {
-                                $wood = 0;
-                            }
-                            if ($mission->wine > 0 and $trade_town->branch_trade_wine_type == 0 and $mission->trade_wine_cost >= $trade_town->branch_trade_wine_cost)
-                            {
-                                $wine = ($mission->wine > $trade_town->branch_trade_wine_count) ? $trade_town->branch_trade_wine_count : $mission->wine;
-                                $mission->gold = $mission->wine*$mission->trade_wine_cost;
-                            }
-                            else
-                            {
-                                $wine = 0;
-                            }
-                            if ($mission->marble > 0 and $trade_town->branch_trade_marble_type == 0 and $mission->trade_marble_cost >= $trade_town->branch_trade_marble_cost)
-                            {
-                                $marble = ($mission->marble > $trade_town->branch_trade_marble_count) ? $trade_town->branch_trade_marble_count : $mission->marble;
-                                $mission->gold = $mission->marble*$mission->trade_marble_cost;
-                            }
-                            else
-                               {
-                                   $marble = 0;
-                               }
-                               if ($mission->crystal > 0 and $trade_town->branch_trade_crystal_type == 0 and $mission->trade_crystal_cost >= $trade_town->branch_trade_crystal_cost)
-                               {
-                                   $crystal = ($mission->crystal > $trade_town->branch_trade_crystal_count) ? $trade_town->branch_trade_crystal_count : $mission->crystal;
-                                   $mission->gold = $mission->crystal*$mission->trade_crystal_cost;
-                               }
-                               else
-                               {
-                                   $crystal = 0;
-                               }
-                               if ($mission->sulfur > 0 and $trade_town->branch_trade_sulfur_type == 0 and $mission->trade_sulfur_cost >= $trade_town->branch_trade_sulfur_cost)
-                               {
-                                   $sulfur = ($mission->sulfur > $trade_town->branch_trade_sulfur_count) ? $trade_town->branch_trade_sulfur_count : $mission->sulfur;
-                                   $mission->gold = $mission->sulfur*$mission->trade_sulfur_cost;
-                               }
-                               else
-                               {
-                                   $sulfur = 0;
-                               }
-                               if ($wood > 0 or $wine > 0 or $crystal > 0 or $marble > 0 or $sulfur > 0)
-                               {
-                                   $text = '';
-                                   if ($wood > 0){ $text .= '<li class="wood"><span class="textLabel">Стройматериалы: </span>'.($wood).'</li> по цене:<li class="gold"><span class="textLabel">Золото: </span>'.$trade_town->branch_trade_wood_cost.'</li><br>';}
-                                   if ($wine > 0){$text .= '<li class="wine"><span class="textLabel">Виноград: </span>'.($wine).'</li> по цене:<li class="gold"><span class="textLabel">Золото: </span>'.$trade_town->branch_trade_wine_cost.'</li><br>';}
-                                   if ($crystal > 0){$text .= '<li class="marble"><span class="textLabel">Мрамор: </span>'.($marble).'</li> по цене:<li class="gold"><span class="textLabel">Золото: </span>'.$trade_town->branch_trade_marble_cost.'</li><br>';}
-                                   if ($marble > 0){$text .= '<li class="glass"><span class="textLabel">Хрусталь: </span>'.($crystal).'</li> по цене:<li class="gold"><span class="textLabel">Золото: </span>'.$trade_town->branch_trade_crystal_cost.'</li><br>';}
-                                   if ($sulfur > 0){$text .= '<li class="sulfur"><span class="textLabel">Сера: </span>'.($sulfur).'</li> по цене:<li class="gold"><span class="textLabel">Золото: </span>'.$trade_town->branch_trade_sulfur_cost.'</li><br>';}
-                                   $text .= '</ul>';
-                                   
-								   // Сообщение отправителю
-                                   $text_from = 'Ваш торговый флот из <a href="'.$this->config->item('base_url').'game/island/'.$this->Data_Model->temp_towns_db[$mission->from]->island.'/'.$mission->from.'/">'.$this->Data_Model->temp_towns_db[$mission->from]->name.'</a> прибыл в <a href="'.$this->config->item('base_url').'game/island/'.$this->Data_Model->temp_towns_db[$mission->to]->island.'/'.$mission->to.'/">'.$this->Data_Model->temp_towns_db[$mission->to]->name.'</a> и выгрузил: <ul class="resources">'.$text;
-                                   $town_from_message = array(
-                                       'user' => $mission->user,
-                                       'town' => $mission->from,
-                                       'date' => $mission->mission_start + $time,
-                                       'text' => $text_from
-                                   );
-                                   if ($mission->user != $trade_town->user)
-                                   {
-                                       // Сообщение получателю
-                                       $text_to = 'Торговый флот из <a href="'.$this->config->item('base_url').'game/island/'.$this->Data_Model->temp_towns_db[$mission->from]->island.'/'.$mission->from.'/">'.$this->Data_Model->temp_towns_db[$mission->from]->name.'</a> прибыл в ваш город <a href="'.$this->config->item('base_url').'game/island/'.$this->Data_Model->temp_towns_db[$mission->to]->island.'/'.$mission->to.'/">'.$this->Data_Model->temp_towns_db[$mission->to]->name.'</a> и выгрузил: <ul class="resources">'.$text;
-                                       $town_to_message = array(
-                                           'user' => $trade_town->user,
-                                           'town' => $mission->to,
-                                           'date' => $mission->mission_start + $time,
-                                           'text' => $text_to
-                                       );
-                                       $towns_messages[] = $town_to_message;
-                                   }
-                                   $towns_messages[] = $town_from_message;
-                                   // Ресурсы
-                                   $mission->wood = $mission->wood - $wood;
-                                   $mission->wine = $mission->wine - $wine;
-                                   $mission->marble = $mission->marble - $marble;
-                                   $mission->crystal = $mission->crystal - $crystal;
-                                   $mission->sulfur = $mission->sulfur - $sulfur;
-                                   // Обновляем миссию
-                                   $this->db->set('return_start', $mission->mission_start + $time + $loading_time);
-                                   $this->db->set('loading_to_start', $mission->mission_start + $time + $loading_time);
-                                   $this->db->set('percent', 1);
-                                   $this->db->set('wood', $mission->wood);
-                                   $this->db->set('wine', $mission->wine);
-                                   $this->db->set('marble', $mission->marble);
-                                   $this->db->set('crystal', $mission->crystal);
-                                   $this->db->set('sulfur', $mission->sulfur);
-                                   $this->db->set('gold', $mission->gold);
-                                   $this->db->where(array('id' => $mission->id));
-                                   $this->db->update($this->session->userdata('universe').'_missions');
-                                   // обновляем чужой город
-                                   $this->db->set('branch_trade_wood_count', $trade_town->branch_trade_wood_count - $wood);
-                                   $this->db->set('branch_trade_wine_count', $trade_town->branch_trade_wine_count - $wine);
-                                   $this->db->set('branch_trade_marble_count', $trade_town->branch_trade_marble_count - $marble);
-                                   $this->db->set('branch_trade_crystal_count', $trade_town->branch_trade_crystal_count - $crystal);
-                                   $this->db->set('branch_trade_sulfur_count', $trade_town->branch_trade_sulfur_count - $sulfur);
-                                   $this->db->set('wood', $trade_town->wood + $wood);
-                                   $this->db->set('wine', $trade_town->wine + $wine);
-                                   $this->db->set('marble', $trade_town->marble + $marble);
-                                   $this->db->set('crystal', $trade_town->crystal + $crystal);
-                                   $this->db->set('sulfur', $trade_town->sulfur + $sulfur);
-                                   $this->db->where(array('id' => $mission->to));
-                                   $this->db->update($this->session->userdata('universe').'_towns');
-                                   
-                            }
-                        } 
-						elseif($mission->mission_type == 5)
-						{
-							/* Set the defender troops.*/
-                            // Devo considerare se sto attaccando un villaggio dei barbari o una città reale	
-                            // Devo considerare il livello delle mura del difensore								
-							$this->Battle_Model->Load_Mission($mission);
-							if(is_int($mission->to))
-							{
-							    $this->Data_Model->Load_Army($mission->to);
-							    $this->Battle_Model->Load_Mission($mission);
-							    $def_army = array();
-                            
-							    // Carico il difensore
-							    for($i = 1; $i <= 14; $i++)
-							    {
-							        $class = $this->Data_Model->army_class_by_type($i);
-								   
- 								    if($this->Data_Model->temp_army_db[$mission->to]->$class > 0)
-     									$def_army += array($class => $this->Data_Model->temp_army_db[$mission->to]->$class); 
-								    else
-								        $def_army += array($class => 0);
-							    }
-							
-							    // Semplice calcolo della capacità
-                                for ($i = 0; $i <= 14; $i++)
-                                {
-                                    $pos_type = 'pos'.$i.'_type';
-					                $pos_level = 'pos'.$i.'_level';
-                                    if ($trade_town->$pos_type == 7)
-					                    $wall = $trade_town->$pos_level;
-								    elseif($trade_town->$pos_type == 6)
-									    $warehouses_levels[] = $trade_town->$pos_level; 	
-									else
-								        $wall = $warehouses_levels = 0;
-					            }
-				                $this->Battle_Model->setDefenderTroops($def_army, $wall, $warehouses_levels, $trade_town);
-							
-							    unset($this->Data_Model->temp_army_db[$mission->to]);
-							}
-							else
-							{
-                                $array = explode(',',$mission->to);
-		                        $bresource = $this->Data_Model->barbarian_resources_by_level($array[1]);
-								$barbarian_array = array(
-								    'level'   => $array[1],
-									'wall'    => $this->Data_Model->barbarian_wall_by_level($array[1]),
-									'troops'  => $this->Data_Model->barbarian_number_by_level($array[1]),
-									'island'  => $array[2],
-									'wood'    => $bresource['wood'],
-									'wine'    => $bresource['wine'],
-									'crystal' => $bresource['crystal'],
-									'marble'  => $bresource['marble'],
-									'sulfur'  => $bresource['sulfur'],									
-								);
-                      								
-								$this->Battle_Model->setBarbarianTroops($barbarian_array);
-						    }
-							
-							$this->Data_Model->Load_Army($mission->from);
-							$att_army = array();
-							for($i = 1; $i <= 14; $i++)
-							{	
-								$class = $this->Data_Model->army_class_by_type($i);
-								if($mission->$class > 0)
-							    {
-									$att_army += array($class => $mission->$class); 
-								}
-                            }
-							$this->Battle_Model->setAttackerTroops($att_army);
-							
-							// Do battle
-							$this->Battle_Model->battle();
-							
-							/* Insert the report into db.*/
-							$data = array('attacker' => $mission->from, 'defender' => $mission->to, 'date' => time(), 'text' => $this->Battle_Model->representBattle());
-							$this->db->insert($this->session->userdata('universe').'_reports', $data); 
-
-							$this->Data_Model->Load_User($mission->to);
-							
-							// Mando i messaggi hai giocatori coinvolti
-							if(is_int($mission->to))
-							{
-						      	if($this->Battle_Model->result == 'win') 
-							    {
-    							    $text_to = 'Hai perso la battaglia contro: '.$this->Player_Model->user->login;
-								    $text_from = 'Hai vinto la battaglia contro: '.$this->Data_Model->temp_user_db[$mission->to]->login;
-							    }
-							    elseif($this->Battle_Model->result == 'lose')
-							    {
-							        $text_to = 'Hai vinto la battaglia contro: '.$this->Player_Model->user->login;
-								    $text_from = 'Hai perso la battaglia contro: '.$this->Data_Model->temp_user_db[$mission->to]->login;
-							    }
-							    else
-							    {
-							        $text_to = 'C\'&egrave; stata parit&agrave; contro: '.$this->Player_Model->user->login;
-								    $text_from = 'C\'&egrave; stata parit&agrave; contro: '.$this->Data_Model->temp_user_db[$mission->to]->login;
-							    }
-							  	$text_to    .= '<br>Report: <a href="'.base_url().'game/militaryAdvisorReportView/'.$this->db->insert_id().'/">View report</a>';
-							    $text_from  .= '<br>Report: <a href="'.base_url().'game/militaryAdvisorReportView/'.$this->db->insert_id().'/">View report</a>';
-							
-							    $town_from_message = array(
-                                    'user' => $mission->user,
-                                    'town' => $mission->from,
-                                    'date' => $mission->mission_start + $time,
-                                    'text' => $text_from
-                                );  
-                                $town_to_message = array(
-                                    'user' => $trade_town->id,
-                                    'town' => $mission->to,
-                                    'date' => $mission->mission_start + $time,
-                                    'text' => $text_to
-                                );
-								$towns_messages[] = $town_from_message;
-								$towns_messages[] = $town_to_message;
-								
-								// Qua dovremmo aggiornare i soldati del difensore
-						        for($i = 1; $i <= 14; $i++)
-						        {
-								    $class = $this->Data_Model->army_class_by_type($i);
-								    if(isset($this->Battle_Model->defenderTroops[$class]))
-									    $this->db->set($class, $this->Battle_Model->defenderTroops[$class]);
-								}		
-							    $this->db->where(array('city' => $mission->to));
-							    $this->db->update($this->session->userdata('universe').'_army');
-                            }
-                            else
-                            {							
-								if($this->Battle_Model->result == 'win') 
-							    {
-								    $text_from = 'Hai vinto la battaglia contro il villaggio dei barbari';
-							    }
-							    elseif($this->Battle_Model->result == 'lose')
-							    {
-								    $text_from = 'Hai perso la battaglia contro il villaggio dei barbari';
-							    }
-							    else
-							    {
-							        $text_from = 'C\'&egrave; stata parit&agrave; contro il villaggio dei barbari';
-							    }
-							    $text_from  .= '<br>Report: <a href="'.base_url().'game/militaryAdvisorReportView/'.$this->db->insert_id().'/">View report</a>';
-							
-							    $town_from_message = array(
-                                    'user' => $mission->user,
-                                    'town' => $mission->from,
-                                    'date' => $mission->mission_start + $time,
-                                    'text' => $text_from
-                                ); 
-								$towns_messages[] = $town_from_message;
-							}
-							
-							for($i = 1; $i <= 14; $i++)
-							{
-							    $class = $this->Data_Model->army_class_by_type($i);
-								//Aggiorniamo i soldati dell'attaccante che stanno partendo
-								if(isset($mission->$class) and isset($this->Battle_Model->attackerTroops[$class]))
-								{
-								    $this->db->set($class, $this->Battle_Model->attackerTroops[$class]);
-								}
-							}
-							$this->db->where(array('id' => $mission->id));
-							$this->db->update($this->session->userdata('universe').'_missions');
-							
-							if($mission->return_start == 0)
-                            {
-                                $this->db->set('return_start', $mission->mission_start + $time + $loading_time);
-                                $this->db->where(array('id' => $mission->id));
-                                $this->db->update($this->session->userdata('universe').'_missions');
-                            }
-							unset($this->Player_Model->missions[$mission->id]);
-						}
-                    }
-                }
-                else
-                {
-                    if ($return_end <= 0 or ($loading_end == 0 and $this->Data_Model->temp_towns_db[$mission->to]->user == $mission->user))
-                    {
-                        // Время вышло, значит вернулись
-                        if ($mission->mission_type == 1)
-                        {
-                               // Если колонизация, то удаляем данные о колонии
-                               $this->db->set('city'.$this->Data_Model->temp_towns_db[$mission->to]->position, 0);
-                               $this->db->where(array('id' => $this->Data_Model->temp_towns_db[$mission->to]->island));
-                               $this->db->update($this->session->userdata('universe').'_islands');
-                               $this->db->query('DELETE FROM '.$this->session->userdata('universe').'_towns where `id`="'.$mission->to.'"');
-                           }
-                           if ($mission->wood > 0 or $mission->wine > 0 or $mission->marble > 0 or $mission->crystal > 0 or $mission->sulfur > 0 or $mission->peoples > 0 or $mission->gold > 0)
-                           {
-                               // Возвращаем ресурсы
-                               if($mission->user == $this->Player_Model->user->id)
-                               {
-                                   $this->Player_Model->towns[$mission->from]->wood = $this->Player_Model->towns[$mission->from]->wood +  $mission->wood;
-                                   $this->Player_Model->towns[$mission->from]->wine = $this->Player_Model->towns[$mission->from]->wine +  $mission->wine;
-                                   $this->Player_Model->towns[$mission->from]->marble = $this->Player_Model->towns[$mission->from]->marble +  $mission->marble;
-                                   $this->Player_Model->towns[$mission->from]->crystal = $this->Player_Model->towns[$mission->from]->crystal +  $mission->crystal;
-                                   $this->Player_Model->towns[$mission->from]->sulfur = $this->Player_Model->towns[$mission->from]->sulfur +  $mission->sulfur;
-                                   $this->Player_Model->towns[$mission->from]->peoples = $this->Player_Model->towns[$mission->from]->peoples +  $mission->peoples;
-                                   $this->Player_Model->user->gold = $this->Player_Model->user->gold + $mission->gold;
-                               }
-                               $this->db->query('UPDATE '.$this->session->userdata('universe').'_towns SET `wood`=`wood`+'.$mission->wood.',`wine`=`wine`+'.$mission->wine.',`marble`=`marble`+'.$mission->marble.',`crystal`=`crystal`+'.$mission->crystal.',`sulfur`=`sulfur`+'.$mission->sulfur.',`peoples`=`peoples`+'.$mission->peoples.' WHERE `id`='.$mission->from);
-                               $this->db->query('UPDATE '.$this->session->userdata('universe').'_users SET `gold`=`gold`+'.$mission->gold.' WHERE `id`='.$mission->user);
-
-                               // Отправляем сообщение
-                               $text = 'Ваш торговый флот из <a href="'.$this->config->item('base_url').'game/island/'.$this->Data_Model->temp_towns_db[$mission->from]->island.'/'.$mission->from.'/">'.$this->Data_Model->temp_towns_db[$mission->from]->name.'</a> вернулся';
-                               if ($mission->gold > 0 or $mission->wood > 0 or $mission->wine > 0 or $mission->marble > 0 or $mission->crystal > 0 or $mission->sulfur > 0)
-                               {
-                                   $text .= ' и выгрузил следующие товары: <ul class="resources">';
-                                   if ($mission->gold > 0){ $text .= '<li class="gold"><span class="textLabel">Золото: </span>'.($mission->gold).'</li>';}
-                                   if ($mission->wood > 0){ $text .= '<li class="wood"><span class="textLabel">Стройматериалы: </span>'.($mission->wood).'</li>';}
-                                   if ($mission->wine > 0){$text .= '<li class="wine"><span class="textLabel">Виноград: </span>'.($mission->wine).'</li>';}
-                                   if ($mission->marble > 0){$text .= '<li class="marble"><span class="textLabel">Мрамор: </span>'.($mission->marble).'</li>';}
-                                   if ($mission->crystal > 0){$text .= '<li class="glass"><span class="textLabel">Хрусталь: </span>'.($mission->crystal).'</li>';}
-                                   if ($mission->sulfur > 0){$text .= '<li class="sulfur"><span class="textLabel">Сера: </span>'.($mission->sulfur).'</li>';}
-                                   $text .= '</ul>';
-                               }
-                               else $text .= '.';
-                               $town_message = array(
-                                   'user' => $mission->user,
-                                   'town' => $mission->from,
-                                   'date' => $mission->return_start + $time,
-                                   'text' => $text
-                               );
-                               $towns_messages[] = $town_message;
-                            }
-                            // возвращаем сухогрузы
-                            $this->db->query('UPDATE '.$this->session->userdata('universe').'_users set `transports`=`transports`+'.$mission->ship_transport.', `gold`=`gold`+'.$mission->gold.' WHERE `id`='.$mission->user);
-                            
-							// Se è un attacco allora riportiamo i soldati rimasti nella città
-							if($mission->mission_type == 5)
-							{
-		    				    // I soldati sono tornati dalla battaglia quindi vanno aggiornati
-								for($i = 1; $i <= 14; $i++)
-								{
-								    $class = $this->Data_Model->army_class_by_type($i);
-									if(isset($mission->$class))
-									{
-									    $this->db->set($class, $this->Player_Model->armys[$mission->from]->$class + $mission->$class);
-									}
-								}		
-								$this->db->where(array('city' => $mission->from));
-								$this->db->update($this->session->userdata('universe').'_army');
-							}
-							
-							if($mission->user == $this->Player_Model->user->id)
-                            {
-                                $this->Player_Model->user->transports =  $this->Player_Model->user->transports + $mission->ship_transport;
-                            }
-                            $this->db->query('DELETE FROM '.$this->session->userdata('universe').'_missions where `id`="'.$mission->id.'"');
-                            
-                            unset($this->Player_Model->missions[$mission->id]);
-                       }
-                   }
-               }
-           }
-
-           $this->Send_Messages($towns_messages);
+        }
     }
 
     function Send_Messages($towns_messages)

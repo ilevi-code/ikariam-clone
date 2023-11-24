@@ -102,7 +102,7 @@
 <?}?>
 
                             <li class="time" title="<?=$this->lang->line('build_time')?>">
-                                <span class="textLabel"><?=$this->lang->line('build_time')?>: </span><?=format_time($cost['time'])?>
+                                <span class="textLabel"><?=$this->lang->line('build_time')?>: </span><?=format_time($cost['time'] / getConfig('game_speed'))?>
                             </li>
                         </ul>
                     </div>

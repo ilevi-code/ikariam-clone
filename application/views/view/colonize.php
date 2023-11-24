@@ -8,9 +8,11 @@
         <div class="content" id="relatedCities">
             <p><?=$this->lang->line('move_town_text')?></p>
             <div style="padding:5px 10px 10px 10px;">
-                <form action="<?=$this->config->item('base_url')?>actions/colonize/<?=$id?>/<?=$position?>/" method="post">
+                <form action="<?=$this->config->item('base_url')?>actions/relocate" method="post">
                     <div style="height:100px">
                         <img src="<?=$this->config->item('style_url')?>skin/premium/movecity.jpg" style="float:left;">
+                        <input type=hidden name="island_id" value="<?=$id?>">
+                        <input type=hidden name="island_position" value="<?=$position?>">
                         <table style="width:400px;background-color:#FFFBEC;border:1px solid #FBE7C0;margin-top:45px;">
                             <tr>
                                 <td  style="width:250px;">
@@ -83,10 +85,10 @@ Event.onDOMReady( function() {
             </div>
 <?}else{?>
 <?
-    $all_capacity = $this->Player_Model->user->transports*$this->config->item('transport_capacity');
+    $all_capacity = $this->Player_Model->user->transports * getConfig('transport_capacity');
     $used_capacity =  1250 + 40;
     $capacity = $all_capacity - $used_capacity;
-    $cost = $this->Data_Model->army_cost_by_type(23, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
+    $cost = $this->Data_Model->army_cost_by_type(23, null, null);
     $x1 = $this->Player_Model->now_island->x;
     $x2 = $this->Island_Model->island->x;
     $y1 = $this->Player_Model->now_island->y;
@@ -99,7 +101,9 @@ var transporterDisplay;
 Event.onDOMReady(function() {transporterDisplay = new transportController(<?=$this->Player_Model->user->transports?>, <?=$this->config->item('transport_capacity')?>, Dom.get("transporterCount"), 40+1250);});
 </script>
 <p><?=$this->lang->line('more_resources')?></p>
-<form action="<?=$this->config->item('base_url')?>actions/colonize/<?=$id?>/<?=$position?>/" method="post">
+<form action="<?=$this->config->item('base_url')?>actions/colonize" method="post">
+<input type=hidden name="island_id" value="<?=$id?>">
+<input type=hidden name="island_position" value="<?=$position?>">
 <ul class="resourceAssign">
     <li class="wood">
         <label for="textfield_resource"><?=$this->lang->line('send')?> <?=$this->lang->line('wood')?>:</label>

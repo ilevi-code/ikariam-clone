@@ -56,5 +56,55 @@ class Action_Model extends CI_Model {
         $research_name = "res".$category."_".$research_num;
         return $this->Player_Model->research->$research_name > 0;
     }
+
+    public function get_city_travel_time($src_town_id, $dst_town_id)
+    {
+        $this->load->model('Data_Model');
+        $src_town = $this->Data_Model->Load_Town($src_town_id);
+        $dst_town = $this->Data_Model->Load_Town($dst_town_id);
+        return get_travel_time($src_town->island, $dest_town->island);
+
+    }
+
+    public function get_travel_time($src_island_id, $dst_island_id)
+    {
+        $src_island = $this->Data_Model->Load_Island($src_island_id);
+        $dst_island = $this->Data_Model->Load_Island($dst_island_id);
+        $cost = $this->Data_Model->army_cost_by_type(22, null, null);
+        return $this->Data_Model->time_by_coords($src_island->x, $dst_island->x, $src_island->y, $src_island->y1, $cost['speed']);
+    }
+
+    public function does_town_have_spare($town_id, $resources)
+    {
+        $town = $this->Data_Model->Load_Town($town_id);
+        foreach ($resources as $resource => $count) {
+            if ($town->$resource < $count) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function does_user_have_spare($user_id, $resrouce)
+    {
+        $user = $this->Data_Model->Load_User($user_id);
+        return $user->transports > $ship_count;
+    }
+
+    public function calc_ships($resources)
+    {
+        $total = 0.0;
+        foreach ($resources as $resource => $count) {
+            $total -= $count;
+        }
+        return ceil(($total) / getConfig('transport_capacity'));
+    }
+
+    public function is_town_occupied($island_id, $position)
+    {
+        $position_name = 'city'.$position;
+        $island = $this->Data_Model->Load_Island($island_id);
+        return $isalnd->$position_name == 0;
+    }
 }
 

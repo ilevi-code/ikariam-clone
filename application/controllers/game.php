@@ -71,6 +71,10 @@ class Game extends CI_Controller {
      */
     public function index()
     {
+        if ($this->Data_Model->temp_towns_db[$this->Player_Model->now_town->id]->is_colony) {
+            $this->show('error',$this->lang->line('colonization_in_progress'));
+            return;
+        }
 		$this->show('city');
     }
 	

@@ -21,18 +21,30 @@ class Data_Model extends CI_Model
                 $query = $this->db->get_where($this->session->userdata('universe').'_users', array('id' => $id));
                 $return = $query->row();
                 $this->temp_user_db[$id] = $return;
+                return $return;
         }}
     }
-	
+
 	function Load_Town($id = 0)
     {
         if ($id > 0)
 		{
-		    if (!isset($temp_towns_db[$id]))
-			{
-                $query = $this->db->get_where($this->session->userdata('universe').'_towns', array('id' => $id));
-                $return = $query->row();
+		    if (!isset($this->temp_towns_db[$id]))
+            {
+                $town_table = $this->session->userdata('universe').'_towns';
+                $colonies_table = $this->session->userdata('universe').'_colonies';
+                $query = sprintf("SELECT %s.*, (%s.id is not null) as is_colony ".
+                    "FROM %s LEFT JOIN %s ON %s.id = %s.town_id WHERE %s.id = %d",
+                    $town_table, $colonies_table, $town_table, $colonies_table, $town_table, $colonies_table,
+                $town_table, $id);
+                $result = $this->db->query($query);
+                $return = $result->row();
                 $this->temp_towns_db[$id] = $return;
+                return $return;
+            }
+            else
+            {
+                return $this->temp_towns_db[$id];
             }
 		}
     }
@@ -40,12 +52,13 @@ class Data_Model extends CI_Model
     function Load_Island($id = 0)
     {
         if ($id > 0)
-		{   
+		{
 		    if (!isset($temp_islands_db[$id]))
 			{
                 $query = $this->db->get_where($this->session->userdata('universe').'_islands', array('id' => $id));
                 $return = $query->row();
                 $this->temp_islands_db[$id] = $return;
+                return $return;
             }
 		}
     }
@@ -85,7 +98,7 @@ class Data_Model extends CI_Model
                     $where .= '`to`='.$town->id.' or `from`='.$town->id.' or ';
                 }
                     $where .= '`id`=0';
-                $query = $this->db->query('SELECT * FROM '.$this->session->userdata('universe').'_missions WHERE '.$where.' ORDER BY `loading_from_start` ASC');
+                $query = $this->db->query('SELECT * FROM '.$this->session->userdata('universe').'_missions WHERE '.$where.' ORDER BY `next_stage_time` ASC');
                 $this->temp_missions_db[$id] = array();
                 foreach ($query->result() as $return)
                 {
@@ -258,7 +271,7 @@ class Data_Model extends CI_Model
      * @param <int> $type
      * @return <array>
      */
-    function army_cost_by_type($type, $research, $levels, $use_research = TRUE)
+    function army_cost_by_type($type, $research = null, $levels = null, $use_research = TRUE)
     {
         $type = floor($type)-1;
         if ($type < 0)
@@ -316,7 +329,11 @@ class Data_Model extends CI_Model
         $return['speed'] = ($speed_array[$type] > 0) ? $speed_array[$type] : 0;
         $return['ability'] = ($ability_array[$type] > 0) ? $ability_array[$type] : 0;
         $return['capacity'] = ($capacity_array[$type] > 0) ? $capacity_array[$type] : 0;
-        
+
+        if (is_null($research) and is_null($levels)) {
+            return $return;
+        }
+
         // Скидки на цены
         $minus_wood = 0;
         $minus_wine = 0;
@@ -1700,14 +1717,14 @@ class Data_Model extends CI_Model
 
     function time_by_coords($x1, $x2, $y1, $y2, $speed)
     {
-        $distance = sqrt((($x1-$x2)*($x1-$x2))+(($y1-$y2)*($y1-$y2)));
-        if (($x1 == $x2 and $y1 == $y2) or ($distance <=0))
+        if (($x1 == $x2 and $y1 == $y2))
         {
-            $time = (20/$speed*1*60)/2; //era 1200 /
+            $time = 36000 / $speed;
         }
         else
         {
-            $time = 20/$speed*$distance*60; // era 1200/..
+            $distance = sqrt((($x1-$x2)*($x1-$x2))+(($y1-$y2)*($y1-$y2)));
+            $time = 72000 / $speed * $distance;
         }
         return $time;
     }

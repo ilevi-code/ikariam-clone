@@ -71,6 +71,7 @@ class Player_Model extends CI_Model {
 			$towns_query = $this->db->get_where($this->session->userdata('universe').'_towns', array('user' => $id));
             foreach ($towns_query->result() as $town)
             {
+                $town = $this->Data_Model->Load_Town($town->id);
                 $this->warehouses_levels[$town->id] = array();
                 if ($town->pos0_level == 0)
 				{ 
@@ -93,9 +94,7 @@ class Player_Model extends CI_Model {
                 $this->spyes[$town->id] = array();
                 
 				// Carichiamo la città
-                $this->Data_Model->Load_Town($town->id);
-				$this->Data_Model->temp_towns_db[$town->id] = $town;
-                $this->towns[$town->id] =& $this->Data_Model->temp_towns_db[$town->id];
+                $this->towns[$town->id] =& $town;
                 
 				// Carichiamo l'isola
                 $this->Data_Model->Load_Island($town->island);
