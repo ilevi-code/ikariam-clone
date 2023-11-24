@@ -955,6 +955,7 @@ class Actions extends CI_Controller
             $this->db->where(array('id' => $this->Player_Model->user->id));
             $this->db->update($this->session->userdata('universe').'_users');
         }
+        header('Location: /game/port/'.$this->Player_Model->now_town->id);
     }
 
     function saveAvatarNotes()

@@ -22,7 +22,9 @@
                     <div class="forminput">Maximum: 160<br>
 <?if($this->Player_Model->user->gold >= $this->Data_Model->transport_cost_by_count($this->Player_Model->all_transports)){?>
                         <div class="leftButton">
-                            <a onclick="fetch('<?=$this->config->item('base_url')?>actions/transporter/',{method: 'POST'}).then(function(res){ location.reload(); })" class="button bigButton">Buy a merchant ship</a>
+                          <form action="/<?=$this->config->item('base_url')?>actions/transporter" method="post">
+                            <input class="button bigButton" type="submit" value="Buy a merchant ship">
+                          </form>
                         </div>
 <?}else{?>
 Not enough resources
