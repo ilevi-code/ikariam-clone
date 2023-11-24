@@ -106,5 +106,17 @@ class Action_Model extends CI_Model {
         $island = $this->Data_Model->Load_Island($island_id);
         return $isalnd->$position_name == 0;
     }
+
+    public function is_under_construction($town_id, $position)
+    {
+        $build_queue = $this->Player_Model->build_line[$town_id];
+        foreach($build_queue as $foudn_position => $level)
+        {
+            if ($position == $found_position) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 

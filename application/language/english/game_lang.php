@@ -541,10 +541,10 @@ $lang['abolish_text'] = 'You can destroy the colonial city. All the resources, t
 $lang['constructions_review_text1'] = 'You have too many colonies to be managed? Overview Construction will provide you with enough information to control the whole of your city! ';
 $lang['constructions_review_text2'] = 'You have too many colonies to be managed? Overview Construction will provide you with enough information to control the whole of your city! ';
  
-$lang['expand'] = 'Upgrade works';
+$lang['expand'] = 'Upgrade building';
 $lang['build_time'] = 'Building time';
 $lang['no_expand'] = 'Upgrade temporarily not feasible';
-$lang['level_up'] = 'Upgrade works';
+$lang['level_up'] = 'Upgrade building';
 $lang['level_down'] = 'Demolition works';
 $lang['in_queue'] = 'Waiting building';
 $lang['demolish'] = 'Destroy';

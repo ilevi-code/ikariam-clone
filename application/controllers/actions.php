@@ -60,6 +60,7 @@ class Actions extends CI_Controller
     function get_param($param_name)
     {
         if (!array_key_exists($param_name, $_POST)) {
+            error_log(print_r($_POST, true));
             error_log("Missing request parameter: ".$param_name);
             $this->Error("Bad request");
             die;
@@ -106,155 +107,83 @@ class Actions extends CI_Controller
         }
     }
 
-    /**
-     * Понижение уровня здания
-     * @param <int> $position
-     */
-    function demolition($position, $id)
+    function demolish()
     {
-        $position = floor($position);
-        
-        if ($position > 0 or $this->Player_Model->build_line[$this->Player_Model->town_id][0]['type'] == 1)
+        $position = floor($this->get_param('position'));
+
+        if ($position == 0) {
+            $this->Error('Demolising town hall is not possible.');
+            return;
+        }
+
+        if ($this->Action_Model->is_under_construction($this->Player_Model->now_town->id, $position)) {
+            $this->Error('Cant demolish when building is queued for construction');
+            return;
+        }
+
+        $level_text = 'pos'.$position.'_level';
+        $type_text = 'pos'.$position.'_type';
+
+        $level = $this->Player_Model->now_town->$level_text;
+        $type = $this->Player_Model->now_town->$type_text;
+        if ($level <= 0) {
+            return;
+        }
+
+        $level -= 1;
+        $cost = $this->Data_Model->building_cost($type,$level,$this->Player_Model->research,$this->Player_Model->levels[$this->Player_Model->town_id]);
+
+        //If this is an academy, reset the scientists
+        if ($type == 3 and $level == 0)
         {
-            $level_text = 'pos'.$position.'_level';
-            $type_text = 'pos'.$position.'_type';
-            
-			// Уровень здания
-            $level = $this->Player_Model->now_town->$level_text;
-            $type = $this->Player_Model->now_town->$type_text;
-            if ($type == 0){ $type = $this->Player_Model->build_line[$this->Player_Model->town_id][0]['type']; }
-            
-			// Получаем цены
-            if ($this->Player_Model->now_town->build_line != '' and $this->Player_Model->build_line[$this->Player_Model->town_id][0]['position'] == $position)
-            {
-                $cost = $this->Data_Model->building_cost($type,$level, $this->Player_Model->research,$this->Player_Model->levels[$this->Player_Model->town_id]);
-            }
-            else
-            {
-                $cost = $this->Data_Model->building_cost($type,$level-1,$this->Player_Model->research,$this->Player_Model->levels[$this->Player_Model->town_id]);
-                $level = ($level > 0) ? $level - 1 : $level;
-            }
-            //Если это академия обнуляем ученых
-            if ($type == 3 and $level == 0)
-            {
-                $this->Player_Model->now_town->peoples = $this->Player_Model->now_town->peoples + $this->Player_Model->now_town->scientists;
-                $this->Player_Model->now_town->scientists = 0;
+            $scientists_to_remove = $this->Data_Model->scientists_by_level($level) - $this->Player_Model->now_town->scientists;
+            if ($scientists_to_remove > 0) {
+                $this->Player_Model->now_town->peoples += $scientists_to_remove;
+                $this->Player_Model->now_town->scientists -= $scientists_to_remove;
                 $this->db->set('peoples', $this->Player_Model->now_town->peoples);
                 $this->db->set('scientists', $this->Player_Model->now_town->scientists);
             }
-            // Добавляем 90% ресурсов
-            $wood = $this->Player_Model->now_town->wood + ($cost['wood']*0.9);
-            $wine = $this->Player_Model->now_town->wine + ($cost['wine']*0.9);
-            $marble = $this->Player_Model->now_town->marble + ($cost['marble']*0.9);
-            $crystal = $this->Player_Model->now_town->crystal + ($cost['crystal']*0.9);
-            $sulfur = $this->Player_Model->now_town->sulfur + ($cost['sulfur']*0.9);
-            $points = ($cost['wood'] + $cost['wine'] + $cost['marble'] + $cost['crystal'] + $cost['sulfur'])*0.7;
-
-            // Если есть очередь и здание в ней
-            if ($this->Player_Model->now_town->build_line != '' and $this->Player_Model->build_line[$this->Player_Model->town_id][0]['type'] == $type)
-            {
-                // Убираем здание из очереди
-                if (sizeof($this->Player_Model->build_line[$this->Player_Model->town_id]) > 1)
-                {
-                    if ($this->Player_Model->build_line[$this->Player_Model->town_id][0]['position'] < 10)
-                    {
-                        $build_line = ($this->Player_Model->build_line[$this->Player_Model->town_id][0]['type'] < 10) ? substr($this->Player_Model->now_town->build_line, 4) : substr($this->Player_Model->now_town->build_line, 5);
-                    }
-                    else
-                    {
-                        $build_line = ($this->Player_Model->build_line[$this->Player_Model->town_id][0]['type'] < 10) ? substr($this->Player_Model->now_town->build_line, 5) : substr($this->Player_Model->now_town->build_line, 6);
-                    }
-                    $build_start = $this->Player_Model->now_town->build_start;
-                }
-                else
-                {
-                    $build_line = '';
-                    $build_start = 0;
-                }
-                // Если все еще есть очередь
-                if ($build_line != '')
-                {
-                    $do = true;
-                    while ($do)
-                    {
-                        // Стоимость след. здания
-                        $buildings = $this->Data_Model->load_build_line($build_line);
-                        $level_text = 'pos'.$buildings[0]['position'].'_level';
-                        $type_text = 'pos'.$buildings[0]['position'].'_type';
-                        $type = $this->Player_Model->now_town->$type_text;
-                        $next_level = $this->Player_Model->now_town->$level_text;
-                        $cost = $this->Data_Model->building_cost($type, $next_level, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
-                        
-                        // Если хватает ресурсов
-                        if (($wood - $cost['wood']) >= 0 and ($wine - $cost['wine']) >= 0 and ($marble - $cost['marble']) >= 0 and ($crystal - $cost['crystal']) >= 0 and ($sulfur - $cost['sulfur']) >= 0)
-                        {
-                            $wood = $wood - $cost['wood'];
-                            $wine = $wine - $cost['wine'];
-                            $marble = $marble - $cost['marble'];
-                            $crystal = $crystal - $cost['crystal'];
-                            $sulfur = $sulfur - $cost['sulfur'];
-                            $do = false;
-                            break;
-                        }
-                        else
-                        {
-                            // Если не хватает уменьшаем очередь
-                            if ($buildings[0]['position'] < 10)
-                            {
-                                $build_line = ($type < 10) ? substr($build_line, 4) : substr($build_line, 5);
-                            }
-                            else
-                            {
-                                $build_line = ($type < 10) ? substr($build_line, 5) : substr($build_line, 6);
-                            }
-                        }
-                    }
-                }
-                // Проверка данных, чтобы не писать в БД лишнего
-                if (strlen($build_line) < 3){ $build_line = ''; }
-                if ($build_line == ''){ $build_start = 0; }
-                // Пишем в БД
-                $this->Player_Model->now_town->build_line = $build_line;
-                $this->Player_Model->now_town->build_start = $build_start;
-                $this->db->set('build_line', $build_line);
-                $this->db->set('build_start', $build_start);
-            }
-            // Если уровеня нет, то сносим с карты
-            if ($level <= 0){ $this->Player_Model->now_town->$type_text = 0; }
-            // Пишем в БД
-            $level_text = 'pos'.$position.'_level';
-            $this->Player_Model->now_town->$level_text = $level;
-            $this->Player_Model->now_town->wood = $wood;
-            $this->Player_Model->now_town->wine = $wine;
-            $this->Player_Model->now_town->marble = $marble;
-            $this->Player_Model->now_town->crystal = $crystal;
-            $this->Player_Model->now_town->sulfur = $sulfur;
-            
-            $this->db->set('pos'.$position.'_level', $level);
-            $this->db->set('pos'.$position.'_type', $this->Player_Model->now_town->$type_text);
-            $this->db->set('wood', $wood);
-            $this->db->set('wine', $wine);
-            $this->db->set('marble', $marble);
-            $this->db->set('crystal', $crystal);
-            $this->db->set('sulfur', $sulfur);
-            $this->db->where(array('id' => $this->Player_Model->town_id));
-            $this->db->update($this->session->userdata('universe').'_towns');
- 
-            $this->Player_Model->user->points_buildings = $this->Player_Model->user->points_buildings - $points;
-            $this->Player_Model->user->points_levels = $this->Player_Model->user->points_levels - 1;
-
-			$this->db->set('points_buildings', $this->Player_Model->user->points_buildings);
-            $this->db->set('points_levels', $this->Player_Model->user->points_levels);
-			$this->db->where(array('id' => $this->Player_Model->user->id));
-            $this->db->update($this->session->userdata('universe').'_users');	
-			
-            $this->Player_Model->correct_buildings();
-            $this->show('city');
         }
-        else
-        {
-            $this->Error('Невозможно понизить уровень Ратуши!');
-        } 
+
+        $wood = $this->Player_Model->now_town->wood + ($cost['wood']*0.9);
+        $wine = $this->Player_Model->now_town->wine + ($cost['wine']*0.9);
+        $marble = $this->Player_Model->now_town->marble + ($cost['marble']*0.9);
+        $crystal = $this->Player_Model->now_town->crystal + ($cost['crystal']*0.9);
+        $sulfur = $this->Player_Model->now_town->sulfur + ($cost['sulfur']*0.9);
+        $points = ($cost['wood'] + $cost['wine'] + $cost['marble'] + $cost['crystal'] + $cost['sulfur'])*0.7;
+
+        if ($level == 0){
+            $this->Player_Model->now_town->$type_text = 0;
+        }
+
+        $level_text = 'pos'.$position.'_level';
+        $this->Player_Model->now_town->$level_text = $level;
+        $this->Player_Model->now_town->wood = $wood;
+        $this->Player_Model->now_town->wine = $wine;
+        $this->Player_Model->now_town->marble = $marble;
+        $this->Player_Model->now_town->crystal = $crystal;
+        $this->Player_Model->now_town->sulfur = $sulfur;
+
+        $this->db->set($level_text, $level);
+        $this->db->set($type_text, $this->Player_Model->now_town->$type_text);
+        $this->db->set('wood', $wood);
+        $this->db->set('wine', $wine);
+        $this->db->set('marble', $marble);
+        $this->db->set('crystal', $crystal);
+        $this->db->set('sulfur', $sulfur);
+        $this->db->where(array('id' => $this->Player_Model->town_id));
+        $this->db->update($this->session->userdata('universe').'_towns');
+
+        $this->Player_Model->user->points_buildings = $this->Player_Model->user->points_buildings - $points;
+        $this->Player_Model->user->points_levels = $this->Player_Model->user->points_levels - 1;
+
+        $this->db->set('points_buildings', $this->Player_Model->user->points_buildings);
+        $this->db->set('points_levels', $this->Player_Model->user->points_levels);
+        $this->db->where(array('id' => $this->Player_Model->user->id));
+        $this->db->update($this->session->userdata('universe').'_users');
+
+        $this->Player_Model->correct_buildings();
+        header('Location: /game/city/');
     }
 
     /**

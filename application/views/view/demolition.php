@@ -42,7 +42,11 @@
                             </ul>
                         </p>
 			<hr>
-			<a class="yes" href="<?=$this->config->item('base_url')?>actions/demolition/<?=$position?>/" title="<?=$this->lang->line('yes')?>"><?=$this->lang->line('yes')?></a>
+            <form id="demolish_form" action="<?=$this->config->item('base_url')?>actions/demolish" method="post">
+                <input type=hidden name="position" value="<?=$position?>">
+            </form>
+            <a class="yes" href="javascript:{}" onclick="document.getElementById('demolish_form').submit()"
+                title="<?=$this->lang->line('yes')?>"><?=$this->lang->line('yes')?></a>
 			<a class="no" href="<?=$this->config->item('base_url')?>game/<?=$this->Data_Model->building_class_by_type($type)?>/<?=$position?>/" title="<?=$this->lang->line('no')?>"><span class="textLabel"><?=$this->lang->line('no')?></span></a>
 		</div>
 		<div class="footer"></div>
