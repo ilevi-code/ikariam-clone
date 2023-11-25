@@ -1,5 +1,6 @@
 <?php
     
+    $universe_config_cache = array();
     /**
      * Форматирование времени
      * @param <int> $seconds
@@ -41,13 +42,18 @@
 
     function getConfig($item)
 	{
+        if (isset($universe_config_cache[$item])) {
+            return $universe_config_cache[$item];
+        }
 	    $CI =& get_instance();
 		$CI->db->select($item);
 		$universe = ($CI->session->userdata('universe')) ? $CI->session->userdata('universe') : 'alpha';
 		$CI->db->from($universe.'_config');
 		$query = $CI->db->get();
 		if(!$query) return null;
-		return $query->row()->$item;
+		$value = $query->row()->$item;
+        $universe_config_cache[$item] = $value;
+        return $value;
 	}
 	
 	function premium_time($seconds)
