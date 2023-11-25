@@ -7,6 +7,10 @@ enum MissionState : int {
     case RETURNING = 3;
     case DISPERSED = 4;
     case FINISHED = 5;
+
+    public function display_name() {
+        return ucwords(str_replace('_', ' ', strtolower($this->name)));
+    }
 }
 
 enum MissionType : int
@@ -21,6 +25,10 @@ enum MissionType : int
     case OCCUPY_TOWN = 7;
     case OCCUPY_PORT = 8;
     case COLONIZE = 9;
+
+    public function display_name() {
+        return ucwords(str_replace('_', ' ', strtolower($this->name)));
+    }
 }
 
 function mission_name_by_type($type)
@@ -28,7 +36,6 @@ function mission_name_by_type($type)
     $name = array_column(MissionType::cases(), 'name')[$type];
     return ucwords(strtolower($name));
 }
-
 
 class Mission
 {
@@ -69,5 +76,18 @@ class Mission
 
     public function get_travel_time() {
         return $this->ctx->Action_Model->get_city_travel_time($this->from, $this->to);
+    }
+
+    public function is_returning() {
+        switch ($this->state) {
+        case MissionState::LOADING->value:
+        case MissionState::EN_ROUTE->value:
+        case MissionState::IN_BATTLE->value:
+            return 1;
+        case MissionState::RETURNING->value:
+        case MissionState::DISPERSED->value:
+        case MissionState::FINISHED->value:
+            return 0;
+        }
     }
 }

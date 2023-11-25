@@ -155,5 +155,11 @@ class Action_Model extends CI_Model {
         }
         return ceil($resource_count / $loading_speed) * 60; // minutes to seconds
     }
+
+    public function get_mission_owner($mission)
+    {
+        $src_town = $this->Data_Model->Load_Town($mission->from);
+        return $src_town->user;
+    }
 }
 

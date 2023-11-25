@@ -11,61 +11,40 @@
 <?if(SizeOf($this->Player_Model->missions) > 0){?>
 
             <table cellpadding="0" cellspacing="0">
+                <thead>
                 <tr>
                     <th class="transports"><img src="<?=$this->config->item('style_url')?>skin/characters/fleet/40x40/ship_transport_r_40x40.gif" width="40" height="40" title="<?=$this->lang->line('number_ships')?>" alt="<?=$this->lang->line('quantity')?>"></th>
-                    <th class="source"><?=$this->lang->line('start')?></th>
                     <th class="mission"><?=$this->lang->line('mission')?></th>
+                    <th class="source"><?=$this->lang->line('start')?></th>
+                    <th class="arrow"></th>
                     <th class="target"><?=$this->lang->line('target')?></th>
-                    <th class="ika"><?=$this->lang->line('arrival')?></th>
-                    <th class="return"><?=$this->lang->line('return')?></th>
+                    <th class="arrival"><?=$this->lang->line('arrival')?></th>
                     <th class="actions"><?=$this->lang->line('actions')?></th>
                 </tr>
-<?foreach($this->Player_Model->missions as $mission){?>
-<?if($mission->user == $this->Player_Model->user->id){?>
-<?
-    $all_resources = $mission->wood+$mission->wine+$mission->marble+$mission->crystal+$mission->sulfur+$mission->peoples;
-    include(APPPATH.'models/mission_data.php');
+                </thead>
+<?php
+require_once(APPPATH.'libraries/mission_data.php');
+foreach ($this->Player_Model->missions as $mission) {
+    $mission = new Mission($this, (array)$mission);
+    if ($this->Action_Model->get_mission_owner($mission) == $this->Player_Model->user->id) {
+        $all_resources = $mission->wood+$mission->wine+$mission->marble+$mission->crystal+$mission->sulfur+$mission->peoples;
+        $mission_state_class = $mission->is_returning() ? "returning" : "gotoown";
 ?>
                 <tr>
-                    <td class="transports"><?=$mission->ship_transport?></td>
+                    <td class="transports"><?=$mission->ships?></td>
+                    <td class="mission"><?=MissionType::from($mission->type)->display_name()?>
+                        (<?=MissionState::from($mission->state)->display_name()?>)
+                    </td>
                     <td class="source"><a href="<?=$this->config->item('base_url')?>game/island/<?=$this->Player_Model->towns[$mission->from]->island?>/<?=$this->Player_Model->towns[$mission->from]->id?>/"><?=$this->Player_Model->towns[$mission->from]->name?></a>
                     </td>
-                    <td class="mission <?if($mission->return_start > 0){?>returning<?}else{?>gotoown<?}?>"><?=$this->Data_Model->mission_name_by_type($mission->mission_type)?> <?if($mission->return_start == 0){?><?if($mission->mission_start > 0 and $loading_end > 0){?>(<?=$this->lang->line('underway')?>)<?}else{?>(<?=$this->lang->line('loading')?>)<?}?><?}else{?><?if($mission->percent < 1){?>(<?=$this->lang->line('abort')?>)<?}else{?>(<?=$this->lang->line('return')?>)<?}}?></td>
+                    <td class=" <?=$mission_state_class?>"></td>
                     <td class="target"><a href="<?=$this->config->item('base_url')?>game/island/<?=$this->Data_Model->temp_towns_db[$mission->to]->island?>/<?=$this->Data_Model->temp_towns_db[$mission->to]->id?>/"><?=$this->Data_Model->temp_towns_db[$mission->to]->name?> <?if($this->Data_Model->temp_towns_db[$mission->to]->user != $this->Player_Model->user->id){?>(<?=$this->Data_Model->temp_users_db[$this->Data_Model->temp_towns_db[$mission->to]->user]->login?>)<?}?>&nbsp;</a></td>
 
-                    <td id="ika<?=$mission->id?>" class="ika">
-                        <?if ($mission->mission_start == 0){?>
-                            <?=$this->lang->line('loading')?>
-                        <?}else{?>
-                            <?if($mission_end > 0 and $mission->return_start == 0){?>
-                                <?=format_time($mission_end)?>
-                            <?}else{?>
-                                <?if($mission->return_start == 0){?>
-                                    <?=$this->lang->line('loading')?>
-                                <?}else{?>
-                                    -
-                                <?}?>
-                            <?}?>
-                        <?}?>
+                    <td id="arrival<?=$mission->id?>" class="arrival">
+                        <?=format_time($mission->next_stage_time - time())?>
                     </td>
-                    <td id="ret<?=$mission->id?>" class="return">
-                        <?if($mission->mission_start > 0){?>
-                            <?if($mission->loading_to_start > 0 and $mission->return_start == 0){?>
-                            -
-                            <?}else{?>
-                                <?if($mission->loading_to_start > 0){?>
-                                    <?=format_time($loading_end + $time)?>
-                                <?}elseif($mission->mission_start == 0){?>
-                                    <?=format_time($return_end)?>
-                                <?}?>
-                            <?}?>
-                        <?}else{?>
-                            -
-                        <?}?>
-                    </td>
-
                     <td class="actions">
-<?if($mission->return_start == 0){?>
+<?if(true){?>
                         <a title="<?=$this->lang->line('withdraw')?>" href="<?=$this->config->item('base_url')?>actions/abortFleet/<?=$mission->id?>/0/merchantNavy/">
                             <img src="<?=$this->config->item('style_url')?>skin/advisors/military/icon-back.gif" title="<?=$this->lang->line('withdraw')?>">
                         </a>
@@ -134,33 +113,13 @@
                             </div>
                         </td>
                     </tr>
-<?if($mission->mission_start > 0 and $mission_end > 0 and $mission->return_start == 0){?>
             <script type="text/javascript">
                     getCountdown({
-                    enddate: <?=time()+$mission_end?>,
-                    currentdate: <?=time()?>,
-                    el: "ika<?=$mission->id?>"
-		});
+                        enddate: <?=$mission->next_stage_time?>,
+                        currentdate: <?=time()?>,
+                        el: "arrival<?=$mission->id?>"
+                    });
             </script>
-<?}?>
-<?if($mission->return_start > 0){?>
-            <script type="text/javascript">
-                    getCountdown({
-                    enddate: <?=time()+$return_end?>,
-                    currentdate: <?=time()?>,
-                    el: "ret<?=$mission->id?>"
-		});
-            </script>
-<?}elseif($mission->mission_start > 0){?>
-<?if($mission->return_start > 0){?>
-            <script type="text/javascript">
-                    getCountdown({
-                    enddate: <?=time()+$loading_end+$time?>,
-                    currentdate: <?=time()?>,
-                    el: "ret<?=$mission->id?>"
-		});
-            </script>
-<?}}?>
 <?}}?>
             </table>
 <?}else{?>
