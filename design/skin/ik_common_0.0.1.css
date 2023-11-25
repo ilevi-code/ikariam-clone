@@ -200,6 +200,8 @@ li.blockadedCities{width:420px;background-image:url(layout/resources_related_cit
 #container #cityResources
 .glass{left:281px}
 #container #cityResources
+.crystal{left:281px}
+#container #cityResources
 .sulfur{left:370px}
 #container #cityResources li
 .tooltip{position:absolute;display:none;top:26px;left:0px;background-color:#f1d7ad;border:1px
@@ -1674,6 +1676,7 @@ li.wood{position:absolute;left:190px}
 #container #mainview .unit .resources li.wine,
 #container #mainview .unit .resources li.marble,
 #container #mainview .unit .resources li.glass,
+#container #mainview .unit .resources li.crystal,
 #container #mainview .unit .resources
 li.sulfur{position:absolute;left:255px}
 #container #mainview .unit .resources
@@ -1789,6 +1792,8 @@ li.wine{background-image:url(resources/icon_wine.gif);background-position:4px ce
 li.marble{background-image:url(resources/icon_marble.gif);background-position:2px center}
 #container .resourceAssign
 li.glass{background-image:url(resources/icon_glass.gif);background-position:4px center}
+#container .resourceAssign
+li.crystal{background-image:url(resources/icon_glass.gif);background-position:4px center}
 #container .resourceAssign
 li.sulfur{background-image:url(resources/icon_sulfur.gif);background-position:2px center}
 #container .resourceAssign

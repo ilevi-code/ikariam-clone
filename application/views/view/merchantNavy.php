@@ -29,20 +29,20 @@ foreach ($this->Player_Model->missions as $mission) {
     if ($this->Action_Model->get_mission_owner($mission) == $this->Player_Model->user->id) {
         $all_resources = $mission->wood+$mission->wine+$mission->marble+$mission->crystal+$mission->sulfur+$mission->peoples;
         $mission_state_class = $mission->is_returning() ? "returning" : "gotoown";
+        $mission_type_class = strtolower(MissionType::from($mission->type)->name);
+        $state_name = MissionState::from($mission->state)->display_name();
 ?>
                 <tr>
                     <td class="transports"><?=$mission->ships?></td>
-                    <td class="mission"><?=MissionType::from($mission->type)->display_name()?>
-                        (<?=MissionState::from($mission->state)->display_name()?>)
+                    <td class="mission" title="<?=MissionType::from($mission->type)->display_name()?> (<?=$state_name?>)">
+                    <div class="mission_icon <?=$mission_type_class?>"></div>
                     </td>
                     <td class="source"><a href="<?=$this->config->item('base_url')?>game/island/<?=$this->Player_Model->towns[$mission->from]->island?>/<?=$this->Player_Model->towns[$mission->from]->id?>/"><?=$this->Player_Model->towns[$mission->from]->name?></a>
                     </td>
                     <td class=" <?=$mission_state_class?>"></td>
                     <td class="target"><a href="<?=$this->config->item('base_url')?>game/island/<?=$this->Data_Model->temp_towns_db[$mission->to]->island?>/<?=$this->Data_Model->temp_towns_db[$mission->to]->id?>/"><?=$this->Data_Model->temp_towns_db[$mission->to]->name?> <?if($this->Data_Model->temp_towns_db[$mission->to]->user != $this->Player_Model->user->id){?>(<?=$this->Data_Model->temp_users_db[$this->Data_Model->temp_towns_db[$mission->to]->user]->login?>)<?}?>&nbsp;</a></td>
 
-                    <td id="arrival<?=$mission->id?>" class="arrival">
-                        <?=format_time($mission->next_stage_time - time())?>
-                    </td>
+                    <td id="arrival<?=$mission->id?>" class="arrival"></td>
                     <td class="actions">
 <?if(true){?>
                         <a title="<?=$this->lang->line('withdraw')?>" href="<?=$this->config->item('base_url')?>actions/abortFleet/<?=$mission->id?>/0/merchantNavy/">
@@ -97,7 +97,7 @@ foreach ($this->Player_Model->missions as $mission) {
 <?}}?>
 <?if($peoples_icons > 0){?>
 <?for ($i = 0; $i < $peoples_icons; $i++){?>
-<img src="<?=$this->config->item('style_url')?>skin/resources/icon_citizen.gif" width="25" height="20" title="<?=number_format($mission->peoples)?> <?=$this->lang->line('peoples')?>" alt=""  style="margin-left:-17px" >
+<img src="<?=$this->config->item('style_url')?>skin/resources/icon_citizen.gif" width="19" height="20" title="<?=number_format($mission->peoples)?> <?=$this->lang->line('peoples')?>" alt=""  style="margin-left:-17px" >
 <?}}?>
 
                                                 </div>
@@ -105,7 +105,7 @@ foreach ($this->Player_Model->missions as $mission) {
                                             <td>
                                                 <div class="space">
                                                     <img src="<?=$this->config->item('style_url')?>skin/layout/crate.gif" width="22" height="22" alt="<?=$this->lang->line('cargo_space')?>" title="<?=$this->lang->line('cargo_space')?>">
-                                                </div> <?=number_format($all_resources)?> / <?=number_format($mission->ship_transport*$this->config->item('transport_capacity'))?>
+                                                </div><?=number_format($all_resources)?> / <?=number_format($mission->ships * getConfig('transport_capacity'))?>
                                                 </td></tr>
                                     </table>
                                 </div>
@@ -117,7 +117,8 @@ foreach ($this->Player_Model->missions as $mission) {
                     getCountdown({
                         enddate: <?=$mission->next_stage_time?>,
                         currentdate: <?=time()?>,
-                        el: "arrival<?=$mission->id?>"
+                        el: "arrival<?=$mission->id?>",
+                        suffix: "</br>(<?=$state_name?>)",
                     });
             </script>
 <?}}?>

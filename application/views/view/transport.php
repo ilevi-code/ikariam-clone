@@ -4,6 +4,9 @@
         <p>Select the type and number of goods to be transported.</p>
     </div>
 
+<?php
+$capacity = $this->Player_Model->user->transports * getConfig('transport_capacity');
+?>
 					
     <form id="transport" action="<?=$this->config->item('base_url')?>actions/transport/<?=$this->Island_Model->island->id?>/<?=$param1?>/" method="POST">		                    
         <div id="setPremiumTransports" class="contentBox">
@@ -26,83 +29,53 @@
             <div class="content">
                 <p>Select goods to transport from<?=$this->Player_Model->now_town->name?> in<?=$this->Data_Model->temp_towns_db[$param1]->name?>. Consider the number of merchant ships available.</p>
                 <ul class="resourceAssign">
-<?if($this->Player_Model->now_town->wood > 0){?>
-                    <li class="wood">
-                        <label for="textfield_resource">Send building materials:</label>
+<?php
+$resources = ['wood', 'wine', 'marble', 'crystal', 'sulfur'];
+foreach ($resources as $resource) {
+if($this->Player_Model->now_town->$resource > 0){?>
+    <li class="<?=$resource?>">
+                        <label for="textfield_<?=$resource?>">Send building materials:</label>
                         <div class="sliderinput">
-                            <div class="sliderbg">
-                                <div class="actualValue valuebg"></div>
-                                <div class="sliderthumb" id="sliderthumb_wood"></div>
+                            <div class="sliderbg" id="sliderbg_<?=$resource?>">
+                                <div class="actualValue valuebg" id="actualValue_<?=$resource?>"></div>
+                                <div class="sliderthumb" id="sliderthumb_<?=$resource?>"></div>
                             </div>
-                            <a id="slider_wood_min" class="setMin" href="#reset" title="Reset input"><span class="textLabel">i</span></a>
-                            <a id="slider_wood_max" class="setMax" href="#max" title="send all"><span class="textLabel">max.</span></a>
+        <script type="text/javascript">
+		create_slider({
+                    dir : 'ltr',
+                    id : "slider_<?=$resource?>",
+                    maxValue : <?=min($capacity, floor($this->Player_Model->now_town->$resource))?>,
+                    overcharge : 0,
+                    iniValue : 0,
+                    bg : "sliderbg_<?=$resource?>",
+                    thumb : "sliderthumb_<?=$resource?>",
+                    topConstraint: -10,
+                    bottomConstraint: 326,
+                    bg_value : "actualValue_<?=$resource?>",
+                    textfield:"textfield_<?=$resource?>"
+		});
+		Event.onDOMReady(function() {
+                    var slider = sliders["slider_<?=$resource?>"];
+                    slider.UpdateField1 = Dom.get("resourceInput");
+                    slider.subscribe("valueChange", function() {
+                        updateColonizeSummary('resource', slider.actualValue);
+                    });
+                    slider.subscribe("slideEnd", function() {
+                        slider.UpdateField1.value = 1250+slider.actualValue;
+                    });
+                    transporterDisplay.registerSlider(slider);
+		});
+        </script>
+                            <a class="setMin" href="#reset" onClick="setColonizeMinValue('slider_<?=$resource?>'); return false;" title="<?=$this->lang->line('reset_entry')?>"><span class="textLabel"><?=$this->lang->line('min')?></span></a>
+                            <a class="setMax" href="#max" onClick="setColonizeMaxValue('slider_<?=$resource?>'); return false;" title="<?=$this->lang->line('send_all')?>"><span class="textLabel"><?=$this->lang->line('max')?></span></a>
                         </div>
-                        <input class="textfield" id="textfield_wood" type="text" name="cargo_resource"  value="0" size="4" maxlength="9">
+                        <input class="textfield" id="textfield_<?=$resource?>" type="text" name="cargo_resource"  value="0" size="4" maxlength="9">
                     </li>
-<?}?>
-<?if($this->Player_Model->now_town->wine > 0){?>
-                    <li class="wine">
-                        <label for="textfield_wine">send marble:</label>
-                        <div class="sliderinput">
-                            <div class="sliderbg">
-                                <div class="actualValue valuebg"></div>
-                                <div class="sliderthumb" id="sliderthumb_wine"></div>
-                            </div>
-                            <a id="slider_wine_min" class="setMin" href="#reset" title="Reset input"><span class="textLabel">i</span></a>
-                            <a id="slider_wine_max" class="setMax" href="#max" title="send all"><span class="textLabel">max.</span></a>
-                        </div>
-                        <input class="textfield" id="textfield_wine" type="text" name="cargo_tradegood1"  value="0" size="4" maxlength="9">
-                    </li>
-<?}?>
-<?if($this->Player_Model->now_town->marble > 0){?>
-                    <li class="marble">
-                        <label for="textfield_resource">send marble:</label>
-                        <div class="sliderinput">
-                            <div class="sliderbg">
-                                <div class="actualValue valuebg"></div>
-                                <div class="sliderthumb" id="sliderthumb_marble"></div>
-                            </div>						
-                            <a id="slider_marble_min" class="setMin" href="#reset" title="Reset input"><span class="textLabel">i</span></a>
-                            <a id="slider_marble_max" class="setMax" href="#max" title="send all"><span class="textLabel">max.</span></a>
-                        </div>
-                        <input class="textfield" id="textfield_marble" type="text" name="cargo_tradegood2"  value="0" size="4" maxlength="9">
-                    </li>
-<?}?>
-<?if($this->Player_Model->now_town->crystal > 0){?>
-                    <li class="glass">
-                        <label for="textfield_resource">send crystal:</label>
-                        <div class="sliderinput">
-                            <div class="sliderbg">
-                                <div class="actualValue valuebg"></div>
-                                <div class="sliderthumb" id="sliderthumb_glass"></div>
-                            </div>
-                            <a id="slider_glass_min" class="setMin" href="#reset" title="Reset input"><span class="textLabel">i</span></a>
-                            <a id="slider_glass_max" class="setMax" href="#max" title="send all"><span class="textLabel">max.</span></a>
-                        </div>
-                        <input class="textfield" id="textfield_glass" type="text" name="cargo_tradegood3"  value="0" size="4" maxlength="9">
-                    </li>
-<?}?>
-<?if($this->Player_Model->now_town->sulfur > 0){?>
-                    <li class="sulfur">
-                        <label for="textfield_resource">send sulfur</label>
-                        <div class="sliderinput">
-                            <div class="sliderbg">
-                                <div class="actualValue valuebg"></div>
-                                <div class="sliderthumb" id="sliderthumb_sulfur"></div>
-                            </div>
-                            <a id="slider_sulfur_min" class="setMin" href="#reset" title="Reset input"><span class="textLabel">i</span></a>
-                            <a id="slider_sulfur_max" class="setMax" href="#max" title="send all"><span class="textLabel">max.</span></a>
-                        </div>
-                        <input class="textfield" id="textfield_sulfur" type="text" name="cargo_tradegood4"  value="0" size="4" maxlength="9">
-                    </li>
-<?}?>
+<?}}?>
                 </ul>
 
                 <hr />
 <?
-    $all_capacity = $this->Player_Model->user->transports*$this->config->item('transport_capacity');
-    $used_capacity =  1250 + 40;
-    $capacity = $all_capacity - $used_capacity;
     $cost = $this->Data_Model->army_cost_by_type(23, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
     $x1 = $this->Player_Model->now_island->x;
     $x2 = $this->Island_Model->island->x;

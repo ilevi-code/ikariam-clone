@@ -83,11 +83,11 @@ class Mission
         case MissionState::LOADING->value:
         case MissionState::EN_ROUTE->value:
         case MissionState::IN_BATTLE->value:
-            return 1;
+            return false;
         case MissionState::RETURNING->value:
         case MissionState::DISPERSED->value:
         case MissionState::FINISHED->value:
-            return 0;
+            return true;
         }
     }
 }

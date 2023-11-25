@@ -45,3 +45,12 @@ a{font-weight:bold;color:#900}
 .space{width:120px;color:#906646}
 #merchantNavy #mainview table .space
 img{vertical-align:middle}
+#merchantNavy #mainview table
+td{text-align:center}
+td a {text-align:center;color:#542c0f;text-decoration:none}
+.arrow{width:12px}
+.arrival{width:60px}
+.actions{width:72px}
+.mission_icon {display:inline-block;height:22px;width:40px}
+div.transport {background:url(interface/mission_transport.gif) center top no-repeat}
+div.colonize {background:url(interface/mission_transport.gif) center top no-repeat}
