@@ -22,7 +22,7 @@
     $all = $this->Player_Model->now_town->peoples + $this->Player_Model->now_town->tradegood;
     $max = ($cost['workers'] < $all) ? $cost['workers'] : $all;
     $max = floor($max);
-    $over_max = 0;
+    $over_max = $max;
     if ($this->Player_Model->research->res2_5 > 0 and $all >= $max)
     {
         $over_max = $max + $cost['workers']*0.5;
