@@ -1,4 +1,9 @@
+FROM tomsik68/xampp:8 as extension_compiler
+RUN apt update && apt install -y php-pear autoconf gcc make
+RUN pecl channel-update pecl.php.net && PATH=/opt/lampp/bin:$PATH pecl install ds
+
 FROM tomsik68/xampp:8
+COPY --from=extension_compiler /opt/lampp/lib/php/extensions/no-debug-non-zts-20220829/ds.so /opt/lampp/lib/php/extensions/no-debug-non-zts-20220829/ds.so
 COPY my.cnf /opt/lampp/etc/my.cnf
 COPY php.ini /opt/lampp/etc/php.ini
 COPY bashrc /root/.bashrc
