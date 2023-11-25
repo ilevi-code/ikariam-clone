@@ -2,6 +2,7 @@
 
 require_once "application/libraries/mission_data.php";
 
+#[\AllowDynamicProperties]
 class Player_Model extends CI_Model {
 
     /**
