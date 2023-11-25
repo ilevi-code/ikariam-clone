@@ -4,7 +4,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="language" content="<?php echo $this->session->userdata('language');?>">
-        <meta name="description" content="MyIkariam, il browserGame strategico e gratuito ambientato nell'antichità.">
+        <meta name="description" content="Ikariam, a free browser game">
         <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
 <?php 
 if($this->Player_Model->now_town->build_start > 0){
