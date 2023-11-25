@@ -2,10 +2,16 @@ version: "3.3"
 services:
   ikariam:
     image: ikariam
+    build:
+      context: ./docker_image
+      network: host
     ports:
       - "80:80"
       - "2222:22"
     volumes:
       - .:/opt/lampp/htdocs
+      - db:/opt/lampp/var/mysql
       - /tmp/ikariam_bash_hist:/root/.bash_history
-      # - ./ik_game:/opt/lampp/var/mysql/ik_game
+
+volumes:
+  db:
