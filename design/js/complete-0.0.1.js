@@ -9224,21 +9224,33 @@ function getProgressBar(config) {
   pbar.startTimer();
   return pbar;
 }
+function sleep (time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
 function getCountdown(config) {
   var cnt = new Timer(config.enddate, config.currentdate, config.interval);
   cnt.formattime = getTimestring;
   cnt.startdate = config.startdate * 1000;
   cnt.El = Dom.get(config.el);
   cnt.args = getCountdown.arguments;
-  cnt.subscribe("update", function () {
-    var timeargs = [this.enddate - Math.floor(this.currenttime / 1000) * 1000];
-    for (i = 1; i < this.args.length; i++) {
-      timeargs.push(this.args[i]);
+  cnt.suffix = config.suffix;
+  update_callback = function () {
+    var timeargs = [cnt.enddate - Math.floor(cnt.currenttime / 1000) * 1000];
+    for (i = 1; i < cnt.args.length; i++) {
+      timeargs.push(cnt.args[i]);
     }
-    this.El.innerHTML = this.formattime.apply(this, timeargs);
-  });
+    cnt.El.innerHTML = cnt.formattime.apply(cnt, timeargs);
+    if (cnt.suffix) {
+      cnt.El.innerHTML += cnt.suffix;
+    }
+  };
+  document.addEventListener("DOMContentLoaded", update_callback);
+  cnt.subscribe("update", update_callback);
   cnt.subscribe("finished", function () {
     this.El.innerHTML = "-";
+    sleep(1).then(() => {
+        location.reload();
+    });
   });
   cnt.startTimer();
   return cnt;
