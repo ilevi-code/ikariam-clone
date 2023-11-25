@@ -441,7 +441,7 @@ INSERT INTO `alpha_islands` VALUES(194, 'Neyduos', 20, 25, 2, 1, 8, 2, 2, 0, 0, 
 CREATE TABLE `alpha_missions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `from` int(11) NOT NULL,
-  `to` varchar(30) NOT NULL,
+  `to` int(30) NOT NULL,
   `state` int(11) NOT NULL,
   `type` int(11) NOT NULL,
   `prev_stage_time` BIGINT NOT NULL,

@@ -522,7 +522,7 @@ class Update_Model extends CI_Model
         $mission->state = MissionState::EN_ROUTE->value;
 
         $this->db->set('next_stage_time', $mission->next_stage_time);
-        $this->db->set('state', $mission->state->value);
+        $this->db->set('state', $mission->state);
         $this->db->where(array('id' => $mission->id));
         $this->db->update($this->session->userdata('universe').'_missions');
     }
@@ -579,17 +579,18 @@ class Update_Model extends CI_Model
 
     function update_mission(Mission $mission)
     {
-        /* while ($mission->state != MissionState::FINISHED and $mission->next_stage_time < time()) { */
-            switch ($mission->type)
-            {
-            case MissionType::TRANSPORT->value;
-                $this->update_transport($mission);
-                return;
-            case MissionType::COLONIZE->value:
-                $this->update_colonization($mission);
-                return;
-            }
-        /* } */
+        if ($mission->next_stage_time > time()) {
+            return;
+        }
+        switch ($mission->type)
+        {
+        case MissionType::TRANSPORT->value;
+        $this->update_transport($mission);
+        return;
+        case MissionType::COLONIZE->value:
+            $this->update_colonization($mission);
+            return;
+        }
     }
 
     function Update_Missions()

@@ -32,12 +32,14 @@ function mission_name_by_type($type)
 
 class Mission
 {
+    public $id = 0;
     public $ctx = null;
     public $from = 0;
     public $to = 0;
     public $state = 0;
     public $type = 0;
     public $next_stage_time = 0;
+    public $prev_stage_time = 0;
     public $wood = 0;
     public $wine = 0;
     public $marble = 0;
@@ -45,11 +47,12 @@ class Mission
     public $sulfur = 0;
     public $gold = 0;
     public $peoples = 0;
+    public $ships = 0;
 
     public function __construct($ctx, Array $properties=array()){
         $this->ctx = $ctx;
         foreach($properties as $key => $value){
-            $this->{$key} = $value;
+            $this->{$key} = intval($value);
         }
     }
 
