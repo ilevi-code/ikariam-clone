@@ -1224,6 +1224,11 @@ class Actions extends CI_Controller
             $this->Error('No action points!');
             return;
         }
+        if ($this->Action_Model->is_town_occupied($new_island->id, $position))
+        {
+            $this->Error('This position is already occupied');
+            return;
+        }
 
         $ports_levels = $this->Action_Model->levels_of_building_type($this->Player_Model->now_town->id, BUILDING::PORT);
         if (count($ports_levels) == 0) {
@@ -1243,6 +1248,7 @@ class Actions extends CI_Controller
             return;
         }
 
+        // TODO negative amount validation
         $resources = array(
             'wood' => floor($this->get_param('sendresource')) + 1250,
             'wine' => floor($this->get_param('sendwine')),
@@ -1252,15 +1258,19 @@ class Actions extends CI_Controller
             'peoples' => 40,
         );
         $resource_count = $this->Action_Model->count_resources($resources);
+
         $ship_count = $this->Action_Model->calc_ships($resource_count);
+        if ($this->Action_Model->count_available_ships($this->Player_Model->user->id) < $ship_count) {
+            $this->Error("Not enough ships");
+            return;
+        }
+
         $user_resources = array(
-            'transports' => $ship_count,
             'gold' => 9000
         );
 
         if (!$this->Action_Model->does_town_have_spare($this->Player_Model->now_town->id, $resources) or
-            !$this->Action_Model->does_user_have_spare($this->Player_Model->user->id, $user_resources) or
-            $this->Action_Model->is_town_occupied($new_island->id, $position))
+            !$this->Action_Model->does_user_have_spare($this->Player_Model->user->id, $user_resources))
         {
             $this->Error("Not enough resources");
             return;
