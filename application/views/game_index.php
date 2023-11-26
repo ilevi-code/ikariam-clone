@@ -7,6 +7,7 @@
         <meta name="description" content="Ikariam, a free browser game">
         <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
 <?php 
+$available_ships = $this->Action_Model->count_available_ships($this->Player_Model->user->id);
 if($this->Player_Model->now_town->build_start > 0){
     $level_text = 'pos'.$this->Player_Model->build_line[$this->Player_Model->town_id][0]['position'].'_level';
     $type_text = 'pos'.$this->Player_Model->build_line[$this->Player_Model->town_id][0]['position'].'_type';
@@ -272,7 +273,7 @@ case 2:?>
     <ul>
         <li class="transporters" title="<?=$this->lang->line('button_transporters_title')?>">
             <a href="<?=$this->config->item('base_url')?>game/merchantNavy/">
-                <span class="textLabel"><?=$this->lang->line('button_transporters_name')?>:</span><span><?=$this->Player_Model->user->transports?> (<?=$this->Player_Model->all_transports?>)</span>
+                <span class="textLabel"><?=$this->lang->line('button_transporters_name')?>:</span><span><?=$available_ships?> (<?=$this->Player_Model->all_transports?>)</span>
             </a>
         </li>
 	<li class="ambrosia" title="<?=number_format($this->Player_Model->user->ambrosy)?> <?=$this->lang->line('ambrosy')?>">
