@@ -1818,6 +1818,10 @@ class Data_Model extends CI_Model
         return $query->row()->count;
     }
 
+    function user_sendable_resources()
+    {
+        return ['wood', 'wine', 'marble', 'crystal', 'sulfur'];
+    }
 }
 
 /* End of file data_model.php */

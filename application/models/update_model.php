@@ -34,7 +34,6 @@ class Update_Model extends CI_Model
            
            $this->Update_Towns();
            $this->Update_Islands();
-           $this->Update_Missions();
            $this->Update_Trade_Routes();
            $this->Update_Missions();
           
@@ -554,7 +553,7 @@ class Update_Model extends CI_Model
             $this->update_mission_en_route($mission);
             break;
         case MissionState::EN_ROUTE->value;
-            $this->update_mission_arrived($misison);
+            $this->update_mission_arrived($mission);
             break;
         }
     }

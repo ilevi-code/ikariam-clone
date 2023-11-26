@@ -1,14 +1,15 @@
-<div id="mainview">		
+<div id="mainview">
     <div class="buildingDescription">
         <h1>Transport</h1>
         <p>Select the type and number of goods to be transported.</p>
     </div>
 
 <?php
-$capacity = $this->Player_Model->user->transports * getConfig('transport_capacity');
+$available_ships = $this->Action_Model->count_available_ships($this->Player_Model->user->id);
+$capacity = $available_ships * getConfig('transport_capacity');
 ?>
-					
-    <form id="transport" action="<?=$this->config->item('base_url')?>actions/transport/<?=$this->Island_Model->island->id?>/<?=$param1?>/" method="POST">		                    
+    <form id="transport" action="<?=$this->config->item('base_url')?>actions/transport/" method="POST">
+        <input type=hidden name="town_id" value="<?=$param1?>">
         <div id="setPremiumTransports" class="contentBox">
             <h3 class="header">hired transport</h3>
             <div class="content">
@@ -30,8 +31,7 @@ $capacity = $this->Player_Model->user->transports * getConfig('transport_capacit
                 <p>Select goods to transport from<?=$this->Player_Model->now_town->name?> in<?=$this->Data_Model->temp_towns_db[$param1]->name?>. Consider the number of merchant ships available.</p>
                 <ul class="resourceAssign">
 <?php
-$resources = ['wood', 'wine', 'marble', 'crystal', 'sulfur'];
-foreach ($resources as $resource) {
+foreach ($this->Data_Model->user_sendable_resources() as $resource) {
 if($this->Player_Model->now_town->$resource > 0){?>
     <li class="<?=$resource?>">
                         <label for="textfield_<?=$resource?>">Send building materials:</label>
@@ -61,7 +61,7 @@ if($this->Player_Model->now_town->$resource > 0){?>
                         updateColonizeSummary('resource', slider.actualValue);
                     });
                     slider.subscribe("slideEnd", function() {
-                        slider.UpdateField1.value = 1250+slider.actualValue;
+                        slider.UpdateField1.value = slider.actualValue;
                     });
                     transporterDisplay.registerSlider(slider);
 		});
@@ -69,7 +69,7 @@ if($this->Player_Model->now_town->$resource > 0){?>
                             <a class="setMin" href="#reset" onClick="setColonizeMinValue('slider_<?=$resource?>'); return false;" title="<?=$this->lang->line('reset_entry')?>"><span class="textLabel"><?=$this->lang->line('min')?></span></a>
                             <a class="setMax" href="#max" onClick="setColonizeMaxValue('slider_<?=$resource?>'); return false;" title="<?=$this->lang->line('send_all')?>"><span class="textLabel"><?=$this->lang->line('max')?></span></a>
                         </div>
-                        <input class="textfield" id="textfield_<?=$resource?>" type="text" name="cargo_resource"  value="0" size="4" maxlength="9">
+                        <input class="textfield" id="textfield_<?=$resource?>" type="text" name="<?=$resource?>"  value="0" size="4" maxlength="9">
                     </li>
 <?}}?>
                 </ul>
@@ -94,7 +94,7 @@ if($this->Player_Model->now_town->$resource > 0){?>
                     </div>
                 </div>
                 <div class="centerButton">
-                    <input id="submit" class="button" type="submit" value="To transport!">
+                    <input id="submit" class="button" type="submit" value="Transport Goods">
                 </div>
                 </form>
 <!--

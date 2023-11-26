@@ -134,16 +134,16 @@ class Action_Model extends CI_Model {
 
     public function count_resources($resources)
     {
-        $total = 0.0;
+        $total = 0;
         foreach ($resources as $resource => $count) {
             $total += $count;
         }
         return $total;
     }
 
-    public function calc_ships($resources)
+    public function calc_ships($resource_count)
     {
-        return ceil($this->count_resources($resources) / getConfig('transport_capacity'));
+        return ceil($resource_count / getConfig('transport_capacity'));
     }
 
     public function calc_load_time($ports_levels, $resource_count)
@@ -153,13 +153,27 @@ class Action_Model extends CI_Model {
             $loading_speed += $this->Data_Model->speed_by_port_level($port_level);
 
         }
-        return ceil($resource_count / $loading_speed) * 60; // minutes to seconds
+        return $resource_count / $loading_speed * 60; // minutes to seconds
     }
 
-    public function get_mission_owner($mission)
+    public function get_mission_owner(Mission $mission)
     {
         $src_town = $this->Data_Model->Load_Town($mission->from);
         return $src_town->user;
+    }
+
+    public function count_available_ships($user_id)
+    {
+        $ships = $this->Data_Model->Load_User($user_id)->transports;
+        foreach ($this->Data_Model->temp_missions_db as $user_missions) {
+            foreach ($user_missions as $mission) {
+                $mission = new Mission($this, (array)$mission);
+                if ($this->Action_Model->get_mission_owner($mission) == $user_id) {
+                    $ships -= $mission->ships;
+                }
+            }
+        }
+        return $ships;
     }
 }
 

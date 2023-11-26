@@ -18,7 +18,7 @@ class Actions extends CI_Controller
         $this->load->model('Action_Model');
         if (!$this->session->userdata('login'))
         {
-            $this->Player_Model->Error('Ваша сессия истекла, войдите снова!');
+            $this->Player_Model->Error($this->lang->line('error_session'));
         }
         else
         {
@@ -55,6 +55,12 @@ class Actions extends CI_Controller
      */
     function Error($error = '')
     {
+        $format = "";
+        foreach(debug_backtrace() as $trace) {
+            $format .= sprintf("\n%s:%d: %s()", $trace['file'], $trace['line'], $trace['function']);
+        }
+        error_log($format);
+        error_log($error);
         $this->show('error', $error);
         http_response_code(400);
     }
@@ -969,71 +975,62 @@ class Actions extends CI_Controller
 
     function transport($island = 0, $town = 0)
     {
-        $island = floor($island);
-        $town = floor($town);
-        if ($this->Player_Model->now_town->actions > 0)
+        $town_id = intval($this->get_param('town_id'));
+        if ($town_id <= 0)
         {
-            if ($island > 0 and $town >= 0)
-            {
-                $this->Data_Model->Load_Town($town);
-                $this->load->model('Island_Model');
-                $this->Island_Model->Load_Island($island);
-                // Get the details
-                $cargo_wood = isset($_POST['cargo_resource']) ? $_POST['cargo_resource'] : 0;
-                $cargo_wine = isset($_POST['cargo_tradegood1']) ? $_POST['cargo_tradegood1'] : 0;
-                $cargo_marble = isset($_POST['cargo_tradegood2']) ? $_POST['cargo_tradegood2'] : 0;
-                $cargo_crystal = isset($_POST['cargo_tradegood3']) ? $_POST['cargo_tradegood3'] : 0;
-                $cargo_sulfur = isset($_POST['cargo_tradegood4']) ? $_POST['cargo_tradegood4'] : 0;
-                $transporters = isset($_POST['transporters']) ? $_POST['transporters'] : 0;
-                // Count the resources of
-                $wood = $this->Player_Model->now_town->wood - $cargo_wood;
-                $wine = $this->Player_Model->now_town->wine - $cargo_wine;
-                $marble = $this->Player_Model->now_town->marble - $cargo_marble;
-                $crystal = $this->Player_Model->now_town->crystal - $cargo_crystal;
-                $sulfur = $this->Player_Model->now_town->sulfur - $cargo_sulfur;
-                $transports = $this->Player_Model->user->transports - $transporters;
-                if(isset($this->Data_Model->temp_towns_db[$town]) and ($this->Player_Model->user->transports >= $transporters) and ($transporters != 0) and ($wood >= 0) and ($wine >= 0) and ($crystal >= 0) and ($sulfur >= 0) and ($transports >= 0) and ($transporters * getConfig('transport_capacity') >= $cargo_wood + $cargo_wine + $cargo_marble + $cargo_crystal + $cargo_sulfur) and ($cargo_wood + $cargo_wine + $cargo_marble + $cargo_crystal + $cargo_sulfur != 0))
-                {
-                    // subtract the resources
-                    $this->Player_Model->now_town->wood = $wood;
-                    $this->Player_Model->now_town->wine = $wine;
-                    $this->Player_Model->now_town->marble = $marble;
-                    $this->Player_Model->now_town->crystal = $crystal;
-                    $this->Player_Model->now_town->sulfur = $sulfur;
-                    $this->Player_Model->now_town->actions = $this->Player_Model->now_town->actions - 1;
-                    $this->Player_Model->now_town->wood = $wood;
-                    $this->Player_Model->now_town->wood = $wood;
-                    $this->db->set('wood', $wood);
-                    $this->db->set('wine', $wine);
-                    $this->db->set('marble', $marble);
-                    $this->db->set('crystal', $crystal);
-                    $this->db->set('sulfur', $sulfur);
-                    $this->db->set('actions', $this->Player_Model->now_town->actions);
-                    $this->db->where(array('id' => $this->Player_Model->now_town->id));
-                    $this->db->update($this->session->userdata('universe').'_towns');
-                    $this->Player_Model->user->transports = $transports;
-                    $this->db->set('transports', $transports);
-                    $this->db->where(array('id' => $this->Player_Model->user->id));
-                    $this->db->update($this->session->userdata('universe').'_users');
-                    // add a mission
-                    $this->db->insert($this->session->userdata('universe').'_missions', array('user' => $this->Player_Model->user->id, 'from' => $this->Player_Model->now_town->id, 'to' => $town, 'loading_from_start' => time(), 'mission_type' => 2, 'wood' => $cargo_wood, 'wine' => $cargo_wine, 'marble' => $cargo_marble, 'crystal' => $cargo_crystal, 'sulfur' => $cargo_sulfur, 'ship_transport' => $transporters));
-                    // Bring the player to the port
-                    $this->show('port');
-                }
-                else
-                {
-                    $this->show('error', $this->lang->line('trade_fleet_no_freight'));
-                }
-            }
-            else
-            {
-                $this->show('port');
-            }
+            $this->Error('bad town id');
+            return;
         }
-        else
+
+        if ($this->Player_Model->now_town->actions == 0)
         {
-            $this->Error($this->lang->line('enough_action_points'));
+            $this->Error('no actions points available');
+            return;
         }
+
+        $town = $this->Data_Model->Load_Town($town);
+
+        $resources = array();
+        foreach ($this->Data_Model->user_sendable_resources() as $resource) {
+            $count = intval($this->get_param($resource));
+            if ($count < 0) {
+                $this->Error("Cant send negative amount of resources");
+                return;
+            }
+            $resources[$resource] = $count;
+        }
+        if (!$this->Action_Model->does_town_have_spare($this->Player_Model->now_town->id, $resources)) {
+            $this->Error("Not enough resources");
+            return;
+        }
+
+        $total_count = $this->Action_Model->count_resources($resources);
+        if ($total_count == 0) {
+            $this->Error("You cant send your ships empty");
+            return;
+        }
+
+        $ship_count = $this->Action_Model->calc_ships($total_count);
+        if ($this->Action_Model->count_available_ships($this->Player_Model->user->id) < $ship_count) {
+            $this->Error("Not enough ships");
+            return;
+        }
+
+        $town = $this->Data_Model->Load_Town($town_id);
+        $this->remove_resources_from_town($this->Player_Model->now_town->id, $resources);
+
+        $ports_levels = $this->Action_Model->levels_of_building_type($this->Player_Model->now_town->id, BUILDING::PORT);
+        $mission_values = array_merge($resources, array(
+            'from' => $this->Player_Model->now_town->id,
+            'to' => $town->id,
+            'state' => MissionState::LOADING->value,
+            'type' => MissionType::TRANSPORT->value,
+            'prev_stage_time' => time(),
+            'next_stage_time' => time() + $this->Action_Model->calc_load_time($ports_levels, $total_count),
+            'ships' => $ship_count,
+        ));
+        $this->db->insert($this->session->userdata('universe').'_missions', $mission_values);
+        header('Location: /game/port');
     }
 
     /**
@@ -1240,6 +1237,11 @@ class Actions extends CI_Controller
             return;
         }
 
+        if ($this->Player_Model->now_town->actions == 0)
+        {
+            $this->Error('no actions points available');
+            return;
+        }
 
         $resources = array(
             'wood' => floor($this->get_param('sendresource')) + 1250,
@@ -1248,9 +1250,9 @@ class Actions extends CI_Controller
             'crystal' => floor($this->get_param('sendcrystal')),
             'sulfur' => floor($this->get_param('sendsulfur')),
             'peoples' => 40,
-            'actions' => 1,
         );
-        $ship_count = $this->Action_Model->calc_ships($resources);
+        $resource_count = $this->Action_Model->count_resources($resources);
+        $ship_count = $this->Action_Model->calc_ships($resource_count);
         $user_resources = array(
             'transports' => $ship_count,
             'gold' => 9000
@@ -1260,7 +1262,7 @@ class Actions extends CI_Controller
             !$this->Action_Model->does_user_have_spare($this->Player_Model->user->id, $user_resources) or
             $this->Action_Model->is_town_occupied($new_island->id, $position))
         {
-            $this->Error("No enough resources");
+            $this->Error("Not enough resources");
             return;
         }
         $town = $this->colonize_position($new_island->id, $position, $this->Player_Model->user->id);
@@ -1268,7 +1270,6 @@ class Actions extends CI_Controller
         $this->remove_resources_from_user($this->Player_Model->user->id, $user_resources);
 
         unset($resources['actions']);
-        $resource_count = $this->Action_Model->count_resources($resources);
         $mission_values = array_merge($resources, array(
             'from' => $this->Player_Model->now_town->id,
             'to' => $town->id,
@@ -1276,7 +1277,6 @@ class Actions extends CI_Controller
             'type' => MissionType::COLONIZE->value,
             'prev_stage_time' => time(),
             'next_stage_time' => time() + $this->Action_Model->calc_load_time($ports_levels, $resource_count),
-            'peoples' => 40,
             'ships' => $ship_count,
         ));
         $this->db->insert($this->session->userdata('universe').'_missions', $mission_values);
