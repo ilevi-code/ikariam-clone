@@ -664,7 +664,6 @@ CREATE TABLE `alpha_towns` (
   `spyes_start` int(11) NOT NULL DEFAULT '0',
   `workers_wood` int(11) NOT NULL DEFAULT '0',
   `tradegood_wood` int(11) NOT NULL DEFAULT '0',
-  `actions` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '3',
   `tavern_wine` int(11) NOT NULL DEFAULT '0',
   `branch_search_type` int(11) NOT NULL DEFAULT '0',
   `branch_search_resource` int(11) NOT NULL DEFAULT '0',
