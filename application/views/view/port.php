@@ -47,10 +47,11 @@ Not enough resources
         <h3 class="header"><span class="textLabel">Send a merchant ship</span></h3>
         <div class="content">
             <ul class="cities">
-<?foreach($this->Player_Model->towns as $town)?>
+<?php
+foreach($this->Player_Model->towns as $town) {?>
 <?if($town->id != $this->Player_Model->town_id){?>
 <li><a title="Transport in<?=$town->name?>" href="<?=$this->config->item('base_url')?>game/transport/<?=$town->island?>/<?=$town->id?>/">(<?=$this->Player_Model->islands[$town->island]->x?>:<?=$this->Player_Model->islands[$town->island]->y?>) <?=$town->name?></a></li>
-<?}?>
+<?}}?>
             </ul>
         </div>
         <div class="footer"></div>
