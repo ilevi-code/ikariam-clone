@@ -74,7 +74,15 @@ for ($i = 0; $i <= 14; $i++)
         <li class="garnison"></li>
 <?}}?>
 
-<?if($this->Player_Model->missions_loading > 0){?>
+<?php
+$has_loading_missions = false;
+foreach($this->Player_Model->missions as $mission){
+    if ($mission->from == $this->Player_Model->now_town->id and $mission->state == MissionState::LOADING->value){
+        $has_loading_missions = true;
+    }
+}
+if($has_loading_missions){
+?>
         <li class="transporter"></li>
 <?}?>
     </ul>
