@@ -10,19 +10,21 @@ There are still things missing from this clone:
 * Barbarian village
 * Battles
 
-## Installation
+## Prerequisites
 
-You will need `docker` and `docker-compose` in order to build and run game.
+* docker
+* Compose V2
 
-To build the image run:
+## Setting up the server
 
+To run the server:
 ```sh
-cd docker_image
-docker build . -t ikariam
+docker compose build
+docker-compose up
 ```
 
-To run the server run:
-
+To initializae the database:
 ```sh
-docker-compose up
+mysql -u root -S ./mysql/mysql.sock -e 'create database ik_game'
+mysql -u root -S ./mysql/mysql.sock ik_game < sql.sql
 ```
