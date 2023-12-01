@@ -122,14 +122,13 @@ class Main extends CI_Controller {
                     {
                         if ($i == 0 or $i == 2 or $i == 4 or $i == 6 or $i == 8 or $i == 10 or $i == 12 or $i == 14)
                         {
-                            $parametr = 'city'.$i;
                             if ($island->$parametr == 0){$position = $i;break;}
                         }
                     }
                         if ($position >= 0)
                         {
                             // Добавляем город
-                            $this->db->insert($_POST['universe'].'_towns', array('user' => $user->id,'island' => $island->id,'last_update' => time(), 'position' => $position));
+                            $this->db->insert($_POST['universe'].'_towns', array('user' => $user->id,'island' => $island->id,'last_update' => time(), 'position' => $position, 'is_colony' => false));
                             // Находим город в базе
                             $town_query = $this->db->get_where($_POST['universe'].'_towns', array('user' => $user->id));
                             $town = $town_query->row();

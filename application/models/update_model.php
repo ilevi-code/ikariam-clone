@@ -518,7 +518,7 @@ class Update_Model extends CI_Model
     {
         $travel_time = $mission->get_travel_time();
         $mission->next_stage_time += $travel_time;
-        $mission->state = MissionState::EN_ROUTE->value;
+        $mission->state = MissionState::EN_ROUTE;
 
         $this->db->set('next_stage_time', $mission->next_stage_time);
         $this->db->set('state', $mission->state);
@@ -542,17 +542,17 @@ class Update_Model extends CI_Model
         $dest_user->gold += $mission->gold;
         $this->db->query('UPDATE '.$this->session->userdata('universe').'_towns SET '.implode(',',$update_values).' WHERE `id`='.$dest_town->id);
         $this->db->query('UPDATE '.$this->session->userdata('universe').'_users SET `gold`=`gold`+'.$mission->gold.' WHERE `id`='.$dest_user->id);
-        $mission->state = MissionState::FINISHED->value;
+        $mission->state = MissionState::FINISHED;
     }
 
     function update_transport(Mission $mission)
     {
         switch ($mission->state)
         {
-        case MissionState::LOADING->value;
+        case MissionState::LOADING;
             $this->update_mission_en_route($mission);
             break;
-        case MissionState::EN_ROUTE->value;
+        case MissionState::EN_ROUTE;
             $this->update_mission_arrived($mission);
             break;
         }
@@ -562,10 +562,10 @@ class Update_Model extends CI_Model
     {
         switch ($mission->state)
         {
-        case MissionState::LOADING->value;
+        case MissionState::LOADING;
             $this->update_mission_en_route($mission);
             break;
-        case MissionState::EN_ROUTE->value;
+        case MissionState::EN_ROUTE;
             $this->load->model('Island_Model');
                     $this->db->set('pos0_level', 1);
                     $this->db->where(array('id' => $mission->to));
@@ -583,10 +583,10 @@ class Update_Model extends CI_Model
         }
         switch ($mission->type)
         {
-        case MissionType::TRANSPORT->value;
+        case MissionType::TRANSPORT;
         $this->update_transport($mission);
         return;
-        case MissionType::COLONIZE->value:
+        case MissionType::COLONIZE:
             $this->update_colonization($mission);
             return;
         }
@@ -600,7 +600,7 @@ class Update_Model extends CI_Model
         {
             $mission = new Mission($this, (array)$mission_data);
             $this->update_mission($mission);
-            if ($mission->state == MissionState::FINISHED->value) {
+            if ($mission->state == MissionState::FINISHED) {
                 $finished[] = $mission->id;
             }
         }
@@ -608,6 +608,7 @@ class Update_Model extends CI_Model
         {
             unset($this->Player_Model->missions[$mission->id]);
             $this->db->query('DELETE FROM '.$this->session->userdata('universe').'_missions where `id`="'.$mission->id.'"');
+            // todo leave a finished message at the trade-adivaor
         }
     }
 

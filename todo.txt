@@ -1,0 +1,25 @@
+add units ships and wonders page to information
+load info from plugin
+translate welcome lang
+expansion of a building redirects the message instead of post request
+fix demolish
+fix sacked unit view to actually do something, and rename sack to dismiss
+oop mission handling
+when aborting a building in build queue (premium) it might change type
+little icon of tradegood in town dropdown
+icon of town when creating shipment
+fix tradegood view, the cursor over the button is not clickable after moving the slider
+fix transport & colonize & probably plunder to support slider groups
+clicking the sheeping button produces and error page
+product a message to the advisor then shipment arrives
+[EASY] fix transport abortion
+[MED ]fix people growth calculation
+[MED ] fix gold production calculation
+[HARD]handle deserted units (ships, followed by units, followed by scientists).
+[MED ] fix all places when checking how many available ships are
+[MED ] fix all places when check how many action points are available
+[EASY] check for available action points in colonize.php
+[EASY] fix worker submit to redirect (academy, wood, tradegood)
+
+tests:
+what happens when i send to much resources to a single town?

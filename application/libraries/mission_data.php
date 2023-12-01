@@ -56,11 +56,13 @@ class Mission
     public $peoples = 0;
     public $ships = 0;
 
-    public function __construct($ctx, Array $properties=array()){
+    public function __construct($ctx, $properties){
         $this->ctx = $ctx;
-        foreach($properties as $key => $value){
+        foreach((array)$properties as $key => $value){
             $this->{$key} = intval($value);
         }
+        $this->type = MissionType::from($this->type);
+        $this->state = MissionState::from($this->state);
     }
 
     public function get_resources() {
@@ -80,14 +82,29 @@ class Mission
 
     public function is_returning() {
         switch ($this->state) {
-        case MissionState::LOADING->value:
-        case MissionState::EN_ROUTE->value:
-        case MissionState::IN_BATTLE->value:
+        case MissionState::LOADING:
+        case MissionState::EN_ROUTE:
+        case MissionState::IN_BATTLE:
             return false;
-        case MissionState::RETURNING->value:
-        case MissionState::DISPERSED->value:
-        case MissionState::FINISHED->value:
+        case MissionState::RETURNING:
+        case MissionState::DISPERSED:
+        case MissionState::FINISHED:
             return true;
         }
+    }
+}
+
+class ShipmentMission extends Mission {
+
+}
+
+function create_mission($ctx, $mission_data) {
+    switch ($mission->type) {
+    case MissionType::TRANSPORT:
+        return new ShipmentArrivedMessage($ctx, $user_id, $town_id, $data);
+    case TownMessageType::BUILDING_EXPANDED:
+        return new BuildingExpandedMessage($ctx, $user_id, $town_id, $data);
+    default:
+        return new TownMessage($ctx, $user_id, $town_id, $data);
     }
 }

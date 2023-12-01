@@ -16,11 +16,14 @@ enum TownMessageType : int
     case BUILDING_EXPANDED = 0;
     case ISLAND_EXPANDED = 1;
     case UNITS_PRODUCED = 2;
-    case SPY_RECHED = 3;
     case SHIPMENT_ARRIVED = 4;
-    case PLUDNER_RETURNED = 5;
-    case CULTURAL_CONTRACT = 6;
-    case MERCHANT_FLEET = 7;
+    case SPY_RECHED = 5;
+    case SPY_FOUND = 6;
+    case MERCHANT_BOUGHT = 7; // to the user whos selling
+    case MERCHANT_RETURNED = 8; // to the user whos buying
+    case PLUDNER_RETURNED = 9; // attacker
+    case PLUDNERED = 10; // defender
+    case CULTURAL_CONTRACT = 11;
 }
 
 class TownMessage
@@ -48,8 +51,12 @@ class ShipmentArrivedMessage extends TownMessage
     public function format() {
         $this->ctx->Data_Model->Load_Town($this->data->from);
         $source_town = $this->ctx->Data_Model->temp_towns_db[$this->data->from];
-        $fleet_source_link = $this->config->item('base_url').'game/island/'.$source_town->island.'/'.$mission->from.'/';
-        $text = 'The merchant fleet from <a href="'.$source_town->name.'">'.$source_town->name.'</a> returned';
+        if ($source_town->user == $this->ctx->Player_Model->user->id) {
+            $fleet_source_link = $this->ctx->config->item('base_url').'game/city/'.$this->data->from.'/';
+        } else {
+            $fleet_source_link = $this->ctx->config->item('base_url').'game/island/'.$source_town->island.'/'.$mission->from.'/';
+        }
+        $text = 'The trade fleet from <a href="'.$source_town->name.'">'.$source_town->name.'</a> returned';
         $goods = (array)$this->data->goods;
         if (count((array)$goods))
         {
